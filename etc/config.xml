@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <flagbit_flysystem>
+            <local>
+                <lock>1</lock>
+            </local>
+            <ftp>
+                <port>21</port>
+                <passive>1</passive>
+                <ssl>1</ssl>
+                <timeout>30</timeout>
+            </ftp>
+        </flagbit_flysystem>
+    </default>
+</config>
+

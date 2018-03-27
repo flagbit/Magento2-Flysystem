@@ -1,0 +1,29 @@
+{
+  "name": "flagbit/magento2-flysystem",
+  "description": "Flysystem integration for Magento2",
+  "type": "magento2-module",
+  "license": [
+    "proprietary"
+  ],
+  "authors": [
+    {
+      "name": "Robin Homberg",
+      "email": "robin.homberg@flagbit.de",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": "~5.5.0|~5.6.0|~7.0.0"
+  },
+  "autoload": {
+    "files": [
+      "registration.php"
+    ],
+    "psr-4": {
+      "Flagbit\\Flysystem\\": ""
+    }
+  },
+  "config": {
+    "sort-packages": true
+  }
+}
