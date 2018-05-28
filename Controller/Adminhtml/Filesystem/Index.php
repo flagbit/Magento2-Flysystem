@@ -2,6 +2,7 @@
 namespace Flagbit\Flysystem\Controller\Adminhtml\Filesystem;
 
 use \Magento\Backend\App\Action\Context;
+use \Magento\Backend\Model\Session;
 use \Magento\Framework\Registry;
 use \Magento\Framework\View\Result\LayoutFactory;
 
@@ -13,17 +14,21 @@ class Index extends AbstractController
     protected $resultLayoutFactory;
 
     /**
+     * Index constructor.
      * @param Context $context
      * @param Registry $coreRegistry
+     * @param Session $session
      * @param LayoutFactory $resultLayoutFactory
      */
     public function __construct(
         Context $context,
         Registry $coreRegistry,
+        Session $session,
         LayoutFactory $resultLayoutFactory
     ) {
         $this->resultLayoutFactory = $resultLayoutFactory;
-        parent::__construct($context, $coreRegistry);
+        $this->session = $session;
+        parent::__construct($context, $coreRegistry, $session);
     }
 
     /**
@@ -33,7 +38,9 @@ class Index extends AbstractController
      */
     public function execute()
     {
-        $storeId = (int)$this->getRequest()->getParam('store');
+        $identifier = $this->getRequest()->getParam('identifier');
+        $this->setModalIdentifier($identifier);
+
         $this->_initAction();
         /** @var \Magento\Framework\View\Result\Layout $resultLayout */
         $resultLayout = $this->resultLayoutFactory->create();

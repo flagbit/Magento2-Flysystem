@@ -48,6 +48,11 @@ class Manager
     protected $logger;
 
     /**
+     * @var string
+     */
+    protected $path;
+
+    /**
      * Manager constructor.
      * @param FilesystemManager $filesystemManager
      * @param FilesystemAdapterFactory $filesystemAdapterFactory
@@ -114,15 +119,36 @@ class Manager
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    protected function createLocalAdapter()
+    public function getPath()
+    {
+        return $this->path;
+    }
+
+    /**
+     * @param string $path
+     */
+    public function setPath($path)
+    {
+        $this->path = $path;
+    }
+
+    /**
+     * @param null|string $path
+     * @return mixed|null
+     */
+    public function createLocalAdapter($path = null)
     {
         try {
-            $path = $this->config->getLocalPath();
-            if (empty($path)) {
-                $path = '/';
+            if(empty($path)) {
+                $path = $this->config->getLocalPath();
+                if (empty($path)) {
+                    $path = '/';
+                }
             }
+
+            $this->setPath($path);
 
             return $this->filesystemFactory->create($this->filesystemManager->createLocalDriver($path));
         } catch (\Exception $e) {
@@ -150,6 +176,8 @@ class Manager
                 $ftpPath = '/';
             }
 
+            $this->setPath($ftpPath);
+
             return $this->filesystemFactory->create($this->filesystemManager->createFtpDriver([
                 'host' => $host,
                 'username' => $user,
@@ -158,7 +186,7 @@ class Manager
                 'root' => $ftpPath,
                 'passive' => $this->config->getFtpPassive(),
                 'ssl' => $this->config->getFtpSsl(),
-                'timeout' => $this->config->getFtpTimeout()
+                'timeout' => 5
             ]));
         } catch (\Exception $e) {
             $this->logger->critical($e->getMessage());

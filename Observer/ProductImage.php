@@ -1,0 +1,53 @@
+<?php
+namespace Flagbit\Flysystem\Observer;
+
+use Flagbit\Flysystem\Model\Filesystem\TmpManager;
+use Magento\Framework\Event\Observer;
+use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\Registry;
+
+class ProductImage implements ObserverInterface
+{
+    private $registry;
+
+    private $tmpManager;
+
+    public function __construct(
+        Registry $registry,
+        TmpManager $tmpManager
+    ) {
+        $this->registry = $registry;
+        $this->tmpManager = $tmpManager;
+    }
+
+    public function execute(Observer $observer)
+    {
+        try {
+            $modalId = $observer->getEvent()->getData('modal_id');
+            if ($modalId === 'product_gallery') {
+                $manager = $observer->getEvent()->getData('manager');
+                $filename = $observer->getEvent()->getData('filename');
+                $controller = $observer->getEvent()->getData('controller');
+
+                $file = $this->createFileArray($manager, $filename);
+
+                $result = $this->tmpManager->createProductTmp($file);
+                $controller->setResult(json_encode($result));
+            }
+        } catch (\Exception $e) {
+            return null;
+        }
+    }
+
+    protected function createFileArray($manager, $filename) {
+        $file = [
+            'name' => basename($filename),
+            'type' => $manager->getAdapter()->getMimetype($filename),
+            'tmp_name' => $this->tmpManager->getAbsoluteTmpPath($filename),
+            'error' => 0,
+            'size' => $manager->getAdapter()->getSize($filename)
+        ];
+
+        return $file;
+    }
+}

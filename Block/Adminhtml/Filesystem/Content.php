@@ -34,7 +34,7 @@ class Content extends Container
             'deleteFileConfirmationMessage' => __('Are you sure you want to delete this file?'),
             'targetElementId' => $this->getTargetElementId(),
             'contentsUrl' => $this->getContentsUrl(),
-            'onInsertUrl' => '/',
+            'onInsertUrl' => $this->getOnInsertUrl(),
             'newFolderUrl' => '/',
             'deleteFolderUrl' => '/',
             'deleteFilesUrl' => '/',
@@ -50,8 +50,18 @@ class Content extends Container
         return $this->getUrl('flagbit_flysystem/*/contents');
     }
 
+    public function getOnInsertUrl()
+    {
+        return $this->getUrl('flagbit_flysystem/*/onInsert');
+    }
+
     public function getTargetElementId()
     {
         return $this->getRequest()->getParam('target_element_id');
+    }
+
+    public function getModalIdentifier()
+    {
+        return $this->getRequest()->getParam('identifier');
     }
 }

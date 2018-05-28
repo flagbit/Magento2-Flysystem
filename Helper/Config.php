@@ -28,6 +28,10 @@ class Config
     const XPATH_CONFIG_FTP_SSL = 'flagbit_flysystem/ftp/ssl';
     const XPATH_CONFIG_FTP_TIMEOUT = 'flagbit_flysystem/ftp/timeout';
 
+    const FLYSYSTEM_DIRECTORY = 'flagbit_flysystem';
+    const FLYSYSTEM_DIRECTORY_THUMBS = '.thumbs';
+    const FLYSYSTEM_DIRECTORY_TMP = '.tmp';
+
     /**
      * Config constructor.
      * @param ScopeConfigInterface $scopeConfig

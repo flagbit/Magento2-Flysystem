@@ -62,7 +62,7 @@ class Tree extends \Magento\Backend\Block\Template
 
         $jsonArray = [];
         foreach($contents as $contentKey => $content) {
-            if($content['type'] === 'dir') {
+            if($content['type'] === 'dir' && $content['basename'][0] !== '.') {
                 $jsonArray [] = [
                     'text' => $this->_filesystemHelper->getShortFilename($content['path']),
                     'id' => $this->_filesystemHelper->idEncode('/'.$content['path']),

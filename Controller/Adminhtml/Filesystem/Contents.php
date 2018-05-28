@@ -6,6 +6,7 @@ use \Magento\Backend\App\Action\Context;
 use \Magento\Framework\Controller\Result\JsonFactory;
 use \Magento\Framework\Registry;
 use \Magento\Framework\View\Result\LayoutFactory;
+use \Magento\Backend\Model\Session;
 
 class Contents extends AbstractController
 {
@@ -20,20 +21,23 @@ class Contents extends AbstractController
     protected $resultJsonFactory;
 
     /**
+     * Contents constructor.
      * @param Context $context
      * @param Registry $coreRegistry
+     * @param Session $session
      * @param LayoutFactory $resultLayoutFactory
      * @param JsonFactory $resultJsonFactory
      */
     public function __construct(
         Context $context,
         Registry $coreRegistry,
+        Session $session,
         LayoutFactory $resultLayoutFactory,
         JsonFactory $resultJsonFactory
     ) {
         $this->resultLayoutFactory = $resultLayoutFactory;
         $this->resultJsonFactory = $resultJsonFactory;
-        parent::__construct($context, $coreRegistry);
+        parent::__construct($context, $coreRegistry, $session);
     }
 
     /**

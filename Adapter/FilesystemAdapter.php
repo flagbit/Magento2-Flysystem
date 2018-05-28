@@ -251,6 +251,7 @@ class FilesystemAdapter implements AdapterInterface
 
     /**
      * @param $path
+     * @return void
      */
     public function assertPresent($path)
     {
@@ -259,6 +260,7 @@ class FilesystemAdapter implements AdapterInterface
 
     /**
      * @param $path
+     * @return void
      */
     public function assertAbsent($path)
     {

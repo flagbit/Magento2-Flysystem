@@ -2,6 +2,11 @@
 namespace Flagbit\Flysystem\Helper;
 
 use \Magento\Framework\App\Helper\AbstractHelper;
+use Magento\Framework\App\Helper\Context;
+use Magento\Framework\Filesystem as MagentoFilesystem;
+use Magento\Framework\App\Filesystem\DirectoryList;
+use Magento\Framework\View\Design\Theme\ImageFactory;
+use Flagbit\Flysystem\Model\Filesystem\Manager;
 
 /**
  * Class Config
@@ -10,6 +15,31 @@ use \Magento\Framework\App\Helper\AbstractHelper;
 class Filesystem extends AbstractHelper
 {
     protected $_currentPath;
+
+    protected $_imageFactory;
+
+    protected $_directoryList;
+
+    protected $_directory;
+
+    protected $_flysystemManager;
+
+    public function __construct(
+        Context $context,
+        ImageFactory $imageFactory,
+        DirectoryList $directoryList,
+        MagentoFilesystem $filesystem,
+        Config $flysystemConfig,
+        Manager $flysystemManager
+    ) {
+        $this->_imageFactory = $imageFactory;
+        $this->_directoryList = $directoryList;
+        $this->_directory = $filesystem->getDirectoryWrite(DirectoryList::MEDIA);
+        $this->_directory->create(Config::FLYSYSTEM_DIRECTORY);
+        $this->_flysystemManager = $flysystemManager;
+
+        parent::__construct($context);
+    }
 
     /**
      * Ext Tree node key name

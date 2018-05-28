@@ -3,6 +3,8 @@
     <module name="Flagbit_Flysystem" setup_version="0.1.0">
         <sequence>
             <module name="Magento_Catalog"/>
+            <module name="Magento_Backend"/>
+            <module name="Magento_ProductVideo"/>
         </sequence>
     </module>
 </config>
