@@ -6,7 +6,7 @@ use \Flagbit\Flysystem\Adapter\FilesystemAdapterFactory;
 use \Flagbit\Flysystem\Adapter\FilesystemManager;
 use \Flagbit\Flysystem\Helper\Config;
 use \Flagbit\Flysystem\Helper\Filesystem;
-use Flagbit\Flysystem\Model\Uploader;
+use Magento\MediaStorage\Model\File\Uploader;
 use Magento\Catalog\Model\Product\Media\Config as ProductMediaConfig;
 use \Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\ObjectManagerInterface;
@@ -130,9 +130,8 @@ class TmpManager
     {
         $tmpRoot = $this->productMediaConfig->getBaseTmpMediaPath();
 
-        $uploader = $this->objectManager->create(Uploader::class, ['fileId' => 'image', 'isFlysystem' => true]);
+        $uploader = $this->objectManager->create(Uploader::class, ['fileId' => $file, 'isFlysystem' => true]);
         $uploader->setAllowedExtensions(['jpg', 'jpeg', 'gif', 'png']);
-        $uploader->setFile($file);
         $uploader->setAllowRenameFiles(true);
         $uploader->setFilesDispersion(true);
         $result = $uploader->save($this->directoryList->getAbsolutePath($tmpRoot));

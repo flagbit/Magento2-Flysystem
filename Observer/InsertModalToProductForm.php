@@ -1,10 +1,11 @@
 <?php
 namespace Flagbit\Flysystem\Observer;
 
-use Flagbit\Flysystem\Model\Filesystem\TmpManager;
-use Magento\Framework\Event\Observer;
-use Magento\Framework\Event\ObserverInterface;
-use Magento\Framework\Registry;
+use \Flagbit\Flysystem\Block\Adminhtml\Product\Modal;
+use \Flagbit\Flysystem\Model\Filesystem\TmpManager;
+use \Magento\Framework\Event\Observer;
+use \Magento\Framework\Event\ObserverInterface;
+use \Magento\Framework\Registry;
 
 class InsertModalToProductForm implements ObserverInterface
 {
@@ -21,6 +22,7 @@ class InsertModalToProductForm implements ObserverInterface
     {
         try {
             $observer->getBlock()->setTemplate('Flagbit_Flysystem::/product/form/gallery.phtml');
+            $observer->getBlock()->addChild('flysystem-modal', Modal::class);
         } catch (\Exception $e) {
             return null;
         }

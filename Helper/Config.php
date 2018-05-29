@@ -32,6 +32,8 @@ class Config
     const FLYSYSTEM_DIRECTORY_THUMBS = '.thumbs';
     const FLYSYSTEM_DIRECTORY_TMP = '.tmp';
 
+    const FLYSYSTEM_UPLOAD_ID = 'upload_file';
+
     /**
      * Config constructor.
      * @param ScopeConfigInterface $scopeConfig

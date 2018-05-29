@@ -48,28 +48,31 @@ class Tree extends \Magento\Backend\Block\Template
     }
 
     /**
-     * Json tree builder
-     *
-     * @return string
+     * @return bool|string
+     * @throws \Exception
      */
     public function getTreeJson()
     {
-        $manager = $this->_coreRegistry->registry('flysystem_manager');
+        try {
+            $manager = $this->_coreRegistry->registry('flysystem_manager');
 
-        $path = $this->_filesystemHelper->getCurrentPath();
+            $path = $this->_filesystemHelper->getCurrentPath();
 
-        $contents = $manager->getAdapter()->listContents($path);
+            $contents = $manager->getAdapter()->listContents($path);
 
-        $jsonArray = [];
-        foreach($contents as $contentKey => $content) {
-            if($content['type'] === 'dir' && $content['basename'][0] !== '.') {
-                $jsonArray [] = [
-                    'text' => $this->_filesystemHelper->getShortFilename($content['path']),
-                    'id' => $this->_filesystemHelper->idEncode('/'.$content['path']),
-                    'path' => '/'.$content['path'],
-                    'cls' => 'folder'
-                ];
+            $jsonArray = [];
+            foreach ($contents as $contentKey => $content) {
+                if ($content['type'] === 'dir' && $content['basename'][0] !== '.') {
+                    $jsonArray [] = [
+                        'text' => $this->_filesystemHelper->getShortFilename($content['path']),
+                        'id' => $this->_filesystemHelper->idEncode('/' . $content['path']),
+                        'path' => '/' . $content['path'],
+                        'cls' => 'folder'
+                    ];
+                }
             }
+        } catch (\Exception $e) {
+            $jsonArray = [];
         }
 
         return $this->serializer->serialize($jsonArray);

@@ -3,6 +3,7 @@ namespace Flagbit\Flysystem\Block\Adminhtml\Filesystem\Content;
 
 use \Flagbit\Flysystem\Helper\Filesystem;
 use Magento\Framework\Filesystem\DirectoryList;
+use Magento\Framework\Message\ManagerInterface;
 use \Magento\Framework\Registry;
 use \Magento\Backend\Block\Template;
 use \Magento\Backend\Block\Template\Context;
@@ -14,7 +15,7 @@ class Files extends Template
     /**
      * Files collection object
      *
-     * @var \Magento\Framework\Data\Collection\Filesystem
+     * @var array
      */
     protected $_filesCollection = [];
 
@@ -37,6 +38,10 @@ class Files extends Template
      * @var StoreManagerInterface
      */
     protected $_storeManager;
+
+    protected $_messageManager;
+
+    protected $_messages;
 
     /**
      * @var array
@@ -62,38 +67,53 @@ class Files extends Template
         Filesystem $filesystemHelper,
         DirectoryList $directoryList,
         StoreManagerInterface $storeManager,
+        ManagerInterface $messageManager,
+        \Magento\Framework\View\Element\Messages $messages,
         array $data = []
     ) {
         $this->_coreRegistry = $coreRegistry;
         $this->_filesystemHelper = $filesystemHelper;
         $this->_directoryList = $directoryList;
         $this->_storeManager = $storeManager;
+        $this->_messageManager = $messageManager;
+        $this->_messages = $messages;
         parent::__construct($context, $data);
     }
 
     /**
      * Prepared Files collection for current directory
      *
-     * @return \Magento\Framework\Data\Collection\Filesystem
+     * @return array
      */
     public function getFiles()
     {
-        if (count($this->_filesCollection) === 0) {
-            $manager = $this->_coreRegistry->registry('flysystem_manager');
-            $path = $this->_filesystemHelper->getCurrentPath();
+        try {
+            if (count($this->_filesCollection) === 0) {
+                $manager = $this->_coreRegistry->registry('flysystem_manager');
+                $path = $this->_filesystemHelper->getCurrentPath();
 
-            $contents = $manager->getAdapter()->listContents($path);
-            foreach($contents as $file) {
-                if($file['type'] === 'file' && $file['basename'][0] !== '.') {
-                    $fileParts = explode('.', $file['path']);
-                    $fileType = $fileParts[(count($fileParts)-1)];
+                $contents = $manager->getAdapter()->listContents($path);
+                foreach ($contents as $file) {
+                    if ($file['type'] === 'file' && $file['basename'][0] !== '.') {
+                        $fileParts = explode('.', $file['path']);
+                        $fileType = $fileParts[(count($fileParts) - 1)];
 
-                    $this->_filesCollection[] = $file;
+                        $this->_filesCollection[] = $file;
+                    }
                 }
             }
+        } catch (\Exception $e) {
+            $this->_messageManager->addErrorMessage($e->getMessage());
+            return [];
         }
 
         return $this->_filesCollection;
+    }
+
+    public function getMessages()
+    {
+        $this->_messages->setMessages($this->_messageManager->getMessages());
+        return $this->_messages->getGroupedHtml();
     }
 
     /**

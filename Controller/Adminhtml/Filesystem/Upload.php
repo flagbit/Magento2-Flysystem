@@ -1,12 +1,13 @@
 <?php
 namespace Flagbit\Flysystem\Controller\Adminhtml\Filesystem;
 
+use Flagbit\Flysystem\Model\Filesystem\UploadManager;
 use \Magento\Backend\App\Action\Context;
 use \Magento\Framework\Controller\Result\JsonFactory;
 use \Magento\Framework\Registry;
 use \Magento\Backend\Model\Session;
 
-class DeleteFolder extends AbstractController
+class Upload extends AbstractController
 {
     /**
      * @var JsonFactory
@@ -14,7 +15,12 @@ class DeleteFolder extends AbstractController
     protected $resultJson;
 
     /**
-     * DeleteFolder constructor.
+     * @var UploadManager
+     */
+    protected $uploadManager;
+
+    /**
+     * NewFolder constructor.
      * @param Context $context
      * @param Registry $coreRegistry
      * @param Session $session
@@ -24,9 +30,11 @@ class DeleteFolder extends AbstractController
         Context $context,
         Registry $coreRegistry,
         Session $session,
-        JsonFactory $resultJsonFactory
+        JsonFactory $resultJsonFactory,
+        UploadManager $uploadManager
     ) {
         $this->resultJson = $resultJsonFactory;
+        $this->uploadManager = $uploadManager;
         parent::__construct($context, $coreRegistry, $session);
     }
 
@@ -37,12 +45,12 @@ class DeleteFolder extends AbstractController
     {
         try {
             $manager = $this->getStorage();
-            $path = $manager->getSession()->getCurrentPath();
-            $result = $manager->getAdapter()->deleteDir($path);
-        } catch(\Exception $e) {
-            $result = ['error' => true, 'message' => $e->getMessage()];
+            $targetPath = $manager->getSession()->getCurrentPath();
+            $this->uploadManager->upload($manager->getAdapter(), $targetPath);
+            $result = ['error' => false];
+        } catch (\Exception $e) {
+            $result = ['error' => $e->getMessage(), 'errorcode' => $e->getCode()];
         }
-
         /** @var \Magento\Framework\Controller\Result\Json $resultJson */
         $resultJson = $this->resultJson->create();
         return $resultJson->setData($result);

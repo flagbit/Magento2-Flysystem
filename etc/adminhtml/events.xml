@@ -4,6 +4,7 @@
         <observer name="productImageObserver" instance="Flagbit\Flysystem\Observer\ProductImage" />
     </event>
     <event name="catalog_product_gallery_prepare_layout">
+        <observer name="change_template" disabled="true"/>
         <observer name="insertFlysystemModalToProductGallery" instance="Flagbit\Flysystem\Observer\InsertModalToProductForm" />
     </event>
 </config>
