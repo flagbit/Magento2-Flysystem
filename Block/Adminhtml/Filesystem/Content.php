@@ -24,6 +24,37 @@ class Content extends Container
         $this->_headerText = __('File Storage');
         $this->buttonList->remove('back');
         $this->buttonList->remove('edit');
+        $this->buttonList->add(
+            'new_folder',
+            ['class' => 'save', 'label' => __('Create Folder...'), 'type' => 'button'],
+            0,
+            0,
+            'header'
+        );
+
+        $this->buttonList->add(
+            'delete_folder',
+            ['class' => 'delete no-display', 'label' => __('Delete Folder'), 'type' => 'button'],
+            0,
+            0,
+            'header'
+        );
+
+        $this->buttonList->add(
+            'delete_files',
+            ['class' => 'delete no-display', 'label' => __('Delete File'), 'type' => 'button'],
+            0,
+            0,
+            'header'
+        );
+
+        $this->buttonList->add(
+            'insert_files',
+            ['class' => 'save no-display primary', 'label' => __('Insert File'), 'type' => 'button'],
+            0,
+            0,
+            'header'
+        );
     }
 
     public function getFilebrowserSetupObject()
@@ -35,9 +66,9 @@ class Content extends Container
             'targetElementId' => $this->getTargetElementId(),
             'contentsUrl' => $this->getContentsUrl(),
             'onInsertUrl' => $this->getOnInsertUrl(),
-            'newFolderUrl' => '/',
-            'deleteFolderUrl' => '/',
-            'deleteFilesUrl' => '/',
+            'newFolderUrl' => $this->getNewfolderUrl(),
+            'deleteFolderUrl' => $this->getDeletefolderUrl(),
+            'deleteFilesUrl' => $this->getDeleteFilesUrl(),
             'headerText' => $this->getHeaderText(),
             'showBreadcrumbs' => true,
         ];
@@ -53,6 +84,21 @@ class Content extends Container
     public function getOnInsertUrl()
     {
         return $this->getUrl('flagbit_flysystem/*/onInsert');
+    }
+
+    public function getNewfolderUrl()
+    {
+        return $this->getUrl('flagbit_flysystem/*/newFolder');
+    }
+
+    protected function getDeletefolderUrl()
+    {
+        return $this->getUrl('flagbit_flysystem/*/deleteFolder');
+    }
+
+    public function getDeleteFilesUrl()
+    {
+        return $this->getUrl('flagbit_flysystem/*/deleteFiles');
     }
 
     public function getTargetElementId()

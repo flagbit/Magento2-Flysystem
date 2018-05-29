@@ -72,7 +72,7 @@ class FilesystemManager implements ManagerInterface
      * @param array $permissions
      * @return mixed
      */
-    public function createLocalDriver($root, $writeFlags = LOCK_EX, $linkHandling = LocalAdapter::DISALLOW_LINKS, array $permissions = [])
+    public function createLocalDriver($root, $writeFlags = LOCK_EX, $linkHandling = LocalAdapter::SKIP_LINKS, array $permissions = [])
     {
         return $this->objectManager->create(LocalAdapter::class, [
             'root' => $root,
