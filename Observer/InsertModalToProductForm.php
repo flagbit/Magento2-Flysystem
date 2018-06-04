@@ -9,8 +9,16 @@ use \Magento\Framework\Registry;
 
 class InsertModalToProductForm implements ObserverInterface
 {
+    /**
+     * @var Registry
+     */
     private $registry;
 
+    /**
+     * InsertModalToProductForm constructor.
+     * @param Registry $registry
+     * @param TmpManager $tmpManager
+     */
     public function __construct(
         Registry $registry,
         TmpManager $tmpManager
@@ -18,13 +26,16 @@ class InsertModalToProductForm implements ObserverInterface
         $this->registry = $registry;
     }
 
+    /**
+     * @param Observer $observer
+     */
     public function execute(Observer $observer)
     {
         try {
             $observer->getBlock()->setTemplate('Flagbit_Flysystem::/product/form/gallery.phtml');
             $observer->getBlock()->addChild('flysystem-modal', Modal::class);
         } catch (\Exception $e) {
-            return null;
+            return;
         }
     }
 }

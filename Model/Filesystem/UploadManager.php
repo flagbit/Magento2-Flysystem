@@ -7,7 +7,6 @@ use \Flagbit\Flysystem\Adapter\FilesystemManager;
 use \Magento\Framework\ObjectManagerInterface;
 use \Magento\MediaStorage\Model\File\Uploader;
 use \Psr\Log\LoggerInterface;
-use \Magento\Framework\Filesystem as MagentoFilesystem;
 
 class UploadManager
 {

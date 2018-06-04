@@ -1,7 +1,7 @@
 <?php
 namespace Flagbit\Flysystem\Block\Adminhtml\Product;
 
-use Magento\Backend\Block\Template\Context;
+use \Magento\Backend\Block\Template\Context;
 
 class Modal extends \Magento\Backend\Block\Widget
 {

@@ -2,7 +2,7 @@
 namespace Flagbit\Flysystem\Block\Adminhtml\Filesystem\Content;
 
 use \Magento\Backend\Block\Media\Uploader as MagentoUploader;
-use Magento\Framework\File\Size;
+use \Magento\Framework\File\Size;
 use \Magento\Framework\Message\ManagerInterface;
 use \Magento\Framework\Registry;
 use \Magento\Backend\Block\Template\Context;

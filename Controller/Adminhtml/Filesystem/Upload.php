@@ -1,7 +1,7 @@
 <?php
 namespace Flagbit\Flysystem\Controller\Adminhtml\Filesystem;
 
-use Flagbit\Flysystem\Model\Filesystem\UploadManager;
+use \Flagbit\Flysystem\Model\Filesystem\UploadManager;
 use \Magento\Backend\App\Action\Context;
 use \Magento\Framework\Controller\Result\JsonFactory;
 use \Magento\Framework\Registry;

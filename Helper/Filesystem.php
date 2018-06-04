@@ -2,11 +2,11 @@
 namespace Flagbit\Flysystem\Helper;
 
 use \Magento\Framework\App\Helper\AbstractHelper;
-use Magento\Framework\App\Helper\Context;
-use Magento\Framework\Filesystem as MagentoFilesystem;
-use Magento\Framework\App\Filesystem\DirectoryList;
-use Magento\Framework\View\Design\Theme\ImageFactory;
-use Flagbit\Flysystem\Model\Filesystem\Manager;
+use \Magento\Framework\App\Helper\Context;
+use \Magento\Framework\Filesystem as MagentoFilesystem;
+use \Magento\Framework\App\Filesystem\DirectoryList;
+use \Magento\Framework\View\Design\Theme\ImageFactory;
+use \Flagbit\Flysystem\Model\Filesystem\Manager;
 
 /**
  * Class Config

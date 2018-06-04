@@ -1,17 +1,28 @@
 <?php
 namespace Flagbit\Flysystem\Observer;
 
-use Flagbit\Flysystem\Model\Filesystem\TmpManager;
-use Magento\Framework\Event\Observer;
-use Magento\Framework\Event\ObserverInterface;
-use Magento\Framework\Registry;
+use \Flagbit\Flysystem\Model\Filesystem\TmpManager;
+use \Magento\Framework\Event\Observer;
+use \Magento\Framework\Event\ObserverInterface;
+use \Magento\Framework\Registry;
 
 class ProductImage implements ObserverInterface
 {
+    /**
+     * @var Registry
+     */
     private $registry;
 
+    /**
+     * @var TmpManager
+     */
     private $tmpManager;
 
+    /**
+     * ProductImage constructor.
+     * @param Registry $registry
+     * @param TmpManager $tmpManager
+     */
     public function __construct(
         Registry $registry,
         TmpManager $tmpManager
@@ -20,6 +31,9 @@ class ProductImage implements ObserverInterface
         $this->tmpManager = $tmpManager;
     }
 
+    /**
+     * @param Observer $observer
+     */
     public function execute(Observer $observer)
     {
         try {
@@ -35,10 +49,15 @@ class ProductImage implements ObserverInterface
                 $controller->setResult(json_encode($result));
             }
         } catch (\Exception $e) {
-            return null;
+            return;
         }
     }
 
+    /**
+     * @param $manager
+     * @param $filename
+     * @return array
+     */
     protected function createFileArray($manager, $filename) {
         $file = [
             'name' => basename($filename),

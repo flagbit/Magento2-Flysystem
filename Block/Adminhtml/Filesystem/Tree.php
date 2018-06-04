@@ -120,9 +120,7 @@ class Tree extends \Magento\Backend\Block\Template
     }
 
     /**
-     * Get tree widget options
-     *
-     * @return array
+     * @return bool|string
      */
     public function getTreeWidgetOptions()
     {
