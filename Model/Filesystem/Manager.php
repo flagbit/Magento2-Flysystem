@@ -111,9 +111,9 @@ class Manager
     }
 
     /**
-     * @param FilesystemAdapter $adapter
+     * @param FilesystemAdapter|null $adapter
      */
-    public function setAdapter(FilesystemAdapter $adapter)
+    public function setAdapter($adapter)
     {
         $this->adapter = $adapter;
     }
@@ -186,7 +186,7 @@ class Manager
                 'root' => $ftpPath,
                 'passive' => $this->config->getFtpPassive(),
                 'ssl' => $this->config->getFtpSsl(),
-                'timeout' => 5
+                'timeout' => $this->config->getFtpTimeout()
             ]));
         } catch (\Exception $e) {
             $this->logger->critical($e->getMessage());
@@ -199,11 +199,22 @@ class Manager
      */
     protected function createNullAdapter()
     {
-        return $this->filesystemFactory->create($this->filesystemManager->createNullDriver());
+        $driver = $this->filesystemManager->createNullDriver();
+        return $this->filesystemFactory->create($driver);
     }
 
     public function getSession()
     {
         return $this->session;
+    }
+
+    public function setModalIdentifier($identifier)
+    {
+        return $this->getSession()->setFlysystemModalId($identifier);
+    }
+
+    public function getModalIdentifier()
+    {
+        return $this->getSession()->getFlysystemModalId();
     }
 }

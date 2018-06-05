@@ -38,10 +38,11 @@ class Index extends AbstractController
      */
     public function execute()
     {
-        $identifier = $this->getRequest()->getParam('identifier');
-        $this->setModalIdentifier($identifier);
-
         $this->_initAction();
+
+        $identifier = $this->getRequest()->getParam('identifier');
+        $this->getStorage()->setModalIdentifier($identifier);
+
         /** @var \Magento\Framework\View\Result\Layout $resultLayout */
         $resultLayout = $this->resultLayoutFactory->create();
         $resultLayout->addHandle('overlay_popup');

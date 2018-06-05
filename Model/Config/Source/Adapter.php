@@ -11,11 +11,6 @@ use \Magento\Framework\App\Config\ScopeConfigInterface;
 class Adapter extends \Magento\Framework\DataObject implements \Magento\Framework\Option\ArrayInterface
 {
     /**
-     * @var ScopeConfigInterface
-     */
-    protected $scopeConfig;
-
-    /**
      * @var array
      */
     protected $adapters = [];
@@ -26,26 +21,15 @@ class Adapter extends \Magento\Framework\DataObject implements \Magento\Framewor
     protected $options = [];
 
     /**
-     * @var FilesystemAdapterFactory
-     */
-    protected $flyFactory;
-
-    /**
      * Adapter constructor.
-     * @param ScopeConfigInterface $scopeConfig
-     * @param FilesystemAdapterFactory $flyFactory
      * @param array $adapters
      * @param array $data
      */
     public function __construct(
-        ScopeConfigInterface $scopeConfig,
-        FilesystemAdapterFactory $flyFactory,
         array $adapters = [],
         array $data = []
     ) {
-        $this->scopeConfig = $scopeConfig;
         $this->adapters = $adapters;
-        $this->flyFactory = $flyFactory;
         parent::__construct($data);
     }
 

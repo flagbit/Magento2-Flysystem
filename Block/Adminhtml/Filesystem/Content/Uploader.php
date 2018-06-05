@@ -21,9 +21,10 @@ class Uploader extends MagentoUploader
     protected $_messageManager;
 
     /**
-     * Files constructor.
+     * Uploader constructor.
      * @param Context $context
      * @param Registry $coreRegistry
+     * @param Size $fileSize
      * @param ManagerInterface $messageManager
      * @param array $data
      */

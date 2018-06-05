@@ -1,6 +1,7 @@
 <?php
 namespace Flagbit\Flysystem\Block\Adminhtml\Filesystem\Content;
 
+use \Flagbit\Flysystem\Helper\Config;
 use \Flagbit\Flysystem\Helper\Filesystem;
 use \Magento\Framework\Filesystem\DirectoryList;
 use \Magento\Framework\Message\ManagerInterface;
@@ -8,6 +9,7 @@ use \Magento\Framework\Registry;
 use \Magento\Backend\Block\Template;
 use \Magento\Backend\Block\Template\Context;
 use \Magento\Framework\UrlInterface;
+use \Magento\Framework\View\Element\Messages;
 use \Magento\Store\Model\StoreManagerInterface;
 
 class Files extends Template
@@ -30,6 +32,11 @@ class Files extends Template
     protected $_filesystemHelper;
 
     /**
+     * @var Config
+     */
+    protected $_flysystemConfig;
+
+    /**
      * @var DirectoryList
      */
     protected $_directoryList;
@@ -39,40 +46,42 @@ class Files extends Template
      */
     protected $_storeManager;
 
+    /**
+     * @var ManagerInterface
+     */
     protected $_messageManager;
 
-    protected $_messages;
-
     /**
-     * @var array
+     * @var Messages
      */
-    private $imageTypes = [
-        '.jpeg',
-        '.jpg',
-        '.png',
-        '.gif',
-        '.bmp'
-    ];
+    protected $_messages;
 
     /**
      * Files constructor.
      * @param Context $context
      * @param Registry $coreRegistry
      * @param Filesystem $filesystemHelper
+     * @param Config $flysystemConfig
+     * @param DirectoryList $directoryList
+     * @param StoreManagerInterface $storeManager
+     * @param ManagerInterface $messageManager
+     * @param Messages $messages
      * @param array $data
      */
     public function __construct(
         Context $context,
         Registry $coreRegistry,
         Filesystem $filesystemHelper,
+        Config $flysystemConfig,
         DirectoryList $directoryList,
         StoreManagerInterface $storeManager,
         ManagerInterface $messageManager,
-        \Magento\Framework\View\Element\Messages $messages,
+        Messages $messages,
         array $data = []
     ) {
         $this->_coreRegistry = $coreRegistry;
         $this->_filesystemHelper = $filesystemHelper;
+        $this->_flysystemConfig = $flysystemConfig;
         $this->_directoryList = $directoryList;
         $this->_storeManager = $storeManager;
         $this->_messageManager = $messageManager;
@@ -94,10 +103,7 @@ class Files extends Template
 
                 $contents = $manager->getAdapter()->listContents($path);
                 foreach ($contents as $file) {
-                    if ($file['type'] === 'file' && $file['basename'][0] !== '.') {
-                        $fileParts = explode('.', $file['path']);
-                        $fileType = $fileParts[(count($fileParts) - 1)];
-
+                    if ($this->validateFile($file)) {
                         $this->_filesCollection[] = $file;
                     }
                 }
@@ -108,6 +114,19 @@ class Files extends Template
         }
 
         return $this->_filesCollection;
+    }
+
+    public function validateFile($file)
+    {
+        if($file['type'] === 'file' && $file['basename'][0] !== '.') {
+            $fileParts = explode('.', $file['basename']);
+            $supportedFileTypes = $this->_flysystemConfig->getSupportedFileTypes();
+            if(in_array($fileParts[count($fileParts)-1], $supportedFileTypes)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function getMessages()
@@ -164,7 +183,7 @@ class Files extends Template
      * @return bool|mixed
      */
     public function getFileThumbUrl($file) {
-        if(in_array($this->getFileEnding($file), $this->imageTypes)) {
+        if($this->validateFile($file)) {
             $mediaPath = $this->_directoryList->getPath('media');
             $filesystemPath = trim($this->_coreRegistry->registry('flysystem_manager')->getPath(), '/');
             $fullPath = '/'.$filesystemPath.'/'.$file['path'];

@@ -14,6 +14,16 @@ class Config
      */
     protected $scopeConfig;
 
+    /**
+     * @var array Supported Filetypes in Flysystem Modals
+     */
+    protected $supportedFileTypes = [
+        'jpg',
+        'jpeg',
+        'png',
+        'gif'
+    ];
+
     const XPATH_CONFIG_GENERAL_SOURCE = 'flagbit_flysystem/general/source';
 
     const XPATH_CONFIG_LOCAL_PATH = 'flagbit_flysystem/local/path';
@@ -130,5 +140,10 @@ class Config
     public function getFtpTimeout()
     {
         return (int)$this->scopeConfig->getValue(self::XPATH_CONFIG_FTP_TIMEOUT);
+    }
+
+    public function getSupportedFileTypes()
+    {
+        return $this->supportedFileTypes;
     }
 }

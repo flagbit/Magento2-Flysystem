@@ -17,24 +17,54 @@ use \Magento\Backend\Model\Auth\Session;
 
 class TmpManager
 {
+    /**
+     * @var FilesystemManager
+     */
     protected $flysystemManager;
 
+    /**
+     * @var FilesystemAdapterFactory
+     */
     protected $flysystemFactory;
 
+    /**
+     * @var Config
+     */
     protected $flysystemConfig;
 
+    /**
+     * @var Filesystem
+     */
     protected $flysystemHelper;
 
+    /**
+     * @var MagentoFilesystem
+     */
     protected $filesystem;
 
+    /**
+     * @var MagentoFilesystem\Directory\WriteInterface
+     */
     protected $directoryList;
 
+    /**
+     * @var LoggerInterface
+     */
     protected $logger;
 
+    /**
+     * @var Session
+     */
     protected $adminSession;
 
+    /**
+     * @var ProductMediaConfig
+     */
     protected $productMediaConfig;
 
+    /**
+     * @var ObjectManagerInterface
+     */
     protected $objectManager;
 
     /**
@@ -42,6 +72,19 @@ class TmpManager
      */
     protected $adapter;
 
+    /**
+     * TmpManager constructor.
+     * @param FilesystemManager $filesystemManager
+     * @param FilesystemAdapterFactory $filesystemAdapterFactory
+     * @param Config $config
+     * @param Filesystem $flysystemHelper
+     * @param MagentoFilesystem $filesystem
+     * @param DirectoryList $directoryList
+     * @param LoggerInterface $logger
+     * @param Session $adminSession
+     * @param ProductMediaConfig $productMediaconfig
+     * @param ObjectManagerInterface $objectManager
+     */
     public function __construct(
         FilesystemManager $filesystemManager,
         FilesystemAdapterFactory $filesystemAdapterFactory,
@@ -68,6 +111,9 @@ class TmpManager
         $this->create();
     }
 
+    /**
+     * @return FilesystemAdapter|mixed|null
+     */
     public function create()
     {
         if(!$this->adapter) {
@@ -77,12 +123,22 @@ class TmpManager
         return $this->adapter;
     }
 
+    /**
+     * @param $file
+     * @param null $content
+     * @return bool
+     */
     public function writeTmp($file, $content = null)
     {
         $this->clearTmp();
         return $this->getAdapter()->write($this->getTmpPath($file), $content);
     }
 
+    /**
+     * @param $file
+     * @return bool|false|string
+     * @throws LocalizedException
+     */
     public function getTmp($file)
     {
         if($this->getAdapter()->has($this->getTmpPath($file))){
@@ -92,18 +148,29 @@ class TmpManager
         throw new LocalizedException(__('Could not find '.$file.' in Tmp Path'));
     }
 
+    /**
+     * @param $file
+     * @return string
+     */
     public function getAbsoluteTmpPath($file)
     {
         $encodedFile = $this->flysystemHelper->idEncode($file);
         return $this->directoryList->getAbsolutePath().'/'.$this->getUserTmpDir().'/'.$encodedFile;
     }
 
+    /**
+     * @return string
+     */
     protected function getUserTmpDir()
     {
         $userDir = $this->flysystemHelper->idEncode($this->adminSession->getUser()->getUserName());
         return Config::FLYSYSTEM_DIRECTORY.'/'.Config::FLYSYSTEM_DIRECTORY_TMP.'/'.$userDir;
     }
 
+    /**
+     * @param $file
+     * @return string
+     */
     protected function getTmpPath($file)
     {
         $file = $this->flysystemHelper->idEncode($file);
@@ -111,21 +178,34 @@ class TmpManager
         return $this->getUserTmpDir().'/'.$file;
     }
 
+    /**
+     * @return bool
+     */
     public function clearTmp()
     {
         return $this->getAdapter()->deleteDir($this->getUserTmpDir());
     }
 
+    /**
+     * @return FilesystemAdapter|null
+     */
     public function getAdapter()
     {
         return $this->adapter;
     }
 
+    /**
+     * @param $adapter
+     */
     public function setAdapter($adapter)
     {
         $this->adapter = $adapter;
     }
 
+    /**
+     * @param $file
+     * @return mixed
+     */
     public function createProductTmp($file)
     {
         $tmpRoot = $this->productMediaConfig->getBaseTmpMediaPath();

@@ -76,7 +76,7 @@ class OnInsert extends AbstractController
 
         $this->tmpManager->writeTmp($filename, $contents);
 
-        $identifier = $this->getModalIdentifier();
+        $identifier = $manager->getModalIdentifier();
 
         $this->eventManager->dispatch('flagbit_flysystem_oninsert_after',
             [

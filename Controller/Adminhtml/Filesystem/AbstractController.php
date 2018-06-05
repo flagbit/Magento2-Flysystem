@@ -69,14 +69,4 @@ abstract class AbstractController extends Action
 
         return $this->_coreRegistry->registry('flysystem_manager');
     }
-
-    public function setModalIdentifier($identifier)
-    {
-        return $this->_session->setFlysystemModalId($identifier);
-    }
-
-    public function getModalIdentifier()
-    {
-        return $this->_session->getFlysystemModalId();
-    }
 }
