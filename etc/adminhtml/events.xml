@@ -2,6 +2,7 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
     <event name="flagbit_flysystem_oninsert_after">
         <observer name="productImageObserver" instance="Flagbit\Flysystem\Observer\ProductImage" />
+        <observer name="categoryImageObserver" instance="Flagbit\Flysystem\Observer\CategoryImage" />
     </event>
     <event name="catalog_product_gallery_prepare_layout">
         <observer name="change_template" disabled="true"/>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <fieldset name="content" sortOrder="10">
+        <field name="flysystem_modal">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Flysystem Image</item>
+                    <item name="title" xsi:type="string" translate="true">Select Image</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="elementTmpl" xsi:type="string">Flagbit_Flysystem/form/element/mediabrowser</item>
+                    <item name="elementId" xsi:type="string">flysystem_category_image</item>
+                    <item name="dialogUrl" xsi:type="url" path="flagbit_flysystem/filesystem/index">
+                        <param name="target_element_id">flysystem_category_image</param>
+                        <param name="type">file</param>
+                        <param name="identifier">category_modal</param>
+                    </item>
+                    <item name="sortOrder" xsi:type="number">45</item>
+                    <item name="component" xsi:type="string">Flagbit_Flysystem/js/category/mediabrowser</item>
+                </item>
+            </argument>
+        </field>
+    </fieldset>
+</form>

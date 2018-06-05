@@ -6,10 +6,13 @@ use \Flagbit\Flysystem\Adapter\FilesystemAdapterFactory;
 use \Flagbit\Flysystem\Adapter\FilesystemManager;
 use \Flagbit\Flysystem\Helper\Config;
 use \Flagbit\Flysystem\Helper\Filesystem;
+use \Magento\Framework\UrlInterface;
+use \Magento\MediaStorage\Helper\File\Storage\Database;
 use \Magento\MediaStorage\Model\File\Uploader;
 use \Magento\Catalog\Model\Product\Media\Config as ProductMediaConfig;
 use \Magento\Framework\Exception\LocalizedException;
 use \Magento\Framework\ObjectManagerInterface;
+use \Magento\Store\Model\StoreManagerInterface;
 use \Psr\Log\LoggerInterface;
 use \Magento\Framework\Filesystem as MagentoFilesystem;
 use \Magento\Framework\App\Filesystem\DirectoryList;
@@ -68,6 +71,16 @@ class TmpManager
     protected $objectManager;
 
     /**
+     * @var Database
+     */
+    protected $coreFileStorageDatabase;
+
+    /**
+     * @var StoreManagerInterface
+     */
+    protected $storeManager;
+
+    /**
      * @var null|FilesystemAdapter
      */
     protected $adapter;
@@ -95,7 +108,9 @@ class TmpManager
         LoggerInterface $logger,
         Session $adminSession,
         ProductMediaConfig $productMediaconfig,
-        ObjectManagerInterface $objectManager
+        ObjectManagerInterface $objectManager,
+        Database $coreFileStorageDatabase,
+        StoreManagerInterface $storeManager
     ) {
         $this->flysystemManager = $filesystemManager;
         $this->flysystemFactory = $filesystemAdapterFactory;
@@ -107,6 +122,8 @@ class TmpManager
         $this->adminSession = $adminSession;
         $this->productMediaConfig = $productMediaconfig;
         $this->objectManager = $objectManager;
+        $this->coreFileStorageDatabase = $coreFileStorageDatabase;
+        $this->storeManager = $storeManager;
 
         $this->create();
     }
@@ -222,6 +239,46 @@ class TmpManager
         $result['url'] = $this->productMediaConfig->getTmpMediaUrl($result['file']);
         $result['file'] = $result['file'] . '.tmp';
 
+        return $result;
+    }
+
+    public function createCategoryTmp($file)
+    {
+        /** @var \Magento\Catalog\Model\ImageUploader $imageUploader*/
+        $imageUploader = $this->objectManager->get(\Magento\Catalog\CategoryImageUpload::class);
+        $baseTmpPath = $imageUploader->getBaseTmpPath();
+
+        $uploader = $this->objectManager->create(Uploader::class, ['fileId' => $file, 'isFlysystem' => true]);
+        $uploader->setAllowedExtensions($imageUploader->getAllowedExtensions());
+        $uploader->setAllowRenameFiles(true);
+        $uploader->setFilesDispersion(true);
+        $result = $uploader->save($this->directoryList->getAbsolutePath($baseTmpPath));
+
+        unset($result['path']);
+
+        if (!$result) {
+            throw new \Magento\Framework\Exception\LocalizedException(
+                __('File can not be saved to the destination folder.')
+            );
+        }
+
+        $result['tmp_name'] = str_replace('\\', '/', $result['tmp_name']);
+        $result['url'] = $this->storeManager
+                ->getStore()
+                ->getBaseUrl(UrlInterface::URL_TYPE_MEDIA) . $imageUploader->getFilePath($baseTmpPath, $result['file']);
+        $result['name'] = $result['file'];
+
+        if (isset($result['file'])) {
+            try {
+                $relativePath = rtrim($baseTmpPath, '/') . '/' . ltrim($result['file'], '/');
+                $this->coreFileStorageDatabase->saveFile($relativePath);
+            } catch (\Exception $e) {
+                $this->logger->critical($e);
+                throw new \Magento\Framework\Exception\LocalizedException(
+                    __('Something went wrong while saving the file(s).')
+                );
+            }
+        }
         return $result;
     }
 
