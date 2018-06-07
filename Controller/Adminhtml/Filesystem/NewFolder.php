@@ -1,33 +1,37 @@
 <?php
 namespace Flagbit\Flysystem\Controller\Adminhtml\Filesystem;
 
+use \Flagbit\Flysystem\Model\Filesystem\Manager;
 use \Magento\Backend\App\Action\Context;
 use \Magento\Framework\Controller\Result\JsonFactory;
-use \Magento\Framework\Registry;
 use \Magento\Backend\Model\Session;
 
+/**
+ * Class NewFolder
+ * @package Flagbit\Flysystem\Controller\Adminhtml\Filesystem
+ */
 class NewFolder extends AbstractController
 {
     /**
      * @var JsonFactory
      */
-    protected $resultJson;
+    protected $_resultJson;
 
     /**
      * NewFolder constructor.
      * @param Context $context
-     * @param Registry $coreRegistry
+     * @param Manager $flysystemManager
      * @param Session $session
      * @param JsonFactory $resultJsonFactory
      */
     public function __construct(
         Context $context,
-        Registry $coreRegistry,
+        Manager $flysystemManager,
         Session $session,
         JsonFactory $resultJsonFactory
     ) {
-        $this->resultJson = $resultJsonFactory;
-        parent::__construct($context, $coreRegistry, $session);
+        $this->_resultJson = $resultJsonFactory;
+        parent::__construct($context, $flysystemManager, $session);
     }
 
     /**
@@ -45,7 +49,7 @@ class NewFolder extends AbstractController
         }
 
         /** @var \Magento\Framework\Controller\Result\Json $resultJson */
-        $resultJson = $this->resultJson->create();
+        $resultJson = $this->_resultJson->create();
         return $resultJson->setData($result);
     }
 }

@@ -4,31 +4,26 @@ namespace Flagbit\Flysystem\Observer;
 use \Flagbit\Flysystem\Model\Filesystem\TmpManager;
 use \Magento\Framework\Event\Observer;
 use \Magento\Framework\Event\ObserverInterface;
-use \Magento\Framework\Registry;
 
+/**
+ * Class ProductImage
+ * @package Flagbit\Flysystem\Observer
+ */
 class ProductImage implements ObserverInterface
 {
     /**
-     * @var Registry
-     */
-    private $registry;
-
-    /**
      * @var TmpManager
      */
-    private $tmpManager;
+    private $_tmpManager;
 
     /**
      * ProductImage constructor.
-     * @param Registry $registry
      * @param TmpManager $tmpManager
      */
     public function __construct(
-        Registry $registry,
         TmpManager $tmpManager
     ) {
-        $this->registry = $registry;
-        $this->tmpManager = $tmpManager;
+        $this->_tmpManager = $tmpManager;
     }
 
     /**
@@ -45,7 +40,7 @@ class ProductImage implements ObserverInterface
 
                 $file = $this->createFileArray($manager, $filename);
 
-                $result = $this->tmpManager->createProductTmp($file);
+                $result = $this->_tmpManager->createProductTmp($file);
                 $controller->setResult(json_encode($result));
             }
         } catch (\Exception $e) {
@@ -62,7 +57,7 @@ class ProductImage implements ObserverInterface
         $file = [
             'name' => basename($filename),
             'type' => $manager->getAdapter()->getMimetype($filename),
-            'tmp_name' => $this->tmpManager->getAbsoluteTmpPath($filename),
+            'tmp_name' => $this->_tmpManager->getAbsoluteTmpPath($filename),
             'error' => 0,
             'size' => $manager->getAdapter()->getSize($filename)
         ];

@@ -3,15 +3,19 @@ namespace Flagbit\Flysystem\Block\Adminhtml\Filesystem\Content;
 
 use \Flagbit\Flysystem\Helper\Config;
 use \Flagbit\Flysystem\Helper\Filesystem;
+use \Flagbit\Flysystem\Model\Filesystem\Manager;
 use \Magento\Framework\Filesystem\DirectoryList;
 use \Magento\Framework\Message\ManagerInterface;
-use \Magento\Framework\Registry;
 use \Magento\Backend\Block\Template;
 use \Magento\Backend\Block\Template\Context;
 use \Magento\Framework\UrlInterface;
 use \Magento\Framework\View\Element\Messages;
 use \Magento\Store\Model\StoreManagerInterface;
 
+/**
+ * Class Files
+ * @package Flagbit\Flysystem\Block\Adminhtml\Filesystem\Content
+ */
 class Files extends Template
 {
     /**
@@ -22,14 +26,14 @@ class Files extends Template
     protected $_filesCollection = [];
 
     /**
-     * @var Registry
+     * @var Manager
      */
-    protected $_coreRegistry;
+    protected $_flysystemManager;
 
     /**
      * @var Filesystem
      */
-    protected $_filesystemHelper;
+    protected $_flysystemHelper;
 
     /**
      * @var Config
@@ -59,8 +63,8 @@ class Files extends Template
     /**
      * Files constructor.
      * @param Context $context
-     * @param Registry $coreRegistry
-     * @param Filesystem $filesystemHelper
+     * @param Manager $flysystemManager
+     * @param Filesystem $flysystemHelper
      * @param Config $flysystemConfig
      * @param DirectoryList $directoryList
      * @param StoreManagerInterface $storeManager
@@ -70,8 +74,8 @@ class Files extends Template
      */
     public function __construct(
         Context $context,
-        Registry $coreRegistry,
-        Filesystem $filesystemHelper,
+        Manager $flysystemManager,
+        Filesystem $flysystemHelper,
         Config $flysystemConfig,
         DirectoryList $directoryList,
         StoreManagerInterface $storeManager,
@@ -79,8 +83,8 @@ class Files extends Template
         Messages $messages,
         array $data = []
     ) {
-        $this->_coreRegistry = $coreRegistry;
-        $this->_filesystemHelper = $filesystemHelper;
+        $this->_flysystemManager = $flysystemManager;
+        $this->_flysystemHelper = $flysystemHelper;
         $this->_flysystemConfig = $flysystemConfig;
         $this->_directoryList = $directoryList;
         $this->_storeManager = $storeManager;
@@ -98,10 +102,9 @@ class Files extends Template
     {
         try {
             if (count($this->_filesCollection) === 0) {
-                $manager = $this->_coreRegistry->registry('flysystem_manager');
-                $path = $this->_filesystemHelper->getCurrentPath();
+                $path = $this->_flysystemHelper->getCurrentPath();
 
-                $contents = $manager->getAdapter()->listContents($path);
+                $contents = $this->_flysystemManager->getAdapter()->listContents($path);
                 foreach ($contents as $file) {
                     if ($this->validateFile($file)) {
                         $this->_filesCollection[] = $file;
@@ -153,7 +156,7 @@ class Files extends Template
      */
     public function getFileId($file)
     {
-        return $this->_filesystemHelper->idEncode($file['path']);
+        return $this->_flysystemHelper->idEncode($file['path']);
     }
 
     /**
@@ -161,7 +164,7 @@ class Files extends Template
      * @return string
      */
     public function getFileShortName($file) {
-        return $this->_filesystemHelper->getShortFilename($file['path']);
+        return $this->_flysystemHelper->getShortFilename($file['path']);
     }
 
     /**
@@ -185,7 +188,7 @@ class Files extends Template
     public function getFileThumbUrl($file) {
         if($this->validateFile($file)) {
             $mediaPath = $this->_directoryList->getPath('media');
-            $filesystemPath = trim($this->_coreRegistry->registry('flysystem_manager')->getPath(), '/');
+            $filesystemPath = trim($this->_flysystemManager->getPath(), '/');
             $fullPath = '/'.$filesystemPath.'/'.$file['path'];
 
             if(strstr($fullPath, $mediaPath) === false) {

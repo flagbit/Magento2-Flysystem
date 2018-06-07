@@ -14,16 +14,40 @@ use \Flagbit\Flysystem\Model\Filesystem\Manager;
  */
 class Filesystem extends AbstractHelper
 {
-    protected $_currentPath;
-
+    /**
+     * @var ImageFactory
+     */
     protected $_imageFactory;
 
+    /**
+     * @var DirectoryList
+     */
     protected $_directoryList;
 
+    /**
+     * @var MagentoFilesystem\Directory\WriteInterface
+     */
     protected $_directory;
 
+    /**
+     * @var Manager
+     */
     protected $_flysystemManager;
 
+    /**
+     * @var string
+     */
+    protected $_currentPath;
+
+    /**
+     * Filesystem constructor.
+     * @param Context $context
+     * @param ImageFactory $imageFactory
+     * @param DirectoryList $directoryList
+     * @param MagentoFilesystem $filesystem
+     * @param Config $flysystemConfig
+     * @param Manager $flysystemManager
+     */
     public function __construct(
         Context $context,
         ImageFactory $imageFactory,

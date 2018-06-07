@@ -16,88 +16,92 @@ use \League\Flysystem\Adapter\NullAdapter as NullAdapter;
 use \League\Flysystem\Adapter\Local as LocalAdapter;
 use \League\Flysystem\Adapter\Ftp as FtpAdapter;
 
+/**
+ * Class ManagerTest
+ * @package Flagbit\Flysystem\Test\Unit\Model\Config\Source
+ */
 class ManagerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var FilesystemManager|MockObject
      */
-    protected $flysystemManagerMock;
+    protected $_flysystemManagerMock;
 
     /**
      * @var FilesystemAdapterFactory|MockObject
      */
-    protected $flysystemFactoryMock;
+    protected $_flysystemFactoryMock;
 
     /**
      * @var FilesystemAdapter|MockObject
      */
-    protected $flysystemAdapterMock;
+    protected $_flysystemAdapterMock;
 
     /**
      * @var EventManager|MockObject
      */
-    protected $eventManagerMock;
+    protected $_eventManagerMock;
 
     /**
      * @var Config|MockObject
      */
-    protected $configMock;
+    protected $_configMock;
 
     /**
      * @var Session|MockObject
      */
-    protected $sessionMock;
+    protected $_sessionMock;
 
     /**
      * @var Monolog|MockObject
      */
-    protected $loggerMock;
+    protected $_loggerMock;
 
     /**
      * @var NullAdapter|MockObject
      */
-    protected $nullAdapterMock;
+    protected $_nullAdapterMock;
 
     /**
      * @var LocalAdapter|MockObject
      */
-    protected $localAdapterMock;
+    protected $_localAdapterMock;
 
     /**
      * @var FtpAdapter|MockObject
      */
-    protected $ftpAdapterMock;
+    protected $_ftpAdapterMock;
 
     /**
      * @var Manager|MockObject
      */
-    protected $manager;
+    protected $_manager;
 
     /**
      * Set up Unit Tests
      */
     public function setUp()
     {
-        $this->flysystemManagerMock = $this->getMockBuilder(FilesystemManager::class)
+        $this->_flysystemManagerMock = $this->getMockBuilder(FilesystemManager::class)
             ->disableOriginalConstructor()
             ->setMethods(['createLocalDriver', 'createFtpDriver', 'createNullDriver'])
             ->getMock();
 
-        $this->flysystemFactoryMock = $this->getMockBuilder(FilesystemAdapterFactory::class)
+        $this->_flysystemFactoryMock = $this->getMockBuilder(FilesystemAdapterFactory::class)
             ->disableOriginalConstructor()
             ->setMethods(['create'])
             ->getMock();
 
-        $this->flysystemAdapterMock = $this->getMockBuilder(FilesystemAdapter::class)
+        $this->_flysystemAdapterMock = $this->getMockBuilder(FilesystemAdapter::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->eventManagerMock = $this->getMockBuilder(EventManager::class)
+        $this->_eventManagerMock = $this->getMockBuilder(EventManager::class)
             ->disableOriginalConstructor()
             ->setMethods(['dispatch'])
             ->getMock();
 
-        $this->configMock = $this->getMockBuilder(Config::class)
+        $this->_configMock = $this->getMockBuilder(Config::class)
             ->disableOriginalConstructor()
             ->setMethods([
                 'getSource',
@@ -113,34 +117,34 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
             ])
             ->getMock();
 
-        $this->sessionMock = $this->getMockBuilder(Session::class)
+        $this->_sessionMock = $this->getMockBuilder(Session::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->loggerMock = $this->getMockBuilder(Monolog::class)
+        $this->_loggerMock = $this->getMockBuilder(Monolog::class)
             ->disableOriginalConstructor()
             ->setMethods(['critical'])
             ->getMock();
 
-        $this->nullAdapterMock = $this->getMockBuilder(NullAdapter::class)
+        $this->_nullAdapterMock = $this->getMockBuilder(NullAdapter::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->localAdapterMock = $this->getMockBuilder(LocalAdapter::class)
+        $this->_localAdapterMock = $this->getMockBuilder(LocalAdapter::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->ftpAdapterMock = $this->getMockBuilder(FtpAdapter::class)
+        $this->_ftpAdapterMock = $this->getMockBuilder(FtpAdapter::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->manager = new Manager(
-                $this->flysystemManagerMock,
-                $this->flysystemFactoryMock,
-                $this->eventManagerMock,
-                $this->configMock,
-                $this->sessionMock,
-                $this->loggerMock
+        $this->_manager = new Manager(
+                $this->_flysystemManagerMock,
+                $this->_flysystemFactoryMock,
+                $this->_eventManagerMock,
+                $this->_configMock,
+                $this->_sessionMock,
+                $this->_loggerMock
             );
     }
 
@@ -151,25 +155,25 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
     {
         $testSource = null;
 
-        $this->configMock->expects($this->once())
+        $this->_configMock->expects($this->once())
             ->method('getSource')
             ->willReturn('test');
 
         // setAdapter
-        $this->flysystemManagerMock->expects($this->once())
+        $this->_flysystemManagerMock->expects($this->once())
             ->method('createNullDriver')
-            ->willReturn($this->nullAdapterMock);
+            ->willReturn($this->_nullAdapterMock);
 
-        $this->flysystemFactoryMock->expects($this->once())
+        $this->_flysystemFactoryMock->expects($this->once())
             ->method('create')
-            ->with($this->nullAdapterMock)
-            ->willReturn($this->flysystemAdapterMock);
+            ->with($this->_nullAdapterMock)
+            ->willReturn($this->_flysystemAdapterMock);
 
-        $this->eventManagerMock->expects($this->once())
+        $this->_eventManagerMock->expects($this->once())
             ->method('dispatch')
             ->withAnyParameters();
 
-        $this->assertEquals($this->flysystemAdapterMock, $this->manager->create($testSource));
+        $this->assertEquals($this->_flysystemAdapterMock, $this->_manager->create($testSource));
     }
 
     /**
@@ -179,17 +183,17 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
     {
         $testSource = 'invalid';
 
-        $this->configMock->expects($this->never())
+        $this->_configMock->expects($this->never())
             ->method('getSource');
 
-        $this->flysystemFactoryMock->expects($this->never())
+        $this->_flysystemFactoryMock->expects($this->never())
             ->method('create');
 
-        $this->eventManagerMock->expects($this->once())
+        $this->_eventManagerMock->expects($this->once())
             ->method('dispatch')
             ->withAnyParameters();
 
-        $this->assertEquals(null, $this->manager->create($testSource));
+        $this->assertEquals(null, $this->_manager->create($testSource));
     }
 
     /**
@@ -200,21 +204,21 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
         $pathParam = null;
         $pathConfig = '/';
 
-        $this->configMock->expects($this->once())
+        $this->_configMock->expects($this->once())
             ->method('getLocalPath')
             ->willReturn($pathConfig);
 
-        $this->flysystemManagerMock->expects($this->once())
+        $this->_flysystemManagerMock->expects($this->once())
             ->method('createLocalDriver')
             ->with($pathConfig)
-            ->willReturn($this->localAdapterMock);
+            ->willReturn($this->_localAdapterMock);
 
-        $this->flysystemFactoryMock->expects($this->once())
+        $this->_flysystemFactoryMock->expects($this->once())
             ->method('create')
-            ->with($this->localAdapterMock)
-            ->willReturn($this->flysystemAdapterMock);
+            ->with($this->_localAdapterMock)
+            ->willReturn($this->_flysystemAdapterMock);
 
-        $this->assertEquals($this->flysystemAdapterMock, $this->manager->createLocalAdapter($pathParam));
+        $this->assertEquals($this->_flysystemAdapterMock, $this->_manager->createLocalAdapter($pathParam));
     }
 
     /**
@@ -225,20 +229,20 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
         $pathParam = 'invalidPath';
         $exception = new \Exception();
 
-        $this->configMock->expects($this->never())
+        $this->_configMock->expects($this->never())
             ->method('getLocalPath');
 
-        $this->flysystemManagerMock->expects($this->once())
+        $this->_flysystemManagerMock->expects($this->once())
             ->method('createLocalDriver')
             ->with($pathParam)
             ->willThrowException($exception);
 
-        $this->loggerMock->expects($this->once())
+        $this->_loggerMock->expects($this->once())
             ->method('critical')
             ->with($exception->getMessage())
             ->willReturn(true);
 
-        $this->assertEquals(null, $this->manager->createLocalAdapter($pathParam));
+        $this->assertEquals(null, $this->_manager->createLocalAdapter($pathParam));
     }
 
     /**
@@ -259,53 +263,53 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
             'timeout' => 30
         ];
 
-        $this->configMock->expects($this->once())
+        $this->_configMock->expects($this->once())
             ->method('getFtpHost')
             ->willReturn($configArray['host']);
 
-        $this->configMock->expects($this->once())
+        $this->_configMock->expects($this->once())
             ->method('getFtpUser')
             ->willReturn($configArray['username']);
 
-        $this->configMock->expects($this->once())
+        $this->_configMock->expects($this->once())
             ->method('getFtpPassword')
             ->willReturn($configArray['password']);
 
-        $this->configMock->expects($this->once())
+        $this->_configMock->expects($this->once())
             ->method('getFtpPath')
             ->willReturn($configArray['root']);
 
-        $this->configMock->expects($this->once())
+        $this->_configMock->expects($this->once())
             ->method('getFtpPort')
             ->willReturn($configArray['port']);
 
-        $this->configMock->expects($this->once())
+        $this->_configMock->expects($this->once())
             ->method('getFtpPassive')
             ->willReturn($configArray['passive']);
 
-        $this->configMock->expects($this->once())
+        $this->_configMock->expects($this->once())
             ->method('getFtpSsl')
             ->willReturn($configArray['ssl']);
 
-        $this->configMock->expects($this->once())
+        $this->_configMock->expects($this->once())
             ->method('getFtpTimeout')
             ->willReturn($configArray['timeout']);
 
-        $this->flysystemManagerMock->expects($this->once())
+        $this->_flysystemManagerMock->expects($this->once())
             ->method('createFtpDriver')
             ->with($configArray)
-            ->willReturn($this->ftpAdapterMock);
+            ->willReturn($this->_ftpAdapterMock);
 
-        $this->flysystemFactoryMock->expects($this->once())
+        $this->_flysystemFactoryMock->expects($this->once())
             ->method('create')
-            ->with($this->ftpAdapterMock)
-            ->willReturn($this->flysystemAdapterMock);
+            ->with($this->_ftpAdapterMock)
+            ->willReturn($this->_flysystemAdapterMock);
 
-        $this->eventManagerMock->expects($this->once())
+        $this->_eventManagerMock->expects($this->once())
             ->method('dispatch')
             ->withAnyParameters();
 
-        $this->assertEquals($this->flysystemAdapterMock, $this->manager->create($testSource));
+        $this->assertEquals($this->_flysystemAdapterMock, $this->_manager->create($testSource));
     }
 
     /**
@@ -328,31 +332,31 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
             'timeout' => 0
         ];
 
-        $this->configMock->expects($this->once())
+        $this->_configMock->expects($this->once())
             ->method('getFtpHost')
             ->willReturn($configArray['host']);
 
-        $this->configMock->expects($this->once())
+        $this->_configMock->expects($this->once())
             ->method('getFtpUser')
             ->willReturn($configArray['username']);
 
-        $this->configMock->expects($this->once())
+        $this->_configMock->expects($this->once())
             ->method('getFtpPassword')
             ->willReturn($configArray['password']);
 
-        $this->configMock->expects($this->never())
+        $this->_configMock->expects($this->never())
             ->method('getFtpPath');
 
-        $this->loggerMock->expects($this->once())
+        $this->_loggerMock->expects($this->once())
             ->method('critical')
             ->with($exception->getMessage())
             ->willReturn(true);
 
-        $this->eventManagerMock->expects($this->once())
+        $this->_eventManagerMock->expects($this->once())
             ->method('dispatch')
             ->withAnyParameters();
 
-        $this->assertEquals(null, $this->manager->create($testSource));
+        $this->assertEquals(null, $this->_manager->create($testSource));
     }
 
     /**
@@ -375,52 +379,52 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
             'timeout' => 30
         ];
 
-        $this->configMock->expects($this->once())
+        $this->_configMock->expects($this->once())
             ->method('getFtpHost')
             ->willReturn($configArray['host']);
 
-        $this->configMock->expects($this->once())
+        $this->_configMock->expects($this->once())
             ->method('getFtpUser')
             ->willReturn($configArray['username']);
 
-        $this->configMock->expects($this->once())
+        $this->_configMock->expects($this->once())
             ->method('getFtpPassword')
             ->willReturn($configArray['password']);
 
-        $this->configMock->expects($this->once())
+        $this->_configMock->expects($this->once())
             ->method('getFtpPath')
             ->willReturn($configArray['root']);
 
-        $this->configMock->expects($this->once())
+        $this->_configMock->expects($this->once())
             ->method('getFtpPort')
             ->willReturn($configArray['port']);
 
-        $this->configMock->expects($this->once())
+        $this->_configMock->expects($this->once())
             ->method('getFtpPassive')
             ->willReturn($configArray['passive']);
 
-        $this->configMock->expects($this->once())
+        $this->_configMock->expects($this->once())
             ->method('getFtpSsl')
             ->willReturn($configArray['ssl']);
 
-        $this->configMock->expects($this->once())
+        $this->_configMock->expects($this->once())
             ->method('getFtpTimeout')
             ->willReturn($configArray['timeout']);
 
-        $this->flysystemManagerMock->expects($this->once())
+        $this->_flysystemManagerMock->expects($this->once())
             ->method('createFtpDriver')
             ->with($configArray)
             ->willThrowException($exception);
 
-        $this->loggerMock->expects($this->once())
+        $this->_loggerMock->expects($this->once())
             ->method('critical')
             ->with($exception->getMessage())
             ->willReturn(true);
 
-        $this->eventManagerMock->expects($this->once())
+        $this->_eventManagerMock->expects($this->once())
             ->method('dispatch')
             ->withAnyParameters();
 
-        $this->assertEquals(null, $this->manager->create($testSource));
+        $this->assertEquals(null, $this->_manager->create($testSource));
     }
 }

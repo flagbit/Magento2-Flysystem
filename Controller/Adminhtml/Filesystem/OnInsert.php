@@ -2,44 +2,48 @@
 namespace Flagbit\Flysystem\Controller\Adminhtml\Filesystem;
 
 use \Flagbit\Flysystem\Helper\Filesystem;
+use \Flagbit\Flysystem\Model\Filesystem\Manager;
 use \Flagbit\Flysystem\Model\Filesystem\TmpManager;
 use \Magento\Backend\App\Action\Context;
 use \Magento\Framework\Controller\Result\RawFactory;
 use \Magento\Framework\EntityManager\EventManager;
-use \Magento\Framework\Registry;
 use \Magento\Backend\Model\Session;
 
+/**
+ * Class OnInsert
+ * @package Flagbit\Flysystem\Controller\Adminhtml\Filesystem
+ */
 class OnInsert extends AbstractController
 {
     /**
      * @var RawFactory
      */
-    protected $resultRawFactory;
+    protected $_resultRawFactory;
 
     /**
      * @var Filesystem
      */
-    protected $flysystemHelper;
+    protected $_flysystemHelper;
 
     /**
      * @var TmpManager
      */
-    protected $tmpManager;
+    protected $_tmpManager;
 
     /**
      * @var EventManager
      */
-    protected $eventManager;
+    protected $_eventManager;
 
     /**
      * @var string
      */
-    protected $result = '';
+    protected $_result = '';
 
     /**
      * OnInsert constructor.
      * @param Context $context
-     * @param Registry $coreRegistry
+     * @param Manager $flysystemManager
      * @param Session $session
      * @param RawFactory $rawFactory
      * @param Filesystem $flysystemHelper
@@ -48,18 +52,18 @@ class OnInsert extends AbstractController
      */
     public function __construct(
         Context $context,
-        Registry $coreRegistry,
+        Manager $flysystemManager,
         Session $session,
         RawFactory $rawFactory,
         Filesystem $flysystemHelper,
         TmpManager $tmpManager,
         EventManager $eventManager
     ) {
-        $this->resultRawFactory = $rawFactory;
-        $this->flysystemHelper = $flysystemHelper;
-        $this->tmpManager = $tmpManager;
-        $this->eventManager = $eventManager;
-        parent::__construct($context, $coreRegistry, $session);
+        $this->_resultRawFactory = $rawFactory;
+        $this->_flysystemHelper = $flysystemHelper;
+        $this->_tmpManager = $tmpManager;
+        $this->_eventManager = $eventManager;
+        parent::__construct($context, $flysystemManager, $session);
     }
 
     /**
@@ -70,15 +74,15 @@ class OnInsert extends AbstractController
         $manager = $this->getStorage();
 
         $filename = $this->getRequest()->getParam('filename');
-        $filename = $this->flysystemHelper->idDecode($filename);
+        $filename = $this->_flysystemHelper->idDecode($filename);
 
         $contents = $manager->getAdapter()->read($filename);
 
-        $this->tmpManager->writeTmp($filename, $contents);
+        $this->_tmpManager->writeTmp($filename, $contents);
 
         $identifier = $manager->getModalIdentifier();
 
-        $this->eventManager->dispatch('flagbit_flysystem_oninsert_after',
+        $this->_eventManager->dispatch('flagbit_flysystem_oninsert_after',
             [
                 'controller' => $this,
                 'filename' => $filename,
@@ -90,7 +94,7 @@ class OnInsert extends AbstractController
             $this->result =  $filename;
         }
 
-        $resultRaw = $this->resultRawFactory->create();
+        $resultRaw = $this->_resultRawFactory->create();
         return $resultRaw->setContents($this->result);
     }
 

@@ -18,78 +18,82 @@ use \Magento\Framework\Filesystem as MagentoFilesystem;
 use \Magento\Framework\App\Filesystem\DirectoryList;
 use \Magento\Backend\Model\Auth\Session;
 
+/**
+ * Class TmpManager
+ * @package Flagbit\Flysystem\Model\Filesystem
+ */
 class TmpManager
 {
     /**
      * @var FilesystemManager
      */
-    protected $flysystemManager;
+    protected $_flysystemManager;
 
     /**
      * @var FilesystemAdapterFactory
      */
-    protected $flysystemFactory;
+    protected $_flysystemFactory;
 
     /**
      * @var Config
      */
-    protected $flysystemConfig;
+    protected $_flysystemConfig;
 
     /**
      * @var Filesystem
      */
-    protected $flysystemHelper;
+    protected $_flysystemHelper;
 
     /**
      * @var MagentoFilesystem
      */
-    protected $filesystem;
+    protected $_filesystem;
 
     /**
      * @var MagentoFilesystem\Directory\WriteInterface
      */
-    protected $directoryList;
+    protected $_directoryList;
 
     /**
      * @var LoggerInterface
      */
-    protected $logger;
+    protected $_logger;
 
     /**
      * @var Session
      */
-    protected $adminSession;
+    protected $_adminSession;
 
     /**
      * @var ProductMediaConfig
      */
-    protected $productMediaConfig;
+    protected $_productMediaConfig;
 
     /**
      * @var ObjectManagerInterface
      */
-    protected $objectManager;
+    protected $_objectManager;
 
     /**
      * @var Database
      */
-    protected $coreFileStorageDatabase;
+    protected $_coreFileStorageDatabase;
 
     /**
      * @var StoreManagerInterface
      */
-    protected $storeManager;
+    protected $_storeManager;
 
     /**
      * @var null|FilesystemAdapter
      */
-    protected $adapter;
+    protected $_adapter;
 
     /**
      * TmpManager constructor.
-     * @param FilesystemManager $filesystemManager
-     * @param FilesystemAdapterFactory $filesystemAdapterFactory
-     * @param Config $config
+     * @param FilesystemManager $flysystemManager
+     * @param FilesystemAdapterFactory $flysystemFactory
+     * @param Config $flysystemConfig
      * @param Filesystem $flysystemHelper
      * @param MagentoFilesystem $filesystem
      * @param DirectoryList $directoryList
@@ -97,11 +101,13 @@ class TmpManager
      * @param Session $adminSession
      * @param ProductMediaConfig $productMediaconfig
      * @param ObjectManagerInterface $objectManager
+     * @param Database $coreFileStorageDatabase
+     * @param StoreManagerInterface $storeManager
      */
     public function __construct(
-        FilesystemManager $filesystemManager,
-        FilesystemAdapterFactory $filesystemAdapterFactory,
-        Config $config,
+        FilesystemManager $flysystemManager,
+        FilesystemAdapterFactory $flysystemFactory,
+        Config $flysystemConfig,
         Filesystem $flysystemHelper,
         MagentoFilesystem $filesystem,
         DirectoryList $directoryList,
@@ -112,18 +118,18 @@ class TmpManager
         Database $coreFileStorageDatabase,
         StoreManagerInterface $storeManager
     ) {
-        $this->flysystemManager = $filesystemManager;
-        $this->flysystemFactory = $filesystemAdapterFactory;
-        $this->flysystemConfig = $config;
-        $this->flysystemHelper = $flysystemHelper;
-        $this->filesystem = $filesystem;
-        $this->directoryList = $this->filesystem->getDirectoryWrite(DirectoryList::MEDIA);
-        $this->logger = $logger;
-        $this->adminSession = $adminSession;
-        $this->productMediaConfig = $productMediaconfig;
-        $this->objectManager = $objectManager;
-        $this->coreFileStorageDatabase = $coreFileStorageDatabase;
-        $this->storeManager = $storeManager;
+        $this->_flysystemManager = $flysystemManager;
+        $this->_flysystemFactory = $flysystemFactory;
+        $this->_flysystemConfig = $flysystemConfig;
+        $this->_flysystemHelper = $flysystemHelper;
+        $this->_filesystem = $filesystem;
+        $this->_directoryList = $this->_filesystem->getDirectoryWrite(DirectoryList::MEDIA);
+        $this->_logger = $logger;
+        $this->_adminSession = $adminSession;
+        $this->_productMediaConfig = $productMediaconfig;
+        $this->_objectManager = $objectManager;
+        $this->_coreFileStorageDatabase = $coreFileStorageDatabase;
+        $this->_storeManager = $storeManager;
 
         $this->create();
     }
@@ -133,11 +139,11 @@ class TmpManager
      */
     public function create()
     {
-        if(!$this->adapter) {
-            $path = $this->directoryList->getAbsolutePath();
-            $this->adapter = $this->flysystemFactory->create($this->flysystemManager->createLocalDriver($path));
+        if(!$this->_adapter) {
+            $path = $this->_directoryList->getAbsolutePath();
+            $this->_adapter = $this->_flysystemFactory->create($this->_flysystemManager->createLocalDriver($path));
         }
-        return $this->adapter;
+        return $this->_adapter;
     }
 
     /**
@@ -171,8 +177,8 @@ class TmpManager
      */
     public function getAbsoluteTmpPath($file)
     {
-        $encodedFile = $this->flysystemHelper->idEncode($file);
-        return $this->directoryList->getAbsolutePath().'/'.$this->getUserTmpDir().'/'.$encodedFile;
+        $encodedFile = $this->_flysystemHelper->idEncode($file);
+        return $this->_directoryList->getAbsolutePath().'/'.$this->getUserTmpDir().'/'.$encodedFile;
     }
 
     /**
@@ -180,7 +186,7 @@ class TmpManager
      */
     protected function getUserTmpDir()
     {
-        $userDir = $this->flysystemHelper->idEncode($this->adminSession->getUser()->getUserName());
+        $userDir = $this->_flysystemHelper->idEncode($this->_adminSession->getUser()->getUserName());
         return Config::FLYSYSTEM_DIRECTORY.'/'.Config::FLYSYSTEM_DIRECTORY_TMP.'/'.$userDir;
     }
 
@@ -190,7 +196,7 @@ class TmpManager
      */
     protected function getTmpPath($file)
     {
-        $file = $this->flysystemHelper->idEncode($file);
+        $file = $this->_flysystemHelper->idEncode($file);
 
         return $this->getUserTmpDir().'/'.$file;
     }
@@ -208,7 +214,7 @@ class TmpManager
      */
     public function getAdapter()
     {
-        return $this->adapter;
+        return $this->_adapter;
     }
 
     /**
@@ -216,7 +222,7 @@ class TmpManager
      */
     public function setAdapter($adapter)
     {
-        $this->adapter = $adapter;
+        $this->_adapter = $adapter;
     }
 
     /**
@@ -225,18 +231,18 @@ class TmpManager
      */
     public function createProductTmp($file)
     {
-        $tmpRoot = $this->productMediaConfig->getBaseTmpMediaPath();
+        $tmpRoot = $this->_productMediaConfig->getBaseTmpMediaPath();
 
-        $uploader = $this->objectManager->create(Uploader::class, ['fileId' => $file, 'isFlysystem' => true]);
+        $uploader = $this->_objectManager->create(Uploader::class, ['fileId' => $file, 'isFlysystem' => true]);
         $uploader->setAllowedExtensions(['jpg', 'jpeg', 'gif', 'png']);
         $uploader->setAllowRenameFiles(true);
         $uploader->setFilesDispersion(true);
-        $result = $uploader->save($this->directoryList->getAbsolutePath($tmpRoot));
+        $result = $uploader->save($this->_directoryList->getAbsolutePath($tmpRoot));
 
         unset($result['tmp_name']);
         unset($result['path']);
 
-        $result['url'] = $this->productMediaConfig->getTmpMediaUrl($result['file']);
+        $result['url'] = $this->_productMediaConfig->getTmpMediaUrl($result['file']);
         $result['file'] = $result['file'] . '.tmp';
 
         return $result;
@@ -245,14 +251,14 @@ class TmpManager
     public function createCategoryTmp($file)
     {
         /** @var \Magento\Catalog\Model\ImageUploader $imageUploader*/
-        $imageUploader = $this->objectManager->get(\Magento\Catalog\CategoryImageUpload::class);
+        $imageUploader = $this->_objectManager->get(\Magento\Catalog\CategoryImageUpload::class);
         $baseTmpPath = $imageUploader->getBaseTmpPath();
 
-        $uploader = $this->objectManager->create(Uploader::class, ['fileId' => $file, 'isFlysystem' => true]);
+        $uploader = $this->_objectManager->create(Uploader::class, ['fileId' => $file, 'isFlysystem' => true]);
         $uploader->setAllowedExtensions($imageUploader->getAllowedExtensions());
         $uploader->setAllowRenameFiles(true);
         $uploader->setFilesDispersion(true);
-        $result = $uploader->save($this->directoryList->getAbsolutePath($baseTmpPath));
+        $result = $uploader->save($this->_directoryList->getAbsolutePath($baseTmpPath));
 
         unset($result['path']);
 
@@ -263,7 +269,7 @@ class TmpManager
         }
 
         $result['tmp_name'] = str_replace('\\', '/', $result['tmp_name']);
-        $result['url'] = $this->storeManager
+        $result['url'] = $this->_storeManager
                 ->getStore()
                 ->getBaseUrl(UrlInterface::URL_TYPE_MEDIA) . $imageUploader->getFilePath($baseTmpPath, $result['file']);
         $result['name'] = $result['file'];
@@ -271,26 +277,14 @@ class TmpManager
         if (isset($result['file'])) {
             try {
                 $relativePath = rtrim($baseTmpPath, '/') . '/' . ltrim($result['file'], '/');
-                $this->coreFileStorageDatabase->saveFile($relativePath);
+                $this->_coreFileStorageDatabase->saveFile($relativePath);
             } catch (\Exception $e) {
-                $this->logger->critical($e);
+                $this->_logger->critical($e);
                 throw new \Magento\Framework\Exception\LocalizedException(
                     __('Something went wrong while saving the file(s).')
                 );
             }
         }
         return $result;
-    }
-
-    /**
-     * Create Array out of File like $_FILE[]
-     */
-    protected function _createFileArray()
-    {
-        $file = [
-
-        ];
-
-        return $file;
     }
 }

@@ -1,49 +1,50 @@
 <?php
 namespace Flagbit\Flysystem\Block\Adminhtml\Filesystem;
 
+use \Flagbit\Flysystem\Model\Filesystem\Manager;
 use \Magento\Backend\Block\Template\Context;
 use \Flagbit\Flysystem\Helper\Filesystem;
-use \Magento\Framework\Registry;
 use \Magento\Framework\Serialize\Serializer\Json;
 
 /**
- * Directory tree renderer for Flagbit Flysystem
+ * Class Tree
+ * @package Flagbit\Flysystem\Block\Adminhtml\Filesystem
  */
 class Tree extends \Magento\Backend\Block\Template
 {
     /**
-     * @var Registry
+     * @var Manager
      */
-    protected $_coreRegistry;
+    protected $_flysystemManager;
 
     /**
      * @var Filesystem
      */
-    protected $_filesystemHelper;
+    protected $_flysystemHelper;
 
     /**
      * @var Json
      */
-    private $serializer;
+    private $_serializer;
 
     /**
      * Tree constructor.
      * @param Context $context
-     * @param Filesystem $filesystemHelper
-     * @param Registry $registry
+     * @param Manager $flysystemManager
+     * @param Filesystem $flysystemHelper
      * @param Json $serializer
      * @param array $data
      */
     public function __construct(
         Context $context,
-        Filesystem $filesystemHelper,
-        Registry $registry,
+        Manager $flysystemManager,
+        Filesystem $flysystemHelper,
         Json $serializer,
         array $data = []
     ) {
-        $this->_coreRegistry = $registry;
-        $this->_filesystemHelper = $filesystemHelper;
-        $this->serializer = $serializer;
+        $this->_flysystemManager = $flysystemManager;
+        $this->_flysystemHelper = $flysystemHelper;
+        $this->_serializer = $serializer;
         parent::__construct($context, $data);
     }
 
@@ -54,18 +55,16 @@ class Tree extends \Magento\Backend\Block\Template
     public function getTreeJson()
     {
         try {
-            $manager = $this->_coreRegistry->registry('flysystem_manager');
+            $path = $this->_flysystemHelper->getCurrentPath();
 
-            $path = $this->_filesystemHelper->getCurrentPath();
-
-            $contents = $manager->getAdapter()->listContents($path);
+            $contents = $this->_flysystemManager->getAdapter()->listContents($path);
 
             $jsonArray = [];
             foreach ($contents as $contentKey => $content) {
                 if ($content['type'] === 'dir' && $content['basename'][0] !== '.') {
                     $jsonArray [] = [
-                        'text' => $this->_filesystemHelper->getShortFilename($content['path']),
-                        'id' => $this->_filesystemHelper->idEncode('/' . $content['path']),
+                        'text' => $this->_flysystemHelper->getShortFilename($content['path']),
+                        'id' => $this->_flysystemHelper->idEncode('/' . $content['path']),
                         'path' => '/' . $content['path'],
                         'cls' => 'folder'
                     ];
@@ -75,7 +74,7 @@ class Tree extends \Magento\Backend\Block\Template
             $jsonArray = [];
         }
 
-        return $this->serializer->serialize($jsonArray);
+        return $this->_serializer->serialize($jsonArray);
     }
 
     /**
@@ -106,13 +105,13 @@ class Tree extends \Magento\Backend\Block\Template
     public function getTreeCurrentPath()
     {
         $treePath = ['root'];
-        if ($path = $this->_coreRegistry->registry('flysystem_manager')->getSession()->getCurrentPath()) {
+        if ($path = $this->_flysystemManager->getSession()->getCurrentPath()) {
             //$path = str_replace('/', '', $path);
             $relative = [];
             foreach (explode('/', $path) as $dirName) {
                 if ($dirName) {
                     $relative[] = $dirName;
-                    $treePath[] = $this->_filesystemHelper->idEncode(implode('/', $relative));
+                    $treePath[] = $this->_flysystemHelper->idEncode(implode('/', $relative));
                 }
             }
         }
@@ -124,7 +123,7 @@ class Tree extends \Magento\Backend\Block\Template
      */
     public function getTreeWidgetOptions()
     {
-        return $this->serializer->serialize([
+        return $this->_serializer->serialize([
             "folderTree" => [
                 "rootName" => $this->getRootNodeName(),
                 "url" => $this->getTreeLoaderUrl(),

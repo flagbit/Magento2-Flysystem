@@ -12,12 +12,12 @@ class Config
     /**
      * @var ScopeConfigInterface
      */
-    protected $scopeConfig;
+    protected $_scopeConfig;
 
     /**
      * @var array Supported Filetypes in Flysystem Modals
      */
-    protected $supportedFileTypes = [
+    protected $_supportedFileTypes = [
         'jpg',
         'jpeg',
         'png',
@@ -51,7 +51,7 @@ class Config
     public function __construct(
         ScopeConfigInterface $scopeConfig
     ) {
-        $this->scopeConfig = $scopeConfig;
+        $this->_scopeConfig = $scopeConfig;
     }
 
     /**
@@ -59,7 +59,7 @@ class Config
      */
     public function getSource()
     {
-        return $this->scopeConfig->getValue(self::XPATH_CONFIG_GENERAL_SOURCE);
+        return $this->_scopeConfig->getValue(self::XPATH_CONFIG_GENERAL_SOURCE);
     }
 
     /**
@@ -67,7 +67,7 @@ class Config
      */
     public function getLocalPath()
     {
-        return $this->scopeConfig->getValue(self::XPATH_CONFIG_LOCAL_PATH);
+        return $this->_scopeConfig->getValue(self::XPATH_CONFIG_LOCAL_PATH);
     }
 
     /**
@@ -75,7 +75,7 @@ class Config
      */
     public function getLocalLock()
     {
-        return (int)$this->scopeConfig->getValue(self::XPATH_CONFIG_LOCAL_LOCK);
+        return (int)$this->_scopeConfig->getValue(self::XPATH_CONFIG_LOCAL_LOCK);
     }
 
     /**
@@ -83,7 +83,7 @@ class Config
      */
     public function getFtpHost()
     {
-        return $this->scopeConfig->getValue(self::XPATH_CONFIG_FTP_HOST);
+        return $this->_scopeConfig->getValue(self::XPATH_CONFIG_FTP_HOST);
     }
 
     /**
@@ -91,7 +91,7 @@ class Config
      */
     public function getFtpUser()
     {
-        return $this->scopeConfig->getValue(self::XPATH_CONFIG_FTP_USER);
+        return $this->_scopeConfig->getValue(self::XPATH_CONFIG_FTP_USER);
     }
 
     /**
@@ -99,7 +99,7 @@ class Config
      */
     public function getFtpPassword()
     {
-        return $this->scopeConfig->getValue(self::XPATH_CONFIG_FTP_PASSWORD);
+        return $this->_scopeConfig->getValue(self::XPATH_CONFIG_FTP_PASSWORD);
     }
 
     /**
@@ -107,7 +107,7 @@ class Config
      */
     public function getFtpPort()
     {
-        return (int)$this->scopeConfig->getValue(self::XPATH_CONFIG_FTP_PORT);
+        return (int)$this->_scopeConfig->getValue(self::XPATH_CONFIG_FTP_PORT);
     }
 
     /**
@@ -115,7 +115,7 @@ class Config
      */
     public function getFtpPath()
     {
-        return $this->scopeConfig->getValue(self::XPATH_CONFIG_FTP_PATH);
+        return $this->_scopeConfig->getValue(self::XPATH_CONFIG_FTP_PATH);
     }
 
     /**
@@ -123,7 +123,7 @@ class Config
      */
     public function getFtpPassive()
     {
-        return (bool)$this->scopeConfig->getValue(self::XPATH_CONFIG_FTP_PASSIVE);
+        return (bool)$this->_scopeConfig->getValue(self::XPATH_CONFIG_FTP_PASSIVE);
     }
 
     /**
@@ -131,7 +131,7 @@ class Config
      */
     public function getFtpSsl()
     {
-        return (bool)$this->scopeConfig->getValue(self::XPATH_CONFIG_FTP_SSL);
+        return (bool)$this->_scopeConfig->getValue(self::XPATH_CONFIG_FTP_SSL);
     }
 
     /**
@@ -139,11 +139,11 @@ class Config
      */
     public function getFtpTimeout()
     {
-        return (int)$this->scopeConfig->getValue(self::XPATH_CONFIG_FTP_TIMEOUT);
+        return (int)$this->_scopeConfig->getValue(self::XPATH_CONFIG_FTP_TIMEOUT);
     }
 
     public function getSupportedFileTypes()
     {
-        return $this->supportedFileTypes;
+        return $this->_supportedFileTypes;
     }
 }

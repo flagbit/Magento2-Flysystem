@@ -1,34 +1,37 @@
 <?php
 namespace Flagbit\Flysystem\Controller\Adminhtml\Filesystem;
 
+use \Flagbit\Flysystem\Model\Filesystem\Manager;
 use \Magento\Backend\App\Action\Context;
 use \Magento\Backend\Model\Session;
-use \Magento\Framework\Registry;
 use \Magento\Framework\View\Result\LayoutFactory;
 
+/**
+ * Class Index
+ * @package Flagbit\Flysystem\Controller\Adminhtml\Filesystem
+ */
 class Index extends AbstractController
 {
     /**
      * @var LayoutFactory
      */
-    protected $resultLayoutFactory;
+    protected $_resultLayoutFactory;
 
     /**
      * Index constructor.
      * @param Context $context
-     * @param Registry $coreRegistry
+     * @param Manager $flysystemManager
      * @param Session $session
      * @param LayoutFactory $resultLayoutFactory
      */
     public function __construct(
         Context $context,
-        Registry $coreRegistry,
+        Manager $flysystemManager,
         Session $session,
         LayoutFactory $resultLayoutFactory
     ) {
-        $this->resultLayoutFactory = $resultLayoutFactory;
-        $this->session = $session;
-        parent::__construct($context, $coreRegistry, $session);
+        $this->_resultLayoutFactory = $resultLayoutFactory;
+        parent::__construct($context, $flysystemManager, $session);
     }
 
     /**
@@ -44,7 +47,7 @@ class Index extends AbstractController
         $this->getStorage()->setModalIdentifier($identifier);
 
         /** @var \Magento\Framework\View\Result\Layout $resultLayout */
-        $resultLayout = $this->resultLayoutFactory->create();
+        $resultLayout = $this->_resultLayoutFactory->create();
         $resultLayout->addHandle('overlay_popup');
         return $resultLayout;
     }

@@ -9,6 +9,10 @@ use \Magento\Framework\ObjectManagerInterface;
 use \Magento\MediaStorage\Model\File\Uploader;
 use \Psr\Log\LoggerInterface;
 
+/**
+ * Class UploadManager
+ * @package Flagbit\Flysystem\Model\Filesystem
+ */
 class UploadManager
 {
     const SERVER_TMP_PATH = '/tmp';
@@ -16,58 +20,58 @@ class UploadManager
     /**
      * @var FilesystemManager
      */
-    protected $flysystemManager;
+    protected $_flysystemManager;
 
     /**
      * @var FilesystemAdapterFactory
      */
-    protected $flysystemFactory;
+    protected $_flysystemFactory;
 
     /**
      * @var Config
      */
-    protected $flysystemConfig;
+    protected $_flysystemConfig;
 
     /**
      * @var LoggerInterface
      */
-    protected $logger;
-
-    /**
-     * @var null|Uploader
-     */
-    protected $uploader;
+    protected $_logger;
 
     /**
      * @var ObjectManagerInterface
      */
-    protected $objectManager;
+    protected $_objectManager;
+
+    /**
+     * @var null|Uploader
+     */
+    protected $_uploader;
 
     /**
      * @var null|FilesystemAdapter
      */
-    protected $adapter;
+    protected $_adapter;
 
     /**
      * UploadManager constructor.
-     * @param FilesystemManager $filesystemManager
-     * @param FilesystemAdapterFactory $filesystemAdapterFactory
+     * @param FilesystemManager $flysystemManager
+     * @param FilesystemAdapterFactory $flysystemFactory
      * @param Config $flysystemConfig
      * @param LoggerInterface $logger
      * @param ObjectManagerInterface $objectManager
      */
     public function __construct(
-        FilesystemManager $filesystemManager,
-        FilesystemAdapterFactory $filesystemAdapterFactory,
+        FilesystemManager $flysystemManager,
+        FilesystemAdapterFactory $flysystemFactory,
         Config $flysystemConfig,
         LoggerInterface $logger,
         ObjectManagerInterface $objectManager
     ) {
-        $this->flysystemManager = $filesystemManager;
-        $this->flysystemFactory = $filesystemAdapterFactory;
-        $this->flysystemConfig = $flysystemConfig;
-        $this->logger = $logger;
-        $this->objectManager = $objectManager;
+        $this->_flysystemManager = $flysystemManager;
+        $this->_flysystemFactory = $flysystemFactory;
+        $this->_flysystemConfig = $flysystemConfig;
+        $this->_logger = $logger;
+        $this->_objectManager = $objectManager;
 
         $this->create();
         $this->setUploadFile();
@@ -78,10 +82,10 @@ class UploadManager
      */
     public function create()
     {
-        if(!$this->adapter) {
-            $this->adapter = $this->flysystemFactory->create($this->flysystemManager->createLocalDriver(self::SERVER_TMP_PATH));
+        if(!$this->_adapter) {
+            $this->_adapter = $this->_flysystemFactory->create($this->_flysystemManager->createLocalDriver(self::SERVER_TMP_PATH));
         }
-        return $this->adapter;
+        return $this->_adapter;
     }
 
     /**
@@ -89,7 +93,7 @@ class UploadManager
      */
     public function getUploader()
     {
-        return $this->uploader;
+        return $this->_uploader;
     }
 
     /**
@@ -97,7 +101,7 @@ class UploadManager
      */
     public function getAdapter()
     {
-        return $this->adapter;
+        return $this->_adapter;
     }
 
     /**
@@ -107,7 +111,7 @@ class UploadManager
     public function setUploadFile($fileId = \Flagbit\Flysystem\Helper\Config::FLYSYSTEM_UPLOAD_ID)
     {
         try {
-            $this->uploader = $this->objectManager->create(Uploader::class, ['fileId' => $fileId]);
+            $this->_uploader = $this->_objectManager->create(Uploader::class, ['fileId' => $fileId]);
             return true;
         } catch (\Exception $e) {
             return false;
@@ -122,7 +126,7 @@ class UploadManager
     {
         if(isset($file['name'])) {
             $parts = explode('.', $file['name']);
-            $supportedFileTypes = $this->flysystemConfig->getSupportedFileTypes();
+            $supportedFileTypes = $this->_flysystemConfig->getSupportedFileTypes();
 
             if(in_array($parts[count($parts)-1], $supportedFileTypes)) {
                 return;

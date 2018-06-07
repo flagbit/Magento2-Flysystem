@@ -2,41 +2,45 @@
 namespace Flagbit\Flysystem\Controller\Adminhtml\Filesystem;
 
 use \Flagbit\Flysystem\Helper\Filesystem;
+use \Flagbit\Flysystem\Model\Filesystem\Manager;
 use \Magento\Backend\App\Action\Context;
 use \Magento\Framework\Controller\Result\JsonFactory;
-use \Magento\Framework\Registry;
 use \Magento\Backend\Model\Session;
 
+/**
+ * Class DeleteFiles
+ * @package Flagbit\Flysystem\Controller\Adminhtml\Filesystem
+ */
 class DeleteFiles extends AbstractController
 {
     /**
      * @var JsonFactory
      */
-    protected $resultJson;
+    protected $_resultJson;
 
     /**
      * @var Filesystem
      */
-    protected $flysystemHelper;
+    protected $_flysystemHelper;
 
     /**
      * DeleteFiles constructor.
      * @param Context $context
-     * @param Registry $coreRegistry
+     * @param Manager $flysystemManager
      * @param Session $session
      * @param JsonFactory $resultJsonFactory
      * @param Filesystem $flysystemHelper
      */
     public function __construct(
         Context $context,
-        Registry $coreRegistry,
+        Manager $flysystemManager,
         Session $session,
         JsonFactory $resultJsonFactory,
         Filesystem $flysystemHelper
     ) {
-        $this->resultJson = $resultJsonFactory;
-        $this->flysystemHelper = $flysystemHelper;
-        parent::__construct($context, $coreRegistry, $session);
+        $this->_resultJson = $resultJsonFactory;
+        $this->_flysystemHelper = $flysystemHelper;
+        parent::__construct($context, $flysystemManager, $session);
     }
 
     /**
@@ -52,7 +56,7 @@ class DeleteFiles extends AbstractController
             $manager = $this->getStorage();
 
             foreach($files as $file) {
-                $file = $this->flysystemHelper->idDecode($file);
+                $file = $this->_flysystemHelper->idDecode($file);
                 $manager->getAdapter()->delete($file);
             }
             $result = ['error' => false];
@@ -61,7 +65,7 @@ class DeleteFiles extends AbstractController
         }
 
         /** @var \Magento\Framework\Controller\Result\Json $resultJson */
-        $resultJson = $this->resultJson->create();
+        $resultJson = $this->_resultJson->create();
         return $resultJson->setData($result);
     }
 }

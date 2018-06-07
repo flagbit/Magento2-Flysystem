@@ -10,69 +10,75 @@ use \Magento\Framework\Event\Manager as EventManager;
 use \Magento\Framework\Exception\LocalizedException;
 use \Psr\Log\LoggerInterface;
 
+/**
+ * Class Manager
+ * @package Flagbit\Flysystem\Model\Filesystem
+ */
 class Manager
 {
     /**
      * @var FilesystemManager
      */
-    protected $filesystemManager;
+    protected $_flysystemManager;
 
     /**
      * @var FilesystemAdapterFactory
      */
-    protected $filesystemFactory;
+    protected $_flysystemFactory;
 
     /**
      * @var EventManager
      */
-    protected $eventManager;
+    protected $_eventManager;
 
     /**
      * @var Config
      */
-    protected $config;
-
-    /**
-     * @var null|FilesystemAdapter
-     */
-    protected $adapter;
+    protected $_flysystemConfig;
 
     /**
      * @var Session
      */
-    protected $session;
+    protected $_session;
 
     /**
      * @var LoggerInterface
      */
-    protected $logger;
+    protected $_logger;
+
+    /**
+     * @var null|FilesystemAdapter
+     */
+    protected $_adapter;
 
     /**
      * @var string
      */
-    protected $path;
+    protected $_path;
 
     /**
      * Manager constructor.
-     * @param FilesystemManager $filesystemManager
-     * @param FilesystemAdapterFactory $filesystemAdapterFactory
+     * @param FilesystemManager $flysystemManager
+     * @param FilesystemAdapterFactory $flysystemFactory
      * @param EventManager $eventManager
-     * @param Config $config
+     * @param Config $flysystemConfig
+     * @param Session $session
+     * @param LoggerInterface $logger
      */
     public function __construct(
-        FilesystemManager $filesystemManager,
-        FilesystemAdapterFactory $filesystemAdapterFactory,
+        FilesystemManager $flysystemManager,
+        FilesystemAdapterFactory $flysystemFactory,
         EventManager $eventManager,
-        Config $config,
+        Config $flysystemConfig,
         Session $session,
         LoggerInterface $logger
     ) {
-        $this->filesystemManager = $filesystemManager;
-        $this->filesystemFactory = $filesystemAdapterFactory;
-        $this->eventManager = $eventManager;
-        $this->config = $config;
-        $this->session = $session;
-        $this->logger = $logger;
+        $this->_flysystemManager = $flysystemManager;
+        $this->_flysystemFactory = $flysystemFactory;
+        $this->_eventManager = $eventManager;
+        $this->_flysystemConfig = $flysystemConfig;
+        $this->_session = $session;
+        $this->_logger = $logger;
     }
 
     /**
@@ -82,7 +88,7 @@ class Manager
     public function create($source = null)
     {
         if(!$source) {
-            $source = $this->config->getSource();
+            $source = $this->_flysystemConfig->getSource();
         }
 
         switch($source) {
@@ -97,17 +103,21 @@ class Manager
                 break;
         }
 
-        $this->eventManager->dispatch('flagbit_flysystem_create_after', ['source' => $source, 'manager' => $this]);
+        $this->_eventManager->dispatch('flagbit_flysystem_create_after', ['source' => $source, 'manager' => $this]);
 
         return $this->getAdapter();
     }
 
     /**
+     * @param bool $createIfNotExists
      * @return FilesystemAdapter|null
      */
-    public function getAdapter()
+    public function getAdapter($createIfNotExists = true)
     {
-        return $this->adapter;
+        if(!$this->_adapter && $createIfNotExists) {
+            $this->create();
+        }
+        return $this->_adapter;
     }
 
     /**
@@ -115,7 +125,7 @@ class Manager
      */
     public function setAdapter($adapter)
     {
-        $this->adapter = $adapter;
+        $this->_adapter = $adapter;
     }
 
     /**
@@ -123,7 +133,7 @@ class Manager
      */
     public function getPath()
     {
-        return $this->path;
+        return $this->_path;
     }
 
     /**
@@ -131,7 +141,7 @@ class Manager
      */
     public function setPath($path)
     {
-        $this->path = $path;
+        $this->_path = $path;
     }
 
     /**
@@ -142,7 +152,7 @@ class Manager
     {
         try {
             if(empty($path)) {
-                $path = $this->config->getLocalPath();
+                $path = $this->_flysystemConfig->getLocalPath();
                 if (empty($path)) {
                     $path = '/';
                 }
@@ -150,9 +160,9 @@ class Manager
 
             $this->setPath($path);
 
-            return $this->filesystemFactory->create($this->filesystemManager->createLocalDriver($path));
+            return $this->_flysystemFactory->create($this->_flysystemManager->createLocalDriver($path));
         } catch (\Exception $e) {
-            $this->logger->critical($e->getMessage());
+            $this->_logger->critical($e->getMessage());
             return null;
         }
     }
@@ -164,32 +174,32 @@ class Manager
     protected function createFtpAdapter()
     {
         try {
-            $host = $this->config->getFtpHost();
-            $user = $this->config->getFtpUser();
-            $password = $this->config->getFtpPassword();
+            $host = $this->_flysystemConfig->getFtpHost();
+            $user = $this->_flysystemConfig->getFtpUser();
+            $password = $this->_flysystemConfig->getFtpPassword();
             if(empty($host) || empty($user) || empty($password)) {
                 throw new LocalizedException(__('FTP connection is not possible. Please check your configuration.'));
             }
 
-            $ftpPath = $this->config->getFtpPath();
+            $ftpPath = $this->_flysystemConfig->getFtpPath();
             if(empty($ftpPath)) {
                 $ftpPath = '/';
             }
 
             $this->setPath($ftpPath);
 
-            return $this->filesystemFactory->create($this->filesystemManager->createFtpDriver([
+            return $this->_flysystemFactory->create($this->_flysystemManager->createFtpDriver([
                 'host' => $host,
                 'username' => $user,
                 'password' => $password,
-                'port' => $this->config->getFtpPort(),
+                'port' => $this->_flysystemConfig->getFtpPort(),
                 'root' => $ftpPath,
-                'passive' => $this->config->getFtpPassive(),
-                'ssl' => $this->config->getFtpSsl(),
-                'timeout' => $this->config->getFtpTimeout()
+                'passive' => $this->_flysystemConfig->getFtpPassive(),
+                'ssl' => $this->_flysystemConfig->getFtpSsl(),
+                'timeout' => $this->_flysystemConfig->getFtpTimeout()
             ]));
         } catch (\Exception $e) {
-            $this->logger->critical($e->getMessage());
+            $this->_logger->critical($e->getMessage());
             return null;
         }
     }
@@ -199,13 +209,13 @@ class Manager
      */
     protected function createNullAdapter()
     {
-        $driver = $this->filesystemManager->createNullDriver();
-        return $this->filesystemFactory->create($driver);
+        $driver = $this->_flysystemManager->createNullDriver();
+        return $this->_flysystemFactory->create($driver);
     }
 
     public function getSession()
     {
-        return $this->session;
+        return $this->_session;
     }
 
     public function setModalIdentifier($identifier)

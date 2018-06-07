@@ -5,10 +5,23 @@ use \Magento\Backend\Block\Widget\Container;
 use \Magento\Backend\Block\Widget\Context;
 use \Magento\Framework\Serialize\Serializer\Json;
 
+/**
+ * Class Content
+ * @package Flagbit\Flysystem\Block\Adminhtml\Filesystem
+ */
 class Content extends Container
 {
+    /**
+     * @var Json
+     */
     protected $_jsonEncoder;
 
+    /**
+     * Content constructor.
+     * @param Context $context
+     * @param Json $jsonEncoder
+     * @param array $data
+     */
     public function __construct(
         Context $context,
         Json $jsonEncoder,
@@ -57,6 +70,9 @@ class Content extends Container
         );
     }
 
+    /**
+     * @return bool|string
+     */
     public function getFilebrowserSetupObject()
     {
         $setupObject = [
@@ -76,36 +92,57 @@ class Content extends Container
         return $this->_jsonEncoder->serialize($setupObject);
     }
 
+    /**
+     * @return string
+     */
     public function getContentsUrl()
     {
         return $this->getUrl('flagbit_flysystem/*/contents');
     }
 
+    /**
+     * @return string
+     */
     public function getOnInsertUrl()
     {
         return $this->getUrl('flagbit_flysystem/*/onInsert');
     }
 
+    /**
+     * @return string
+     */
     public function getNewfolderUrl()
     {
         return $this->getUrl('flagbit_flysystem/*/newFolder');
     }
 
+    /**
+     * @return string
+     */
     protected function getDeletefolderUrl()
     {
         return $this->getUrl('flagbit_flysystem/*/deleteFolder');
     }
 
+    /**
+     * @return string
+     */
     public function getDeleteFilesUrl()
     {
         return $this->getUrl('flagbit_flysystem/*/deleteFiles');
     }
 
+    /**
+     * @return mixed
+     */
     public function getTargetElementId()
     {
         return $this->getRequest()->getParam('target_element_id');
     }
 
+    /**
+     * @return mixed
+     */
     public function getModalIdentifier()
     {
         return $this->getRequest()->getParam('identifier');

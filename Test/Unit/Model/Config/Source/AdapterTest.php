@@ -3,12 +3,16 @@ namespace Flagbit\Flysystem\Test\Unit\Model\Config\Source;
 
 use \Flagbit\Flysystem\Model\Config\Source\Adapter;
 
+/**
+ * Class AdapterTest
+ * @package Flagbit\Flysystem\Test\Unit\Model\Config\Source
+ */
 class AdapterTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var Adapter
      */
-    protected $adapter;
+    protected $_adapter;
 
     /**
      * Setup test cases
@@ -22,7 +26,7 @@ class AdapterTest extends \PHPUnit\Framework\TestCase
             ['identifier' => 'testKey2', 'title' => 'testValue2']
         ];
 
-        $this->adapter = new Adapter($testAdapters);
+        $this->_adapter = new Adapter($testAdapters);
     }
 
     /**
@@ -38,6 +42,6 @@ class AdapterTest extends \PHPUnit\Framework\TestCase
             'testKey2' => 'testValue2'
         ];
 
-        $this->assertEquals($expectedReturn, $this->adapter->toOptionArray());
+        $this->assertEquals($expectedReturn, $this->_adapter->toOptionArray());
     }
 }

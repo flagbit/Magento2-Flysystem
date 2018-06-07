@@ -7,9 +7,12 @@ use \Magento\Framework\Message\ManagerInterface;
 use \Magento\Framework\Registry;
 use \Magento\Backend\Block\Template\Context;
 
+/**
+ * Class Uploader
+ * @package Flagbit\Flysystem\Block\Adminhtml\Filesystem\Content
+ */
 class Uploader extends MagentoUploader
 {
-
     /**
      * @var Registry
      */

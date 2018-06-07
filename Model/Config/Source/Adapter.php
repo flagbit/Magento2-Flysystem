@@ -13,12 +13,12 @@ class Adapter extends \Magento\Framework\DataObject implements \Magento\Framewor
     /**
      * @var array
      */
-    protected $adapters = [];
+    protected $_adapters = [];
 
     /**
      * @var array
      */
-    protected $options = [];
+    protected $_options = [];
 
     /**
      * Adapter constructor.
@@ -29,7 +29,7 @@ class Adapter extends \Magento\Framework\DataObject implements \Magento\Framewor
         array $adapters = [],
         array $data = []
     ) {
-        $this->adapters = $adapters;
+        $this->_adapters = $adapters;
         parent::__construct($data);
     }
 
@@ -38,13 +38,17 @@ class Adapter extends \Magento\Framework\DataObject implements \Magento\Framewor
      */
     public function toOptionArray()
     {
-        $options = [null => 'Magento2 Default'];
+        if(count($this->_options) === 0) {
+            $options = [null => 'Magento2 Default'];
 
-        foreach($this->adapters as $adapter) {
-            $options[$adapter['identifier']] = $adapter['title'];
+            foreach ($this->_adapters as $adapter) {
+                $options[$adapter['identifier']] = $adapter['title'];
+            }
+
+            $this->_options = $options;
         }
 
-        return $options;
+        return $this->_options;
     }
 
 }

@@ -2,42 +2,46 @@
 namespace Flagbit\Flysystem\Controller\Adminhtml\Filesystem;
 
 use \Flagbit\Flysystem\Helper\Filesystem;
+use \Flagbit\Flysystem\Model\Filesystem\Manager;
 use \Magento\Backend\App\Action\Context;
 use \Magento\Framework\Controller\Result\JsonFactory;
-use \Magento\Framework\Registry;
 use \Magento\Framework\View\Result\LayoutFactory;
 use \Magento\Backend\Model\Session;
 
+/**
+ * Class Contents
+ * @package Flagbit\Flysystem\Controller\Adminhtml\Filesystem
+ */
 class Contents extends AbstractController
 {
     /**
      * @var LayoutFactory
      */
-    protected $resultLayoutFactory;
+    protected $_resultLayoutFactory;
 
     /**
      * @var JsonFactory
      */
-    protected $resultJsonFactory;
+    protected $_resultJsonFactory;
 
     /**
      * Contents constructor.
      * @param Context $context
-     * @param Registry $coreRegistry
+     * @param Manager $flysystemManager
      * @param Session $session
      * @param LayoutFactory $resultLayoutFactory
      * @param JsonFactory $resultJsonFactory
      */
     public function __construct(
         Context $context,
-        Registry $coreRegistry,
+        Manager $flysystemManager,
         Session $session,
         LayoutFactory $resultLayoutFactory,
         JsonFactory $resultJsonFactory
     ) {
-        $this->resultLayoutFactory = $resultLayoutFactory;
-        $this->resultJsonFactory = $resultJsonFactory;
-        parent::__construct($context, $coreRegistry, $session);
+        $this->_resultLayoutFactory = $resultLayoutFactory;
+        $this->_resultJsonFactory = $resultJsonFactory;
+        parent::__construct($context, $flysystemManager, $session);
     }
 
     /**
@@ -63,12 +67,12 @@ class Contents extends AbstractController
         try {
             $this->_initAction()->_saveSessionCurrentPath();
             /** @var \Magento\Framework\View\Result\Layout $resultLayout */
-            $resultLayout = $this->resultLayoutFactory->create();
+            $resultLayout = $this->_resultLayoutFactory->create();
             return $resultLayout;
         } catch (\Exception $e) {
             $result = ['error' => true, 'message' => $e->getMessage()];
             /** @var \Magento\Framework\Controller\Result\Json $resultJson */
-            $resultJson = $this->resultJsonFactory->create();
+            $resultJson = $this->_resultJsonFactory->create();
             $resultJson->setData($result);
             return $resultJson;
         }
