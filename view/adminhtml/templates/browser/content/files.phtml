@@ -11,11 +11,7 @@ $block->getFiles();
     <?php foreach ($block->getFiles() as $file): ?>
         <div data-row="file" class="filecnt" id="<?= $block->escapeHtmlAttr($block->getFileId($file)) ?>">
             <p class="nm" style="height:<?= $block->escapeHtmlAttr($_heigth) ?>px;width:<?= $block->escapeHtmlAttr($_width) ?>px;">
-                <?php if ($block->getFileThumbUrl($file)): ?>
-                    <img src="<?= $block->escapeHtmlAttr($block->getFileThumbUrl($file)) ?>" alt="<?= $block->escapeHtmlAttr($block->getFileEnding($file)) ?>"/>
-                <?php else: ?>
-                    <div><?php echo $block->getFileEnding($file); ?></div>
-                <?php endif; ?>
+                <div><?php echo $block->getFileEnding($file); ?></div>
             </p>
             <small><?= $block->escapeHtml($block->getFileShortName($file)) ?></small>
         </div>

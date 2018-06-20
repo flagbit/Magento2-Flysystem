@@ -4,6 +4,7 @@ namespace Flagbit\Flysystem\Controller\Adminhtml\Filesystem;
 use \Flagbit\Flysystem\Model\Filesystem\Manager;
 use \Magento\Backend\App\Action\Context;
 use \Magento\Backend\Model\Session;
+use \Magento\Framework\Controller\Result\JsonFactory;
 use \Magento\Framework\View\Result\LayoutFactory;
 
 /**
@@ -18,19 +19,27 @@ class Index extends AbstractController
     protected $_resultLayoutFactory;
 
     /**
+     * @var JsonFactory
+     */
+    protected $_resultJsonFactory;
+
+    /**
      * Index constructor.
      * @param Context $context
      * @param Manager $flysystemManager
      * @param Session $session
      * @param LayoutFactory $resultLayoutFactory
+     * @param JsonFactory $resultJsonFactory
      */
     public function __construct(
         Context $context,
         Manager $flysystemManager,
         Session $session,
-        LayoutFactory $resultLayoutFactory
+        LayoutFactory $resultLayoutFactory,
+        JsonFactory $resultJsonFactory
     ) {
         $this->_resultLayoutFactory = $resultLayoutFactory;
+        $this->_resultJsonFactory = $resultJsonFactory;
         parent::__construct($context, $flysystemManager, $session);
     }
 
@@ -41,14 +50,22 @@ class Index extends AbstractController
      */
     public function execute()
     {
-        $this->_initAction();
+        try {
+            $this->_initAction();
 
-        $identifier = $this->getRequest()->getParam('identifier');
-        $this->getStorage()->setModalIdentifier($identifier);
+            $identifier = $this->getRequest()->getParam('identifier');
+            $this->getStorage()->setModalIdentifier($identifier);
 
-        /** @var \Magento\Framework\View\Result\Layout $resultLayout */
-        $resultLayout = $this->_resultLayoutFactory->create();
-        $resultLayout->addHandle('overlay_popup');
-        return $resultLayout;
+            /** @var \Magento\Framework\View\Result\Layout $resultLayout */
+            $resultLayout = $this->_resultLayoutFactory->create();
+            $resultLayout->addHandle('overlay_popup');
+            return $resultLayout;
+        } catch (\Exception $e) {
+            $result = ['error' => true, 'message' => $e->getMessage()];
+            /** @var \Magento\Framework\Controller\Result\Json $resultJson */
+            $resultJson = $this->_resultJsonFactory->create();
+            $resultJson->setData($result);
+            return $resultJson;
+        }
     }
 }

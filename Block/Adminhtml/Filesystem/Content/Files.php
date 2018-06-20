@@ -2,15 +2,13 @@
 namespace Flagbit\Flysystem\Block\Adminhtml\Filesystem\Content;
 
 use \Flagbit\Flysystem\Helper\Config;
+use \Flagbit\Flysystem\Helper\Errors;
 use \Flagbit\Flysystem\Helper\Filesystem;
 use \Flagbit\Flysystem\Model\Filesystem\Manager;
-use \Magento\Framework\Filesystem\DirectoryList;
 use \Magento\Framework\Message\ManagerInterface;
 use \Magento\Backend\Block\Template;
 use \Magento\Backend\Block\Template\Context;
-use \Magento\Framework\UrlInterface;
 use \Magento\Framework\View\Element\Messages;
-use \Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Class Files
@@ -41,16 +39,6 @@ class Files extends Template
     protected $_flysystemConfig;
 
     /**
-     * @var DirectoryList
-     */
-    protected $_directoryList;
-
-    /**
-     * @var StoreManagerInterface
-     */
-    protected $_storeManager;
-
-    /**
      * @var ManagerInterface
      */
     protected $_messageManager;
@@ -66,8 +54,6 @@ class Files extends Template
      * @param Manager $flysystemManager
      * @param Filesystem $flysystemHelper
      * @param Config $flysystemConfig
-     * @param DirectoryList $directoryList
-     * @param StoreManagerInterface $storeManager
      * @param ManagerInterface $messageManager
      * @param Messages $messages
      * @param array $data
@@ -77,8 +63,6 @@ class Files extends Template
         Manager $flysystemManager,
         Filesystem $flysystemHelper,
         Config $flysystemConfig,
-        DirectoryList $directoryList,
-        StoreManagerInterface $storeManager,
         ManagerInterface $messageManager,
         Messages $messages,
         array $data = []
@@ -86,8 +70,6 @@ class Files extends Template
         $this->_flysystemManager = $flysystemManager;
         $this->_flysystemHelper = $flysystemHelper;
         $this->_flysystemConfig = $flysystemConfig;
-        $this->_directoryList = $directoryList;
-        $this->_storeManager = $storeManager;
         $this->_messageManager = $messageManager;
         $this->_messages = $messages;
         parent::__construct($context, $data);
@@ -121,10 +103,14 @@ class Files extends Template
 
     public function validateFile($file)
     {
+        $requiredValues = ['type' => null, 'basename' => null, 'path' => null];
+        if(!is_array($file) || count(array_diff_key($requiredValues, $file)) > 0) {
+            throw new \Exception(Errors::getErrorMessage(201));
+        }
+
         if($file['type'] === 'file' && $file['basename'][0] !== '.') {
-            $fileParts = explode('.', $file['basename']);
             $supportedFileTypes = $this->_flysystemConfig->getSupportedFileTypes();
-            if(in_array($fileParts[count($fileParts)-1], $supportedFileTypes)) {
+            if(in_array($this->getFileEnding($file), $supportedFileTypes)) {
                 return true;
             }
         }
@@ -145,25 +131,29 @@ class Files extends Template
      */
     public function getFilesCount()
     {
-        $asdf = count($this->getFiles());
-
-        return $asdf;
+        return count($this->getFiles());
     }
 
     /**
      * @param $file
-     * @return string
+     * @return null|string
      */
     public function getFileId($file)
     {
+        if(!isset($file['path'])) {
+            return null;
+        }
         return $this->_flysystemHelper->idEncode($file['path']);
     }
 
     /**
      * @param $file
-     * @return string
+     * @return null|string
      */
     public function getFileShortName($file) {
+        if(!isset($file['path'])) {
+            return null;
+        }
         return $this->_flysystemHelper->getShortFilename($file['path']);
     }
 
@@ -172,32 +162,18 @@ class Files extends Template
      * @return string
      */
     public function getFileEnding($file) {
-        if(strstr($file['basename'], '.') === false) {
+        if(!isset($file['extension']) || empty($file['extension'])) {
             return 'unknown';
         }
 
-        $fileParts = explode('.', $file['basename']);
-
-        return '.'.$fileParts[(count($fileParts)-1)];
+        return $file['extension'];
     }
 
     /**
-     * @param $file
-     * @return bool|mixed
+     * @param $files
      */
-    public function getFileThumbUrl($file) {
-        if($this->validateFile($file)) {
-            $mediaPath = $this->_directoryList->getPath('media');
-            $filesystemPath = trim($this->_flysystemManager->getPath(), '/');
-            $fullPath = '/'.$filesystemPath.'/'.$file['path'];
-
-            if(strstr($fullPath, $mediaPath) === false) {
-                return false;
-            }
-
-            return $this->_storeManager->getStore()->getBaseUrl(UrlInterface::URL_TYPE_MEDIA ).str_replace($mediaPath, '', $fullPath);
-        }
-
-        return false;
+    public function setFilesCollection($files)
+    {
+        $this->_filesCollection = $files;
     }
 }

@@ -5,6 +5,7 @@ use \Flagbit\Flysystem\Adapter\FilesystemAdapter;
 use \Flagbit\Flysystem\Adapter\FilesystemAdapterFactory;
 use \Flagbit\Flysystem\Adapter\FilesystemManager;
 use \Flagbit\Flysystem\Helper\Config;
+use \Flagbit\Flysystem\Helper\Errors;
 use \Magento\Framework\ObjectManagerInterface;
 use \Magento\MediaStorage\Model\File\Uploader;
 use \Psr\Log\LoggerInterface;
@@ -114,6 +115,7 @@ class UploadManager
             $this->_uploader = $this->_objectManager->create(Uploader::class, ['fileId' => $fileId]);
             return true;
         } catch (\Exception $e) {
+            $this->_logger->critical($e);
             return false;
         }
     }
@@ -128,12 +130,17 @@ class UploadManager
             $parts = explode('.', $file['name']);
             $supportedFileTypes = $this->_flysystemConfig->getSupportedFileTypes();
 
-            if(in_array($parts[count($parts)-1], $supportedFileTypes)) {
+            $filetype = $parts[count($parts)-1];
+            if(in_array($filetype, $supportedFileTypes)) {
                 return;
             }
         }
 
-        throw new \Exception('File type is not allowed');
+        if(!isset($filetype)) {
+            $filetype = '';
+        }
+
+        throw new \Exception(Errors::getErrorMessage(382, [$filetype]));
     }
 
     /**
@@ -150,7 +157,7 @@ class UploadManager
             $this->validateFileType($file);
 
             if(!isset($file['tmp_name'])) {
-                throw new \Exception('File not found!');
+                throw new \Exception(Errors::getErrorMessage(501));
             }
 
             $contents = $this->getAdapter()->read(basename($file['tmp_name']));

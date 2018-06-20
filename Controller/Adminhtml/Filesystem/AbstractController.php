@@ -56,7 +56,7 @@ abstract class AbstractController extends Action
      */
     public function getStorage()
     {
-        $this->_flysystemManager->create();
+        $this->_flysystemManager->getAdapter();
         return $this->_flysystemManager;
     }
 }

@@ -54,12 +54,13 @@ class Tree extends \Magento\Backend\Block\Template
      */
     public function getTreeJson()
     {
+        $jsonArray = [];
+
         try {
             $path = $this->_flysystemHelper->getCurrentPath();
 
             $contents = $this->_flysystemManager->getAdapter()->listContents($path);
 
-            $jsonArray = [];
             foreach ($contents as $contentKey => $content) {
                 if ($content['type'] === 'dir' && $content['basename'][0] !== '.') {
                     $jsonArray [] = [
@@ -71,6 +72,7 @@ class Tree extends \Magento\Backend\Block\Template
                 }
             }
         } catch (\Exception $e) {
+            $this->_logger->error($e->getMessage());
             $jsonArray = [];
         }
 

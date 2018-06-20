@@ -5,6 +5,7 @@ use \Flagbit\Flysystem\Adapter\FilesystemAdapterFactory;
 use \Flagbit\Flysystem\Adapter\FilesystemManager;
 use \Flagbit\Flysystem\Adapter\FilesystemAdapter;
 use \Flagbit\Flysystem\Helper\Config;
+use \Flagbit\Flysystem\Helper\Errors;
 use \Flagbit\Flysystem\Model\Filesystem\Manager;
 use \Magento\Backend\Model\Session;
 use \Magento\Framework\Event\Manager as EventManager;
@@ -319,7 +320,7 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
     {
         $testSource = 'ftp';
 
-        $exception = new LocalizedException(__('FTP connection is not possible. Please check your configuration.'));
+        $exception = new LocalizedException(__(Errors::getErrorMessage(101)));
 
         $configArray = [
             'host' => null,

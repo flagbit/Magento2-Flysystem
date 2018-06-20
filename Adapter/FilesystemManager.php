@@ -5,8 +5,6 @@ use \League\Flysystem\Adapter\Local as LocalAdapter;
 use \League\Flysystem\Adapter\Ftp as FtpAdapter;
 use \League\Flysystem\Adapter\NullAdapter as NullAdapter;
 
-use \Magento\Framework\App\Config\ScopeConfigInterface;
-use \Magento\Framework\Event\Manager;
 use \Magento\Framework\ObjectManagerInterface;
 
 /**
@@ -21,37 +19,13 @@ class FilesystemManager implements ManagerInterface
     protected $objectManager;
 
     /**
-     * @var \Flagbit\Flysystem\Adapter\FilesystemAdapterFactory
-     */
-    protected $adapterFactory;
-
-    /**
-     * @var ScopeConfigInterface
-     */
-    protected $scopeConfig;
-
-    /**
-     * @var Manager
-     */
-    protected $eventManager;
-
-    /**
      * FilesystemManager constructor.
      * @param ObjectManagerInterface $objectManager
-     * @param \Flagbit\Flysystem\Adapter\FilesystemAdapterFactory $adapter
-     * @param ScopeConfigInterface $scopeConfig
-     * @param Manager $eventManager
      */
     public function __construct(
-        ObjectManagerInterface $objectManager,
-        FilesystemAdapterFactory $adapter,
-        ScopeConfigInterface $scopeConfig,
-        Manager $eventManager
+        ObjectManagerInterface $objectManager
     ) {
         $this->objectManager = $objectManager;
-        $this->adapterFactory = $adapter;
-        $this->scopeConfig = $scopeConfig;
-        $this->eventManager = $eventManager;
     }
 
     /**

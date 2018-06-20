@@ -1,9 +1,6 @@
 <?php
 namespace Flagbit\Flysystem\Model\Config\Source;
 
-use \Flagbit\Flysystem\Adapter\FilesystemAdapterFactory;
-use \Magento\Framework\App\Config\ScopeConfigInterface;
-
 /**
  * Class Adapter
  * @package Flagbit\Flysystem\Model\Config\Source

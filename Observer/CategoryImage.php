@@ -1,9 +1,13 @@
 <?php
 namespace Flagbit\Flysystem\Observer;
 
+use \Flagbit\Flysystem\Controller\Adminhtml\Filesystem\OnInsert;
+use \Flagbit\Flysystem\Helper\Errors;
+use \Flagbit\Flysystem\Model\Filesystem\Manager;
 use \Flagbit\Flysystem\Model\Filesystem\TmpManager;
 use \Magento\Framework\Event\Observer;
 use \Magento\Framework\Event\ObserverInterface;
+use \Psr\Log\LoggerInterface;
 
 /**
  * Class CategoryImage
@@ -17,13 +21,21 @@ class CategoryImage implements ObserverInterface
     private $_tmpManager;
 
     /**
-     * ProductImage constructor.
+     * @var LoggerInterface
+     */
+    private $_logger;
+
+    /**
+     * CategoryImage constructor.
      * @param TmpManager $tmpManager
+     * @param LoggerInterface $logger
      */
     public function __construct(
-        TmpManager $tmpManager
+        TmpManager $tmpManager,
+        LoggerInterface $logger
     ) {
         $this->_tmpManager = $tmpManager;
+        $this->_logger = $logger;
     }
 
     /**
@@ -38,12 +50,16 @@ class CategoryImage implements ObserverInterface
                 $filename = $observer->getEvent()->getData('filename');
                 $controller = $observer->getEvent()->getData('controller');
 
+                if(!is_a($manager, Manager::class) || !is_a($controller, OnInsert::class)) {
+                    throw new \Exception(Errors::getErrorMessage(621, [get_class($this), $observer->getEventName()]));
+                }
                 $file = $this->createFileArray($manager, $filename);
 
                 $result = $this->_tmpManager->createCategoryTmp($file);
                 $controller->setResult(json_encode($result));
             }
         } catch (\Exception $e) {
+            $this->_logger->critical($e->getMessage());
             return;
         }
     }

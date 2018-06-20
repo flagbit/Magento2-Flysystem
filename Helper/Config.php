@@ -142,6 +142,9 @@ class Config
         return (int)$this->_scopeConfig->getValue(self::XPATH_CONFIG_FTP_TIMEOUT);
     }
 
+    /**
+     * @return array
+     */
     public function getSupportedFileTypes()
     {
         return $this->_supportedFileTypes;

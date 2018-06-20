@@ -6,8 +6,8 @@ use \Flagbit\Flysystem\Model\Filesystem\Manager;
 use \Flagbit\Flysystem\Model\Filesystem\TmpManager;
 use \Magento\Backend\App\Action\Context;
 use \Magento\Framework\Controller\Result\RawFactory;
-use \Magento\Framework\EntityManager\EventManager;
 use \Magento\Backend\Model\Session;
+use \Psr\Log\LoggerInterface;
 
 /**
  * Class OnInsert
@@ -31,9 +31,9 @@ class OnInsert extends AbstractController
     protected $_tmpManager;
 
     /**
-     * @var EventManager
+     * @var LoggerInterface
      */
-    protected $_eventManager;
+    protected $_logger;
 
     /**
      * @var string
@@ -48,7 +48,7 @@ class OnInsert extends AbstractController
      * @param RawFactory $rawFactory
      * @param Filesystem $flysystemHelper
      * @param TmpManager $tmpManager
-     * @param EventManager $eventManager
+     * @param LoggerInterface $logger
      */
     public function __construct(
         Context $context,
@@ -57,12 +57,12 @@ class OnInsert extends AbstractController
         RawFactory $rawFactory,
         Filesystem $flysystemHelper,
         TmpManager $tmpManager,
-        EventManager $eventManager
+        LoggerInterface $logger
     ) {
         $this->_resultRawFactory = $rawFactory;
         $this->_flysystemHelper = $flysystemHelper;
         $this->_tmpManager = $tmpManager;
-        $this->_eventManager = $eventManager;
+        $this->_logger = $logger;
         parent::__construct($context, $flysystemManager, $session);
     }
 
@@ -71,35 +71,39 @@ class OnInsert extends AbstractController
      */
     public function execute()
     {
-        $manager = $this->getStorage();
+        try {
+            $manager = $this->getStorage();
 
-        $filename = $this->getRequest()->getParam('filename');
-        $filename = $this->_flysystemHelper->idDecode($filename);
+            $filename = $this->getRequest()->getParam('filename');
+            $filename = $this->_flysystemHelper->idDecode($filename);
 
-        $contents = $manager->getAdapter()->read($filename);
+            $contents = $manager->getAdapter()->read($filename);
 
-        $this->_tmpManager->writeTmp($filename, $contents);
+            $this->_tmpManager->writeTmp($filename, $contents);
 
-        $identifier = $manager->getModalIdentifier();
+            $identifier = $manager->getModalIdentifier();
 
-        $this->_eventManager->dispatch('flagbit_flysystem_oninsert_after',
-            [
-                'controller' => $this,
-                'filename' => $filename,
-                'manager' => $manager,
-                'modal_id' => $identifier
-            ]);
+            $this->_eventManager->dispatch('flagbit_flysystem_oninsert_after',
+                [
+                    'controller' => $this,
+                    'filename' => $filename,
+                    'manager' => $manager,
+                    'modal_id' => $identifier
+                ]);
 
-        if(empty($this->result)) {
-            $this->result =  $filename;
+            if (empty($this->_result)) {
+                $this->setResult($filename);
+            }
+        } catch (\Exception $e) {
+            $this->_logger->critical($e);
         }
 
         $resultRaw = $this->_resultRawFactory->create();
-        return $resultRaw->setContents($this->result);
+        return $resultRaw->setContents($this->_result);
     }
 
     public function setResult($result)
     {
-        $this->result = $result;
+        $this->_result = $result;
     }
 }

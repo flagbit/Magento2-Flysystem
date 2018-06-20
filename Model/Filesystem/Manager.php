@@ -5,6 +5,7 @@ use \Flagbit\Flysystem\Adapter\FilesystemAdapter;
 use \Flagbit\Flysystem\Adapter\FilesystemAdapterFactory;
 use \Flagbit\Flysystem\Adapter\FilesystemManager;
 use \Flagbit\Flysystem\Helper\Config;
+use \Flagbit\Flysystem\Helper\Errors;
 use \Magento\Backend\Model\Session;
 use \Magento\Framework\Event\Manager as EventManager;
 use \Magento\Framework\Exception\LocalizedException;
@@ -105,7 +106,7 @@ class Manager
 
         $this->_eventManager->dispatch('flagbit_flysystem_create_after', ['source' => $source, 'manager' => $this]);
 
-        return $this->getAdapter();
+        return $this->getAdapter(false);
     }
 
     /**
@@ -178,7 +179,7 @@ class Manager
             $user = $this->_flysystemConfig->getFtpUser();
             $password = $this->_flysystemConfig->getFtpPassword();
             if(empty($host) || empty($user) || empty($password)) {
-                throw new LocalizedException(__('FTP connection is not possible. Please check your configuration.'));
+                throw new LocalizedException(Errors::getErrorMessage(101));
             }
 
             $ftpPath = $this->_flysystemConfig->getFtpPath();

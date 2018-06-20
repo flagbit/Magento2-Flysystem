@@ -5,6 +5,7 @@ use \Flagbit\Flysystem\Adapter\FilesystemAdapter;
 use \Flagbit\Flysystem\Adapter\FilesystemAdapterFactory;
 use \Flagbit\Flysystem\Adapter\FilesystemManager;
 use \Flagbit\Flysystem\Helper\Config;
+use \Flagbit\Flysystem\Helper\Errors;
 use \Flagbit\Flysystem\Helper\Filesystem;
 use \Magento\Framework\UrlInterface;
 use \Magento\MediaStorage\Helper\File\Storage\Database;
@@ -96,7 +97,6 @@ class TmpManager
      * @param Config $flysystemConfig
      * @param Filesystem $flysystemHelper
      * @param MagentoFilesystem $filesystem
-     * @param DirectoryList $directoryList
      * @param LoggerInterface $logger
      * @param Session $adminSession
      * @param ProductMediaConfig $productMediaconfig
@@ -110,7 +110,6 @@ class TmpManager
         Config $flysystemConfig,
         Filesystem $flysystemHelper,
         MagentoFilesystem $filesystem,
-        DirectoryList $directoryList,
         LoggerInterface $logger,
         Session $adminSession,
         ProductMediaConfig $productMediaconfig,
@@ -164,11 +163,12 @@ class TmpManager
      */
     public function getTmp($file)
     {
-        if($this->getAdapter()->has($this->getTmpPath($file))){
-            return $this->getAdapter()->read($this->getTmpPath($file));
+        $tmpPath = $this->getTmpPath($file);
+        if($this->getAdapter()->has($tmpPath)){
+            return $this->getAdapter()->read($tmpPath);
         }
 
-        throw new LocalizedException(__('Could not find '.$file.' in Tmp Path'));
+        throw new LocalizedException(Errors::getErrorMessage(381, [$file]));
     }
 
     /**
@@ -183,10 +183,15 @@ class TmpManager
 
     /**
      * @return string
+     * @throws \Exception
      */
     protected function getUserTmpDir()
     {
-        $userDir = $this->_flysystemHelper->idEncode($this->_adminSession->getUser()->getUserName());
+        $adminUser = $this->_adminSession->getUser();
+        if(!$adminUser) {
+            throw new LocalizedException(Errors::getErrorMessage(0));
+        }
+        $userDir = $this->_flysystemHelper->idEncode($adminUser->getUserName());
         return Config::FLYSYSTEM_DIRECTORY.'/'.Config::FLYSYSTEM_DIRECTORY_TMP.'/'.$userDir;
     }
 
@@ -228,9 +233,14 @@ class TmpManager
     /**
      * @param $file
      * @return mixed
+     * @throws \Exception
      */
     public function createProductTmp($file)
     {
+        if(!$this->_validateUploadFile($file)) {
+            throw new \Exception('File Structure is not valid');
+        }
+
         $tmpRoot = $this->_productMediaConfig->getBaseTmpMediaPath();
 
         $uploader = $this->_objectManager->create(Uploader::class, ['fileId' => $file, 'isFlysystem' => true]);
@@ -248,8 +258,18 @@ class TmpManager
         return $result;
     }
 
+    /**
+     * @param $file
+     * @return mixed
+     * @throws LocalizedException
+     * @throws \Exception
+     */
     public function createCategoryTmp($file)
     {
+        if(!$this->_validateUploadFile($file)) {
+            throw new \Exception('File Structure is not valid');
+        }
+
         /** @var \Magento\Catalog\Model\ImageUploader $imageUploader*/
         $imageUploader = $this->_objectManager->get(\Magento\Catalog\CategoryImageUpload::class);
         $baseTmpPath = $imageUploader->getBaseTmpPath();
@@ -286,5 +306,16 @@ class TmpManager
             }
         }
         return $result;
+    }
+
+    protected function _validateUploadFile($file)
+    {
+        $testArray = [
+            'name' => null,
+            'tmp_name' => null,
+            'size' => null
+        ];
+
+        return is_array($file) && !count(array_diff_key($testArray, $file));
     }
 }

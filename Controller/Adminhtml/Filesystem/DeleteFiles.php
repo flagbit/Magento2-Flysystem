@@ -1,6 +1,7 @@
 <?php
 namespace Flagbit\Flysystem\Controller\Adminhtml\Filesystem;
 
+use \Flagbit\Flysystem\Helper\Errors;
 use \Flagbit\Flysystem\Helper\Filesystem;
 use \Flagbit\Flysystem\Model\Filesystem\Manager;
 use \Magento\Backend\App\Action\Context;
@@ -50,7 +51,7 @@ class DeleteFiles extends AbstractController
     {
         try {
             if (!$this->getRequest()->isPost()) {
-                throw new \Exception('Wrong request.');
+                throw new \Exception(Errors::getErrorMessage(351));
             }
             $files = $this->getRequest()->getParam('files');
             $manager = $this->getStorage();
