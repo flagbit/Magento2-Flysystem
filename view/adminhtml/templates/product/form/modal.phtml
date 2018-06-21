@@ -1,0 +1,39 @@
+<?php
+$flyUrl = $this->getUrl('flagbit_flysystem/filesystem/index',
+    [
+        'target_element_id' => 'flysystem_image_path',
+        'type' => 'file',
+        'identifier' => 'product_gallery'
+    ]);
+?>
+
+<div id="flagbit-flysystem-modal">
+    <input class="admin__control-text"
+           type="hidden"
+           name="product[flysystem_image]"
+           id="flysystem_image_path"
+           onChange="changeFlysystemValue(this.value)">
+    <button id="flysystem_image_path_button"
+            type="button"
+            onclick="MediabrowserUtility.openDialog(this.getAttribute('data-url'))"
+            data-index="flagbit_flysystem_modal"
+            data-url="<?= $flyUrl; ?>">
+        <span>Select Flysystem Image</span>
+    </button>
+</div>
+<script type="text/javascript">
+    var flysystemOldValue;
+    function changeFlysystemValue(value) {
+        if(value !== '' && value !== flysystemOldValue) {
+            flysystemOldValue = value;
+            try {
+                var decodedvalue = JSON.parse(value);
+                jQuery('#fileupload').trigger('addItem', [decodedvalue]);
+                return true;
+            } catch (e) {
+                console.log(e);
+                return false;
+            }
+        }
+    }
+</script>

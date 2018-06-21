@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Flagbit\Flysystem\Model\Config\Source\Adapter">
+        <arguments>
+            <argument name="adapters" xsi:type="array">
+                <item name="local" xsi:type="array">
+                    <item name="title" xsi:type="string">Local</item>
+                    <item name="identifier" xsi:type="string">local</item>
+                </item>
+                <item name="ftp" xsi:type="array">
+                    <item name="title" xsi:type="string">FTP</item>
+                    <item name="identifier" xsi:type="string">ftp</item>
+                </item>
+                <item name="test" xsi:type="array">
+                    <item name="title" xsi:type="string">Null-Adapter</item>
+                    <item name="identifier" xsi:type="string">test</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+</config>

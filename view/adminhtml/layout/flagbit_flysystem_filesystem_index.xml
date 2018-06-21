@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<layout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/layout_generic.xsd">
+    <container name="root">
+        <block class="Flagbit\Flysystem\Block\Adminhtml\Filesystem\Content" name="flagbit_flysystem.content" template="Flagbit_Flysystem::browser/content.phtml">
+            <block class="Flagbit\Flysystem\Block\Adminhtml\Filesystem\Tree" name="flagbit_flysystem.tree" template="Flagbit_Flysystem::browser/tree.phtml"/>
+            <block class="Flagbit\Flysystem\Block\Adminhtml\Filesystem\Content\Uploader" name="flagbit_flysystem.uploader" template="Flagbit_Flysystem::browser/content/uploader.phtml"/>
+        </block>
+    </container>
+</layout>
