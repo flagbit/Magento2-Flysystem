@@ -15,6 +15,8 @@ use \Psr\Log\LoggerInterface;
  */
 class OnInsert extends AbstractController
 {
+    const ADMIN_RESOURCE = 'Flagbit_Flysystem::file_insert';
+
     /**
      * @var RawFactory
      */

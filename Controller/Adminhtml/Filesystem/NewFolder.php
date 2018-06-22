@@ -12,6 +12,8 @@ use \Magento\Backend\Model\Session;
  */
 class NewFolder extends AbstractController
 {
+    const ADMIN_RESOURCE = 'Flagbit_Flysystem::folder_create';
+
     /**
      * @var JsonFactory
      */

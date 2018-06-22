@@ -37,37 +37,46 @@ class Content extends Container
         $this->_headerText = __('File Storage');
         $this->buttonList->remove('back');
         $this->buttonList->remove('edit');
-        $this->buttonList->add(
-            'new_folder',
-            ['class' => 'save', 'label' => __('Create Folder...'), 'type' => 'button'],
-            0,
-            0,
-            'header'
-        );
 
-        $this->buttonList->add(
-            'delete_folder',
-            ['class' => 'delete no-display', 'label' => __('Delete Folder'), 'type' => 'button'],
-            0,
-            0,
-            'header'
-        );
+        if($this->_authorization->isAllowed('Flagbit_Flysystem::folder_create')) {
+            $this->buttonList->add(
+                'new_folder',
+                ['class' => 'save', 'label' => __('Create Folder...'), 'type' => 'button'],
+                0,
+                0,
+                'header'
+            );
+        }
 
-        $this->buttonList->add(
-            'delete_files',
-            ['class' => 'delete no-display', 'label' => __('Delete File'), 'type' => 'button'],
-            0,
-            0,
-            'header'
-        );
+        if($this->_authorization->isAllowed('Flagbit_Flysystem::folder_delete')) {
+            $this->buttonList->add(
+                'delete_folder',
+                ['class' => 'delete no-display', 'label' => __('Delete Folder'), 'type' => 'button'],
+                0,
+                0,
+                'header'
+            );
+        }
 
-        $this->buttonList->add(
-            'insert_files',
-            ['class' => 'save no-display primary', 'label' => __('Insert File'), 'type' => 'button'],
-            0,
-            0,
-            'header'
-        );
+        if($this->_authorization->isAllowed('Flagbit_Flysystem::file_delete')) {
+            $this->buttonList->add(
+                'delete_files',
+                ['class' => 'delete no-display', 'label' => __('Delete File'), 'type' => 'button'],
+                0,
+                0,
+                'header'
+            );
+        }
+
+        if($this->_authorization->isAllowed('Flagbit_Flysystem::file_insert')) {
+            $this->buttonList->add(
+                'insert_files',
+                ['class' => 'save no-display primary', 'label' => __('Insert File'), 'type' => 'button'],
+                0,
+                0,
+                'header'
+            );
+        }
     }
 
     /**
