@@ -10,11 +10,19 @@
       "name": "Robin Homberg",
       "email": "robin.homberg@flagbit.de",
       "role": "Developer"
+    },
+    {
+      "name": "Björn Meyer",
+      "email": "bjoern.meyer@flagbit.de",
+      "role": "DevOps"
     }
   ],
   "require": {
     "php": ">=7.0.0",
     "league/flysystem": "1.0.43"
+  },
+  "require-dev": {
+    "roave/security-advisories": "dev-master"
   },
   "autoload": {
     "files": [
