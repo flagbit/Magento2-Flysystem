@@ -12,8 +12,6 @@ use \Magento\Backend\Model\Session;
  */
 abstract class AbstractController extends Action
 {
-    public const ADMIN_RESOURCE = 'Flagbit_Flysystem::filesystem';
-
     /**
      * @var Manager
      */

@@ -13,6 +13,8 @@ use \Magento\Backend\Model\Session;
  */
 class Upload extends AbstractController
 {
+    const ADMIN_RESOURCE = 'Flagbit_Flysystem::file_upload';
+
     /**
      * @var JsonFactory
      */

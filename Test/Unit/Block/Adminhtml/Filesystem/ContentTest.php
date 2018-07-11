@@ -6,6 +6,7 @@ use \Magento\Backend\Block\Widget\Button\ButtonList;
 use \Magento\Backend\Block\Widget\Context;
 use \Magento\Backend\Model\Url;
 use \Magento\Framework\App\Request\Http;
+use \Magento\Framework\Authorization;
 use \Magento\Framework\Serialize\Serializer\Json;
 use \PHPUnit\Framework\MockObject\MockObject;
 use \PHPUnit\Framework\TestCase;
@@ -21,6 +22,11 @@ class ContentTest extends TestCase
      * @var Json|MockObject
      */
     protected $_jsonEncoderMock;
+
+    /**
+     * @var Authorization|MockObject
+     */
+    protected $_authorizationMock;
 
     /**
      * @var ButtonList|MockObject
@@ -46,11 +52,16 @@ class ContentTest extends TestCase
     {
         $this->_contextMock = $this->getMockBuilder(Context::class)
             ->disableOriginalConstructor()
-            ->setMethods(['getButtonList', 'getRequest', 'getUrlBuilder'])
+            ->setMethods(['getButtonList', 'getRequest', 'getUrlBuilder', 'getAuthorization'])
             ->getMock();
 
         $this->_jsonEncoderMock = $this->getMockBuilder(Json::class)
             ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->_authorizationMock = $this->getMockBuilder(Authorization::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['isAllowed'])
             ->getMock();
 
         $this->_buttonListMock = $this->getMockBuilder(ButtonList::class)
@@ -79,9 +90,18 @@ class ContentTest extends TestCase
             ->method('getUrlBuilder')
             ->willReturn($this->_urlBuilderMock);
 
+        $this->_contextMock->expects($this->once())
+            ->method('getAuthorization')
+            ->willReturn($this->_authorizationMock);
+
         $this->_buttonListMock->expects($this->exactly(2))
             ->method('remove')
             ->with($this->isType('string'));
+
+        $this->_authorizationMock->expects($this->exactly(4))
+            ->method('isAllowed')
+            ->with($this->isType('string'))
+            ->willReturn(true);
 
         $this->_buttonListMock->expects($this->exactly(4))
             ->method('add')

@@ -3,7 +3,7 @@
     <container name="root">
         <block class="Flagbit\Flysystem\Block\Adminhtml\Filesystem\Content" name="flagbit_flysystem.content" template="Flagbit_Flysystem::browser/content.phtml">
             <block class="Flagbit\Flysystem\Block\Adminhtml\Filesystem\Tree" name="flagbit_flysystem.tree" template="Flagbit_Flysystem::browser/tree.phtml"/>
-            <block class="Flagbit\Flysystem\Block\Adminhtml\Filesystem\Content\Uploader" name="flagbit_flysystem.uploader" template="Flagbit_Flysystem::browser/content/uploader.phtml"/>
+            <block aclResource="Flagbit_Flysystem::file_upload" class="Flagbit\Flysystem\Block\Adminhtml\Filesystem\Content\Uploader" name="flagbit_flysystem.uploader" template="Flagbit_Flysystem::browser/content/uploader.phtml"/>
         </block>
     </container>
 </layout>

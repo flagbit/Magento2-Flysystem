@@ -14,6 +14,8 @@ use \Magento\Backend\Model\Session;
  */
 class DeleteFiles extends AbstractController
 {
+    const ADMIN_RESOURCE = 'Flagbit_Flysystem::file_delete';
+
     /**
      * @var JsonFactory
      */

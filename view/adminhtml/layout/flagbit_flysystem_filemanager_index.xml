@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<layout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/layout_generic.xsd">
+    <update handle="styles"/>
+    <head>
+        <script src="Magento_Backend::js/bootstrap/editor.js" />
+    </head>
+    <body>
+        <referenceContainer name="content" htmlTag="div" />
+        <referenceContainer name="content">
+            <block aclResource="Flagbit_Flysystem::flysystem_page" class="Magento\Backend\Block\Template" name="flagbit_flysystem.filemanager" template="Flagbit_Flysystem::filemanager/content.phtml"/>
+        </referenceContainer>
+    </body>
+</layout>
