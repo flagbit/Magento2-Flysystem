@@ -2,7 +2,7 @@
 
 # What the module is about #
 
-Magento2 Flysystem Module integrate [Flysystem](https://flysystem.thephpleague.com/) into Magento2.
+Magento2 Flysystem Module integrate [Flysystem](https://flysystem.thephpleague.com/) (Abstraction for local and remote filesystems) into Magento2.
 
 ## What the module can do for you ##
 
