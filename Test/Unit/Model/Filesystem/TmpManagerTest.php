@@ -193,7 +193,7 @@ class TmpManagerTest extends TestCase
 
         $this->_flysystemAdapterMock = $this->getMockBuilder(FilesystemAdapter::class)
             ->disableOriginalConstructor()
-            ->setMethods(['has', 'read'])
+            ->setMethods(['has', 'read', 'write', 'deleteDir'])
             ->getMock();
 
         $this->_localAdapterMock = $this->getMockBuilder(Local::class)
@@ -526,5 +526,51 @@ class TmpManagerTest extends TestCase
             ->willReturn($fileContent);
 
         $this->assertEquals($fileContent, $this->_object->getTmp($file));
+    }
+
+    public function testWritePreview()
+    {
+        $username = 'test';
+        $userDir = 'userhash';
+        $file = 'path/test.png';
+        $previewDir = Config::FLYSYSTEM_DIRECTORY.'/'.Config::FLYSYSTEM_DIRECTORY_PREVIEW.'/'.$userDir;
+        $fullPath = $previewDir.'/'.'test.png';
+        $content = 'test';
+
+        $this->_adminSessionMock->expects($this->once())
+            ->method('getUser')
+            ->willReturn($this->_userMock);
+
+        $this->_userMock->expects($this->once())
+            ->method('getUserName')
+            ->willReturn($username);
+
+        $this->_flysystemHelperMock->expects($this->once())
+            ->method('idEncode')
+            ->with($username)
+            ->willReturn($userDir);
+
+        $this->_flysystemAdapterMock->expects($this->once())
+            ->method('deleteDir')
+            ->with($previewDir)
+            ->willReturn(true);
+
+        $this->_flysystemAdapterMock->expects($this->once())
+            ->method('write')
+            ->with($fullPath, $content)
+            ->willReturn(true);
+
+        $this->assertEquals(true, $this->_object->writePreview($file, $content));
+    }
+
+    public function testGetUserPreviewDirException()
+    {
+        $this->_adminSessionMock->expects($this->once())
+            ->method('getUser')
+            ->willReturn(null);
+
+        $this->expectException(LocalizedException::class);
+
+        $this->_object->getUserPreviewDir();
     }
 }

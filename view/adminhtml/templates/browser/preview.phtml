@@ -1,0 +1,17 @@
+<div id="flysystem-image-preview" class="flysystem-image-preview">
+    <div class="preview-header">
+        <button id="preview-close-btn" class="action-close" type="button">
+            <span>Close</span>
+        </button>
+    </div>
+    <div class="preview-wrapper"><img src=""></div>
+</div>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Flagbit_Flysystem/js/flysystemUtility": {
+                "url": "<?php echo $this->getPreviewUrl(); ?>"
+            }
+        }
+    }
+</script>

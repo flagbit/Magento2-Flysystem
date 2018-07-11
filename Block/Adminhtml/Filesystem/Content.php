@@ -48,6 +48,14 @@ class Content extends Container
             );
         }
 
+        $this->buttonList->add(
+            'preview_file_btn',
+            ['id' => 'preview-file-btn', 'label' => __('Preview File'), 'type' => 'button'],
+            0,
+            0,
+            'header'
+        );
+
         if($this->_authorization->isAllowed('Flagbit_Flysystem::folder_delete')) {
             $this->buttonList->add(
                 'delete_folder',
