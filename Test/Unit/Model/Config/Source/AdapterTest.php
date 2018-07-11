@@ -37,7 +37,7 @@ class AdapterTest extends \PHPUnit\Framework\TestCase
     public function testToOptionArray()
     {
         $expectedReturn = [
-            null => 'Magento2 Default',
+            null => 'Use no Flysystem Adapter',
             'testKey1' => 'testValue1',
             'testKey2' => 'testValue2'
         ];

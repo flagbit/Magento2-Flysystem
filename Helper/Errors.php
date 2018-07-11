@@ -17,7 +17,8 @@ class Errors extends AbstractHelper
     /**
      * InitialConnection Errors
      */
-    const ERR_NO_101 = "FTP connection failed. Please check your flysystem configuration";
+    const ERR_NO_101 = "FTP connection failed. Please check your flysystem configuration.";
+    const ERR_NO_111 = "Adapter could not be initialized. Please check your flysystem configuration.";
 
     /**
      * Errors while loading filesystem content
@@ -57,6 +58,6 @@ class Errors extends AbstractHelper
             $errorMsg = self::ERR_NO_000;
         }
 
-        return __($num.': '.$errorMsg, $params);
+        return __('ERR '.$num.': '.$errorMsg, $params);
     }
 }
