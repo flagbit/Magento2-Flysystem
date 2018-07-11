@@ -126,6 +126,8 @@ class UploadManager
      */
     public function validateFileType($file)
     {
+        $filetype = '';
+
         if(isset($file['name'])) {
             $parts = explode('.', $file['name']);
             $supportedFileTypes = $this->_flysystemConfig->getSupportedFileTypes();
@@ -134,10 +136,6 @@ class UploadManager
             if(in_array($filetype, $supportedFileTypes)) {
                 return;
             }
-        }
-
-        if(!isset($filetype)) {
-            $filetype = '';
         }
 
         throw new \Exception(Errors::getErrorMessage(382, [$filetype]));
@@ -168,8 +166,6 @@ class UploadManager
                 if(is_array($fileparts)) {
                     $fileparts[0] = $fileparts[0] . '_' . $i;
                     $filename = implode('.', $fileparts);
-                } else {
-                    break;
                 }
             }
 

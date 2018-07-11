@@ -120,6 +120,7 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
 
         $this->_sessionMock = $this->getMockBuilder(Session::class)
             ->disableOriginalConstructor()
+            ->setMethods(['setFlysystemModalId', 'getFlysystemModalId'])
             ->getMock();
 
         $this->_loggerMock = $this->getMockBuilder(Monolog::class)
@@ -152,10 +153,8 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
     /**
      * Test create method without source
      */
-    public function testCreate()
+    public function testGetAdapter()
     {
-        $testSource = null;
-
         $this->_configMock->expects($this->once())
             ->method('getSource')
             ->willReturn('test');
@@ -174,7 +173,8 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
             ->method('dispatch')
             ->withAnyParameters();
 
-        $this->assertEquals($this->_flysystemAdapterMock, $this->_manager->create($testSource));
+        $this->_manager->setAdapter(null);
+        $this->assertEquals($this->_flysystemAdapterMock, $this->_manager->getAdapter());
     }
 
     /**
@@ -202,12 +202,15 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
      */
     public function testCreateLocalAdapter()
     {
-        $pathParam = null;
+        $source = 'local';
         $pathConfig = '/';
+
+        $this->_configMock->expects($this->never())
+            ->method('getSource');
 
         $this->_configMock->expects($this->once())
             ->method('getLocalPath')
-            ->willReturn($pathConfig);
+            ->willReturn(null);
 
         $this->_flysystemManagerMock->expects($this->once())
             ->method('createLocalDriver')
@@ -219,7 +222,11 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
             ->with($this->_localAdapterMock)
             ->willReturn($this->_flysystemAdapterMock);
 
-        $this->assertEquals($this->_flysystemAdapterMock, $this->_manager->createLocalAdapter($pathParam));
+        $this->_eventManagerMock->expects($this->once())
+            ->method('dispatch')
+            ->withAnyParameters();
+
+        $this->assertEquals($this->_flysystemAdapterMock, $this->_manager->create($source));
     }
 
     /**
@@ -253,12 +260,14 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
     {
         $testSource = 'ftp';
 
+        $ftpPathConfig = '';
+
         $configArray = [
             'host' => 'ftphost',
             'username' => 'ftpuser',
             'password' => 'ftppassword',
             'port' => 22,
-            'root' => 'ftppath',
+            'root' => '/',
             'passive' => true,
             'ssl' => true,
             'timeout' => 30
@@ -278,7 +287,7 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
 
         $this->_configMock->expects($this->once())
             ->method('getFtpPath')
-            ->willReturn($configArray['root']);
+            ->willReturn($ftpPathConfig);
 
         $this->_configMock->expects($this->once())
             ->method('getFtpPort')
@@ -427,5 +436,34 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
             ->withAnyParameters();
 
         $this->assertEquals(null, $this->_manager->create($testSource));
+    }
+
+    public function testGetPath()
+    {
+        $path = '/test/path';
+        $this->_manager->setPath($path);
+        $this->assertEquals($path, $this->_manager->getPath());
+    }
+
+    public function testGetSession()
+    {
+        $this->assertEquals($this->_sessionMock, $this->_manager->getSession());
+    }
+
+    public function testModalIdentifier()
+    {
+        $modalId = 'test';
+
+        $this->_sessionMock->expects($this->at(0))
+            ->method('setFlysystemModalId')
+            ->with($modalId);
+
+        $this->_sessionMock->expects($this->at(1))
+            ->method('getFlysystemModalId')
+            ->willReturn($modalId);
+
+        $this->_manager->setModalIdentifier($modalId);
+
+        $this->assertEquals($this->_manager->getModalIdentifier(), $modalId);
     }
 }

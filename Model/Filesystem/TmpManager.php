@@ -91,6 +91,16 @@ class TmpManager
     protected $_adapter;
 
     /**
+     * @var string
+     */
+    protected $_userPreviewDir = '';
+
+    /**
+     * @var string
+     */
+    protected $_userTmpDir = '';
+
+    /**
      * TmpManager constructor.
      * @param FilesystemManager $flysystemManager
      * @param FilesystemAdapterFactory $flysystemFactory
@@ -185,21 +195,25 @@ class TmpManager
      * @return string
      * @throws \Exception
      */
-    protected function getUserTmpDir()
+    public function getUserTmpDir()
     {
-        $adminUser = $this->_adminSession->getUser();
-        if(!$adminUser) {
-            throw new LocalizedException(Errors::getErrorMessage(0));
+        if(!$this->_userTmpDir) {
+            $adminUser = $this->_adminSession->getUser();
+            if (!$adminUser) {
+                throw new LocalizedException(Errors::getErrorMessage(0));
+            }
+            $userDir = $this->_flysystemHelper->idEncode($adminUser->getUserName());
+            $this->_userTmpDir = Config::FLYSYSTEM_DIRECTORY . '/' . Config::FLYSYSTEM_DIRECTORY_TMP . '/' . $userDir;
         }
-        $userDir = $this->_flysystemHelper->idEncode($adminUser->getUserName());
-        return Config::FLYSYSTEM_DIRECTORY.'/'.Config::FLYSYSTEM_DIRECTORY_TMP.'/'.$userDir;
+
+        return $this->_userTmpDir;
     }
 
     /**
      * @param $file
      * @return string
      */
-    protected function getTmpPath($file)
+    public function getTmpPath($file)
     {
         $file = $this->_flysystemHelper->idEncode($file);
 
@@ -212,6 +226,44 @@ class TmpManager
     public function clearTmp()
     {
         return $this->getAdapter()->deleteDir($this->getUserTmpDir());
+    }
+
+    /**
+     * @param $file
+     * @param null $content
+     * @return bool
+     */
+    public function writePreview($file, $content = null)
+    {
+        $this->clearPreview();
+        $previewFilename = $this->getUserPreviewDir().'/'.basename($file);
+        return $this->getAdapter()->write($previewFilename, $content);
+    }
+
+    /**
+     * @return string
+     * @throws LocalizedException
+     */
+    public function getUserPreviewDir()
+    {
+        if(!$this->_userPreviewDir) {
+            $adminUser = $this->_adminSession->getUser();
+            if (!$adminUser) {
+                throw new LocalizedException(Errors::getErrorMessage(0));
+            }
+            $userDir = $this->_flysystemHelper->idEncode($adminUser->getUserName());
+            $this->_userPreviewDir = Config::FLYSYSTEM_DIRECTORY . '/' . Config::FLYSYSTEM_DIRECTORY_PREVIEW . '/' . $userDir;
+        }
+
+        return $this->_userPreviewDir;
+    }
+
+    /**
+     * @return bool
+     */
+    public function clearPreview()
+    {
+        return $this->getAdapter()->deleteDir($this->getUserPreviewDir());
     }
 
     /**
@@ -238,7 +290,7 @@ class TmpManager
     public function createProductTmp($file)
     {
         if(!$this->_validateUploadFile($file)) {
-            throw new \Exception('File Structure is not valid');
+            throw new LocalizedException(__('File Structure is not valid'));
         }
 
         $tmpRoot = $this->_productMediaConfig->getBaseTmpMediaPath();
@@ -267,7 +319,7 @@ class TmpManager
     public function createCategoryTmp($file)
     {
         if(!$this->_validateUploadFile($file)) {
-            throw new \Exception('File Structure is not valid');
+            throw new LocalizedException(__('File Structure is not valid'));
         }
 
         /** @var \Magento\Catalog\Model\ImageUploader $imageUploader*/
@@ -283,9 +335,7 @@ class TmpManager
         unset($result['path']);
 
         if (!$result) {
-            throw new \Magento\Framework\Exception\LocalizedException(
-                __('File can not be saved to the destination folder.')
-            );
+            throw new LocalizedException(__('File can not be saved to the destination folder.'));
         }
 
         $result['tmp_name'] = str_replace('\\', '/', $result['tmp_name']);
@@ -300,9 +350,7 @@ class TmpManager
                 $this->_coreFileStorageDatabase->saveFile($relativePath);
             } catch (\Exception $e) {
                 $this->_logger->critical($e);
-                throw new \Magento\Framework\Exception\LocalizedException(
-                    __('Something went wrong while saving the file(s).')
-                );
+                throw new LocalizedException(__('Something went wrong while saving the file(s).'));
             }
         }
         return $result;
