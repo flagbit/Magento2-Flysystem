@@ -1,10 +1,10 @@
 # Magento2 Flysystem #
 
-# What the module is about #
+### What the module is about ###
 
 Magento2 Flysystem Module integrate [Flysystem](https://flysystem.thephpleague.com/) (Abstraction for local and remote filesystems) into Magento2.
 
-## What the module can do for you ##
+### What the module can do for you ###
 
 *  Integrate Flysystem to configure different file storages like **ftp**, **local** and **cloud** (S3).
     *  Provide modularity to easily integrate more adapters in the projects which use it.
