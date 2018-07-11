@@ -195,7 +195,7 @@ class TmpManager
      * @return string
      * @throws \Exception
      */
-    protected function getUserTmpDir()
+    public function getUserTmpDir()
     {
         if(!$this->_userTmpDir) {
             $adminUser = $this->_adminSession->getUser();
@@ -290,7 +290,7 @@ class TmpManager
     public function createProductTmp($file)
     {
         if(!$this->_validateUploadFile($file)) {
-            throw new \Exception('File Structure is not valid');
+            throw new LocalizedException(__('File Structure is not valid'));
         }
 
         $tmpRoot = $this->_productMediaConfig->getBaseTmpMediaPath();
@@ -319,7 +319,7 @@ class TmpManager
     public function createCategoryTmp($file)
     {
         if(!$this->_validateUploadFile($file)) {
-            throw new \Exception('File Structure is not valid');
+            throw new LocalizedException(__('File Structure is not valid'));
         }
 
         /** @var \Magento\Catalog\Model\ImageUploader $imageUploader*/
@@ -335,9 +335,7 @@ class TmpManager
         unset($result['path']);
 
         if (!$result) {
-            throw new \Magento\Framework\Exception\LocalizedException(
-                __('File can not be saved to the destination folder.')
-            );
+            throw new LocalizedException(__('File can not be saved to the destination folder.'));
         }
 
         $result['tmp_name'] = str_replace('\\', '/', $result['tmp_name']);
@@ -352,9 +350,7 @@ class TmpManager
                 $this->_coreFileStorageDatabase->saveFile($relativePath);
             } catch (\Exception $e) {
                 $this->_logger->critical($e);
-                throw new \Magento\Framework\Exception\LocalizedException(
-                    __('Something went wrong while saving the file(s).')
-                );
+                throw new LocalizedException(__('Something went wrong while saving the file(s).'));
             }
         }
         return $result;

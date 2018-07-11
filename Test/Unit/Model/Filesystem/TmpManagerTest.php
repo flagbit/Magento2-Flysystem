@@ -573,4 +573,207 @@ class TmpManagerTest extends TestCase
 
         $this->_object->getUserPreviewDir();
     }
+
+    public function testWriteTmp()
+    {
+        $username = 'test';
+        $userDir = 'userhash';
+        $file = 'path/test.png';
+        $encodedFile = 'ENCODED';
+        $tmpDir = Config::FLYSYSTEM_DIRECTORY.'/'.Config::FLYSYSTEM_DIRECTORY_TMP.'/'.$userDir;
+        $fullPath = $tmpDir.'/'.$encodedFile;
+        $content = 'test';
+
+        $this->_adminSessionMock->expects($this->once())
+            ->method('getUser')
+            ->willReturn($this->_userMock);
+
+        $this->_userMock->expects($this->once())
+            ->method('getUserName')
+            ->willReturn($username);
+
+        $this->_flysystemHelperMock->expects($this->at(0))
+            ->method('idEncode')
+            ->with($username)
+            ->willReturn($userDir);
+
+        $this->_flysystemAdapterMock->expects($this->once())
+            ->method('deleteDir')
+            ->with($tmpDir)
+            ->willReturn(true);
+
+        $this->_flysystemHelperMock->expects($this->at(1))
+            ->method('idEncode')
+            ->with($file)
+            ->willReturn($encodedFile);
+
+        $this->_flysystemAdapterMock->expects($this->once())
+            ->method('write')
+            ->with($fullPath, $content)
+            ->willReturn(true);
+
+        $this->assertEquals(true, $this->_object->writeTmp($file, $content));
+    }
+
+    public function testGetTmpException()
+    {
+        $file = 'path/filename.png';
+        $encodedfile = 'ENCODED';
+        $username = 'test';
+        $userDir = 'userhash';
+        $tmpDir = Config::FLYSYSTEM_DIRECTORY.'/'.Config::FLYSYSTEM_DIRECTORY_TMP.'/'.$userDir;
+        $fullFilePath = $tmpDir . '/' . $encodedfile;
+
+        $this->_flysystemHelperMock->expects($this->at(0))
+            ->method('idEncode')
+            ->with($file)
+            ->willReturn($encodedfile);
+
+        $this->_adminSessionMock->expects($this->once())
+            ->method('getUser')
+            ->willReturn($this->_userMock);
+
+        $this->_userMock->expects($this->once())
+            ->method('getUserName')
+            ->willReturn($username);
+
+        $this->_flysystemHelperMock->expects($this->at(1))
+            ->method('idEncode')
+            ->with($username)
+            ->willReturn($userDir);
+
+        $this->_flysystemAdapterMock->expects($this->once())
+            ->method('has')
+            ->with($fullFilePath)
+            ->willReturn(false);
+
+        $this->expectException(LocalizedException::class);
+
+        $this->_object->getTmp($file);
+    }
+
+    public function testGetAbsoluteTmpPath()
+    {
+        $file = 'path/filename.png';
+        $encodedfile = 'ENCODED';
+        $username = 'test';
+        $userDir = 'userhash';
+        $tmpDir = Config::FLYSYSTEM_DIRECTORY.'/'.Config::FLYSYSTEM_DIRECTORY_TMP.'/'.$userDir;
+        $absolutePathPrefix = '/var/www/html';
+        $fullPath = $absolutePathPrefix . '/' . $tmpDir . '/' . $encodedfile;
+
+        $this->_flysystemHelperMock->expects($this->at(0))
+            ->method('idEncode')
+            ->with($file)
+            ->willReturn($encodedfile);
+
+        $this->_directoryListMock->expects($this->once())
+            ->method('getAbsolutePath')
+            ->willReturn($absolutePathPrefix);
+
+        $this->_adminSessionMock->expects($this->once())
+            ->method('getUser')
+            ->willReturn($this->_userMock);
+
+        $this->_userMock->expects($this->once())
+            ->method('getUserName')
+            ->willReturn($username);
+
+        $this->_flysystemHelperMock->expects($this->at(1))
+            ->method('idEncode')
+            ->with($username)
+            ->willReturn($userDir);
+
+        $this->assertEquals($fullPath, $this->_object->getAbsoluteTmpPath($file));
+    }
+
+    public function testGetUserTmpDirException()
+    {
+        $this->_adminSessionMock->expects($this->once())
+            ->method('getUser')
+            ->willReturn(null);
+
+        $this->expectException(LocalizedException::class);
+
+        $this->_object->getUserTmpDir();
+    }
+
+    public function testSetAdapter()
+    {
+        $this->_object->setAdapter($this->_flysystemAdapterMock);
+
+        $this->assertEquals($this->_object->getAdapter(), $this->_flysystemAdapterMock);
+    }
+
+    public function testCreateProductTmpValidateFileException()
+    {
+        $file = 'invalid';
+
+        $this->expectException(LocalizedException::class);
+
+        $this->_objectManagerMock->expects($this->never())
+            ->method('get');
+
+        $this->_object->createProductTmp($file);
+    }
+
+    public function testCreateCategoryTmpValidateFileException()
+    {
+        $file = 'invalid';
+
+        $this->expectException(LocalizedException::class);
+
+        $this->_objectManagerMock->expects($this->never())
+            ->method('get');
+
+        $this->_object->createCategoryTmp($file);
+    }
+
+    public function testCreateCategoryTmpSaveException()
+    {
+        $baseTmpPath = '/category/tmp';
+        $absolutePath = '/var/www/html/pub/category/tmp';
+
+        $file = [
+            'name' => 'test.jpg',
+            'type' => 'image/jpeg',
+            'tmp_name' => '/var/www/html/pub/media/flysystem/.tmp/test.jpg',
+            'error' => 0,
+            'size' => 100
+        ];
+
+        $returnFile = null;
+
+        $this->_objectManagerMock->expects($this->once())
+            ->method('get')
+            ->withAnyParameters()
+            ->willReturn($this->_categoryUploaderMock);
+
+        $this->_categoryUploaderMock->expects($this->once())
+            ->method('getBaseTmpPath')
+            ->willReturn($baseTmpPath);
+
+        $this->_objectManagerMock->expects($this->once())
+            ->method('create')
+            ->withAnyParameters()
+            ->willReturn($this->_uploaderMock);
+
+        $this->_categoryUploaderMock->expects($this->once())
+            ->method('getAllowedExtensions')
+            ->willReturn(['jpg']);
+
+        $this->_directoryListMock->expects($this->at(0))
+            ->method('getAbsolutePath')
+            ->with($baseTmpPath)
+            ->willReturn($absolutePath);
+
+        $this->_uploaderMock->expects($this->once())
+            ->method('save')
+            ->with($absolutePath)
+            ->willReturn($returnFile);
+
+        $this->expectException(LocalizedException::class);
+
+        $this->_object->createCategoryTmp($file);
+    }
 }
