@@ -103,7 +103,7 @@ class ContentTest extends TestCase
             ->with($this->isType('string'))
             ->willReturn(true);
 
-        $this->_buttonListMock->expects($this->exactly(4))
+        $this->_buttonListMock->expects($this->exactly(5))
             ->method('add')
             ->with($this->isType('string'), $this->isType('array'), 0, 0, 'header');
 

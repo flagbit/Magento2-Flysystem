@@ -4,7 +4,7 @@
  /** @var $block \Flagbit\Flysystem\Block\Adminhtml\Filesystem\Content */
 ?>
 
-<div data-mage-init='{"mediabrowser": <?= $block->escapeHtml($block->getFilebrowserSetupObject()) ?>}'>
+<div class="flysystem-browser" data-mage-init='{"mediabrowser": <?= $block->escapeHtml($block->getFilebrowserSetupObject()) ?>}'>
     <div class="side-col"><?= $block->getChildHtml('flagbit_flysystem.tree') ?></div>
     <div class="main-col">
         <div class="insert-title" id="content_header">

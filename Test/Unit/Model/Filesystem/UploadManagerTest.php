@@ -112,7 +112,7 @@ class UploadManagerTest extends TestCase
             ->with($this->_localAdapterMock)
             ->willReturn($this->_flysystemAdapterMock);
 
-        $this->_objectManagerMock->expects($this->once())
+        $this->_objectManagerMock->expects($this->at(0))
             ->method('create')
             ->with(Uploader::class, ['fileId' => Config::FLYSYSTEM_UPLOAD_ID])
             ->willReturn($this->_uploaderMock);
@@ -231,5 +231,22 @@ class UploadManagerTest extends TestCase
 
         $this->expectException(\Exception::class);
         $this->_object->upload($adapter, $targetPath);
+    }
+
+    public function testSetUploadFileException()
+    {
+        $exception = new \Exception('test');
+        $fileId = 'test';
+
+        $this->_objectManagerMock->expects($this->at(0))
+            ->method('create')
+            ->with(Uploader::class, $this->arrayHasKey('fileId'))
+            ->willThrowException($exception);
+
+        $this->_loggerMock->expects($this->once())
+            ->method('critical')
+            ->with($exception);
+
+        $this->assertEquals(false, $this->_object->setUploadFile($fileId));
     }
 }
