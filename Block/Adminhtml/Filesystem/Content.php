@@ -94,7 +94,11 @@ class Content extends Container
     {
         $setupObject = [
             'newFolderPrompt' => __('New Folder Name:'),
-            'deleteFolderConfirmationMessage' => __('Are you sure you want to delete this folder?'),
+            'deleteFolderConfirmationMessage' => __('This folder will be deleted recursively') . ',<br>' .
+            __('it also may contains files which are not displayed inside the modal. ') . '<br>' .
+            __('Please make sure you will NOT delete any folders which are required for Magento to work properly.') . '<br><br>' .
+            __('Are you sure you want to delete this folder ?') . '<br>' .
+            '<span class="folder-deletion-warning">'.__('Attention: If you delete wrong folders this could break your Magento installation.').'</span>',
             'deleteFileConfirmationMessage' => __('Are you sure you want to delete this file?'),
             'targetElementId' => $this->getTargetElementId(),
             'contentsUrl' => $this->getContentsUrl(),
@@ -147,6 +151,14 @@ class Content extends Container
     public function getDeleteFilesUrl()
     {
         return $this->getUrl('flagbit_flysystem/*/deleteFiles');
+    }
+
+    /**
+     * @return string
+     */
+    public function getPreviewUrl()
+    {
+        return $this->getUrl('flagbit_flysystem/*/preview');
     }
 
     /**
