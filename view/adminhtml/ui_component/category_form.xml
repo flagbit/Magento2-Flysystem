@@ -5,7 +5,7 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">Flysystem Image</item>
+                    <item name="label" xsi:type="string" translate="true">Category Image from Flysystem</item>
                     <item name="title" xsi:type="string" translate="true">Select Image</item>
                     <item name="formElement" xsi:type="string">input</item>
                     <item name="elementTmpl" xsi:type="string">Flagbit_Flysystem/form/element/mediabrowser</item>
