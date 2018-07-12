@@ -14,6 +14,46 @@
         }
       }
     }
+
+    .file-row,
+    .file-head {
+      width: 100%;
+      margin: 0;
+      border: none;
+      border-bottom: 1px solid #d4d4d4;
+
+      &.selected {
+        background-color: #ddf0ff;
+      }
+
+      .file-col {
+        display: inline-block;
+        padding: 3px 10px;
+        border-left: 1px solid #eeeeee;
+
+        &:first-child {
+          border-left: none;
+        }
+
+        &.data-name {
+          width: 350px;
+        }
+
+        &.data-size {
+          width: 150px;
+        }
+      }
+    }
+
+    .file-head {
+      background-color: #514943;
+      color: #ffffff;
+      font-weight: 600;
+
+      .file-col {
+        padding: 10px 10px;
+      }
+    }
   }
 }
 
