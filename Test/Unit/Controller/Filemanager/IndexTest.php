@@ -147,4 +147,43 @@ class IndexTest extends TestCase
 
         $this->_object->execute();
     }
+
+    public function testExecuteException()
+    {
+        $exception = new \Exception('test');
+
+        $this->_flysystemManagerMock->expects($this->once())
+            ->method('getAdapter')
+            ->willThrowException($exception);
+
+        $this->_resultPageFactoryMock->expects($this->once())
+            ->method('create')
+            ->willReturn($this->_resultPageMock);
+
+        $this->_resultPageMock->expects($this->once())
+            ->method('addDefaultHandle')
+            ->willReturn($this->_resultPageMock);
+
+        $this->_resultPageMock->expects($this->once())
+            ->method('setActiveMenu')
+            ->with($this->isType('string'))
+            ->willReturn($this->_resultPageMock);
+
+        $this->_resultPageMock->expects($this->once())
+            ->method('addBreadcrumb')
+            ->willReturn($this->_resultPageMock);
+
+        $this->_resultPageMock->expects($this->once())
+            ->method('getConfig')
+            ->willReturn($this->_pageConfigMock);
+
+        $this->_pageConfigMock->expects($this->once())
+            ->method('getTitle')
+            ->willReturn($this->_pageTitleMock);
+
+        $this->_pageTitleMock->expects($this->once())
+            ->method('prepend');
+
+        $this->_object->execute();
+    }
 }

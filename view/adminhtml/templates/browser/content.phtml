@@ -20,3 +20,13 @@
         <div id="contents"></div>
     </div>
 </div>
+<?= $block->getChildHtml('flagbit_flysystem.preview') ?>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Flagbit_Flysystem/js/flysystemUtility": {
+                "url": "<?php echo $this->getPreviewUrl(); ?>"
+            }
+        }
+    }
+</script>
