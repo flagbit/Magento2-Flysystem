@@ -16,12 +16,12 @@ an Abstraction for local and remote filesystems into Magento2 without overriding
 ## Wiki Pages ##
 
 * **User Guides**
-  * [Installation & Configuration Guide](https://bitbucket.org/flagbit/magento2-flysystem/wiki/Installation%20&%20Configuration%20Guide)
-  * [FAQ and Troubleshooting](https://bitbucket.org/flagbit/magento2-flysystem/wiki/FAQ%20and%20Troubleshooting)
+    * [Installation & Configuration Guide](https://bitbucket.org/flagbit/magento2-flysystem/wiki/Installation%20&%20Configuration%20Guide)
+    * [FAQ and Troubleshooting](https://bitbucket.org/flagbit/magento2-flysystem/wiki/FAQ%20and%20Troubleshooting)
 * **Developer Guides**
-  * [Integration of Flysystem to Magento2](https://bitbucket.org/flagbit/magento2-flysystem/wiki/Integration%20of%20Flysystem%20to%20Magento2)
-  * [API Guide Magento2 Flysystem](https://bitbucket.org/flagbit/magento2-flysystem/wiki/API%20Guide%20Magento2%20Flysystem)
-  * [Integrate a new Flysystem Adapter](https://bitbucket.org/flagbit/magento2-flysystem/wiki/Integrate%20a%20new%20Flysystem%20Adapter)
+    * [Integration of Flysystem to Magento2](https://bitbucket.org/flagbit/magento2-flysystem/wiki/Integration%20of%20Flysystem%20to%20Magento2)
+    * [API Guide Magento2 Flysystem](https://bitbucket.org/flagbit/magento2-flysystem/wiki/API%20Guide%20Magento2%20Flysystem)
+    * [Integrate a new Flysystem Adapter](https://bitbucket.org/flagbit/magento2-flysystem/wiki/Integrate%20a%20new%20Flysystem%20Adapter)
 
 ## Screenshots ##
 
