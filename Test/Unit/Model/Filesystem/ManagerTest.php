@@ -194,7 +194,8 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
             ->method('dispatch')
             ->withAnyParameters();
 
-        $this->assertEquals(null, $this->_manager->create($testSource));
+        $this->expectException(LocalizedException::class);
+        $this->_manager->create($testSource);
     }
 
     /**
@@ -366,7 +367,8 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
             ->method('dispatch')
             ->withAnyParameters();
 
-        $this->assertEquals(null, $this->_manager->create($testSource));
+        $this->expectException(LocalizedException::class);
+        $this->_manager->create($testSource);
     }
 
     /**
@@ -435,7 +437,8 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
             ->method('dispatch')
             ->withAnyParameters();
 
-        $this->assertEquals(null, $this->_manager->create($testSource));
+        $this->expectException(LocalizedException::class);
+        $this->_manager->create($testSource);
     }
 
     public function testGetPath()

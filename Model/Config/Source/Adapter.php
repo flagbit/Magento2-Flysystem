@@ -36,7 +36,7 @@ class Adapter extends \Magento\Framework\DataObject implements \Magento\Framewor
     public function toOptionArray()
     {
         if(count($this->_options) === 0) {
-            $options = [null => 'Magento2 Default'];
+            $options = [null => 'Use no Flysystem Adapter'];
 
             foreach ($this->_adapters as $adapter) {
                 $options[$adapter['identifier']] = $adapter['title'];

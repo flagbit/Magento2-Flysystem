@@ -15,11 +15,6 @@ class FilesystemAdapterTest extends TestCase
     protected $_filesystemMock;
 
     /**
-     * @var Handler|MockObject
-     */
-    protected $_flysystemHandlerMock;
-
-    /**
      * @var FilesystemAdapter
      */
     protected $_object;
@@ -52,15 +47,10 @@ class FilesystemAdapterTest extends TestCase
                     'getSize',
                     'setVisibility',
                     'getMetadata',
-                    'get',
                     'assertPresent',
                     'assertAbsent'
                 ]
             )
-            ->getMock();
-
-        $this->_flysystemHandlerMock = $this->getMockBuilder(Handler::class)
-            ->disableOriginalConstructor()
             ->getMock();
 
         $this->_object = new FilesystemAdapter(
@@ -348,19 +338,6 @@ class FilesystemAdapterTest extends TestCase
             ->willReturn($metadata);
 
         $this->assertEquals($metadata, $this->_object->getMetadata($path));
-    }
-
-    public function testGet()
-    {
-        $path = '/test/path/test.txt';
-        $contents = 'content';
-
-        $this->_filesystemMock->expects($this->once())
-            ->method('get')
-            ->with($path, $this->_flysystemHandlerMock)
-            ->willReturn($contents);
-
-        $this->assertEquals($contents, $this->_object->get($path, $this->_flysystemHandlerMock));
     }
 
     public function testAssertPresent()

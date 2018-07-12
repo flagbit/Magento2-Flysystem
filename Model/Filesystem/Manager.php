@@ -112,11 +112,16 @@ class Manager
     /**
      * @param bool $createIfNotExists
      * @return FilesystemAdapter|null
+     * @throws LocalizedException
      */
     public function getAdapter($createIfNotExists = true)
     {
         if(!$this->_adapter && $createIfNotExists) {
             $this->create();
+        }
+
+        if(!$this->_adapter) {
+            throw new LocalizedException(Errors::getErrorMessage(111));
         }
         return $this->_adapter;
     }
