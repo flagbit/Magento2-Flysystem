@@ -170,6 +170,40 @@ class Files extends Template
     }
 
     /**
+     * @param $file
+     * @return string
+     */
+    public function getFileSize($file) {
+        if(!isset($file['size'])) {
+            return '';
+        }
+
+        $size = $file['size'] / 1024 / 1024;
+        if($size >= 1) {
+            return round($size, 2) . ' MB';
+        }
+
+        $size = $file['size'] / 1024;
+        if($size >= 1) {
+            return round($size, 2) . ' KB';
+        }
+
+        return $file['size'] . ' Byte';
+    }
+
+    /**
+     * @param $file
+     * @return false|string
+     */
+    public function getLastModified($file) {
+        if(!isset($file['timestamp'])) {
+            return '';
+        }
+
+        return date('d-m-Y H:i', $file['timestamp']);
+    }
+
+    /**
      * @param $files
      */
     public function setFilesCollection($files)

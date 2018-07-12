@@ -8,12 +8,16 @@ $block->getFiles();
 ?>
 <?= $block->getMessages() ?>
 <?php if ($block->getFilesCount() > 0): ?>
+    <div class="file-head">
+        <div class="file-col data-name"><?= $block->escapeHtml(__('Filename')) ?></div>
+        <div class="file-col data-size"><?= $block->escapeHtml(__('Size')) ?></div>
+        <div class="file-col data-modified-date"><?= $block->escapeHtml(__('Last Modified')) ?></div>
+    </div>
     <?php foreach ($block->getFiles() as $file): ?>
-        <div data-row="file" class="filecnt" id="<?= $block->escapeHtmlAttr($block->getFileId($file)) ?>">
-            <p class="nm" style="height:<?= $block->escapeHtmlAttr($_heigth) ?>px;width:<?= $block->escapeHtmlAttr($_width) ?>px;">
-                <div><?php echo $block->getFileEnding($file); ?></div>
-            </p>
-            <small><?= $block->escapeHtml($block->getFileShortName($file)) ?></small>
+        <div data-row="file" class="file-row" id="<?= $block->escapeHtmlAttr($block->getFileId($file)) ?>">
+            <div class="file-col data-name"><?= $block->escapeHtml($file['basename']) ?></div>
+            <div class="file-col data-size"><?= $block->escapeHtml($block->getFileSize($file)) ?></div>
+            <div class="file-col data-modified-date"><?= $block->escapeHtml($block->getLastModified($file)) ?></div>
         </div>
     <?php endforeach; ?>
 <?php else: ?>
