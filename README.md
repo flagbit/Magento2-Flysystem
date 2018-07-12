@@ -27,7 +27,7 @@ an Abstraction for local and remote filesystems into Magento2 without overriding
 
 **Backend Configuration**
 
-![Magento2 Flysystem Backend Configuration](https://blog.flagbit.de/wp-content/uploads/2018/07/magento2_flysystem_backend_configuration.jpg "Magento2 Flysystem Backend Configuration")
+![Magento2 Flysystem Backend Configuration](https://blog.flagbit.de/wp-content/uploads/2018/07/magento2_flysystem_backend_configuration.png "Magento2 Flysystem Backend Configuration")
 
 **Select Product Image**
 
