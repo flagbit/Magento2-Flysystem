@@ -147,4 +147,16 @@ class ContentTest extends TestCase
 
         $this->assertEquals($identifier, $this->_object->getModalIdentifier());
     }
+
+    public function testGetPreviewUrl()
+    {
+        $url = 'test.com/preview';
+
+        $this->_urlBuilderMock->expects($this->once())
+            ->method('getUrl')
+            ->with($this->isType('string'))
+            ->willReturn($url);
+
+        $this->assertEquals($url, $this->_object->getPreviewUrl());
+    }
 }
