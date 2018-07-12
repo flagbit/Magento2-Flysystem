@@ -1,8 +1,6 @@
 <?php
 namespace Flagbit\Flysystem\Adapter;
 
-use \League\Flysystem\Handler as FlysystemHandler;
-
 /**
  * Interface AdapterInterface
  * @package Flagbit\Flysystem\Adapter
@@ -157,13 +155,6 @@ interface AdapterInterface {
      * @return mixed
      */
     public function getMetadata($path);
-
-    /**
-     * @param $path
-     * @param FlysystemHandler|null $handler
-     * @return mixed
-     */
-    public function get($path, FlysystemHandler $handler = null);
 
     /**
      * @param $path

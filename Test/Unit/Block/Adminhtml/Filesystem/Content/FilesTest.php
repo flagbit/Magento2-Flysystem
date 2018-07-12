@@ -323,4 +323,45 @@ class FilesTest extends \PHPUnit\Framework\TestCase
 
         $this->assertEquals('unknown', $this->_object->getFileEnding($file));
     }
+
+    public function testGetFileSize()
+    {
+        $file = ['size' => 0];
+
+        $this->assertEquals('0 Byte', $this->_object->getFileSize($file));
+
+        $file['size'] = 1000;
+        $this->assertEquals('1000 Byte', $this->_object->getFileSize($file));
+
+        $file['size'] = 1024;
+        $this->assertEquals('1 KB', $this->_object->getFileSize($file));
+
+        $file['size'] = 5000;
+        $this->assertEquals('4.88 KB', $this->_object->getFileSize($file));
+
+        $file['size'] = 5000000;
+        $this->assertEquals('4.77 MB', $this->_object->getFileSize($file));
+    }
+
+    public function testGetFileSizeInvalid()
+    {
+        $file = ['invalid' => null];
+
+        $this->assertEquals('', $this->_object->getFileSize($file));
+    }
+
+    public function testGetLastModified()
+    {
+        $file = ['timestamp' => 1345123434234];
+        $date = date('d-m-Y H:i', $file['timestamp']);
+
+        $this->assertEquals($date, $this->_object->getLastModified($file));
+    }
+
+    public function testGetLastModifiedInvalid()
+    {
+        $file = ['invalid' => null];
+
+        $this->assertEquals('', $this->_object->getLastModified($file));
+    }
 }

@@ -9,7 +9,7 @@ class ErrorsTest extends TestCase
     public function testGetErrorMessage()
     {
         $messageId = 101;
-        $expected = $messageId.': '.Errors::ERR_NO_101;
+        $expected = 'ERR '.$messageId.': '.Errors::ERR_NO_101;
 
         $this->assertEquals($expected, Errors::getErrorMessage($messageId));
     }
@@ -18,7 +18,7 @@ class ErrorsTest extends TestCase
     {
         $messageId = 382;
         $params = ['jpg'];
-        $expected = $messageId.': File type jpg is not allowed.';
+        $expected = 'ERR '.$messageId.': File type jpg is not allowed.';
 
         $this->assertEquals($expected, Errors::getErrorMessage($messageId, $params));
     }
@@ -26,7 +26,7 @@ class ErrorsTest extends TestCase
     public function testGetErrorMessageUnknown()
     {
         $messageId = 9999;
-        $expected = $messageId.': '.Errors::ERR_NO_000;
+        $expected = 'ERR '.$messageId.': '.Errors::ERR_NO_000;
 
         $this->assertEquals($expected, Errors::getErrorMessage($messageId));
     }

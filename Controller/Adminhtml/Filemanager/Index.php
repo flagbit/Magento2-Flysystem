@@ -39,12 +39,18 @@ class Index extends \Flagbit\Flysystem\Controller\Adminhtml\Filesystem\AbstractC
      */
     public function execute()
     {
-        $this->_initAction();
-        $this->getStorage()->setModalIdentifier('filemanager');
-        $page = $this->_resultPageFactory->create()->addDefaultHandle();
-        $page = $this->_initPage($page);
-        return $page;
-    }
+        try {
+            $this->_initAction();
+            $this->getStorage()->setModalIdentifier('filemanager');
+            $page = $this->_resultPageFactory->create()->addDefaultHandle();
+            $page = $this->_initPage($page);
+            return $page;
+        } catch (\Exception $e) {
+            $page = $this->_resultPageFactory->create()->addDefaultHandle();
+            $page = $this->_initPage($page);
+            return $page;
+        }
+}
 
     /**
      * @param \Magento\Backend\Model\View\Result\Page $resultPage

@@ -2,7 +2,6 @@
 namespace Flagbit\Flysystem\Adapter;
 
 use \League\Flysystem\Filesystem;
-use \League\Flysystem\Handler as FlysystemHandler;
 
 /**
  * Class FilesystemAdapter
@@ -237,16 +236,6 @@ class FilesystemAdapter implements AdapterInterface
     public function getMetadata($path)
     {
         return $this->filesystem->getMetadata($path);
-    }
-
-    /**
-     * @param $path
-     * @param FlysystemHandler|null $handler
-     * @return \League\Flysystem\Directory|\League\Flysystem\File|FlysystemHandler
-     */
-    public function get($path, FlysystemHandler $handler = null)
-    {
-        return $this->filesystem->get($path, $handler);
     }
 
     /**
