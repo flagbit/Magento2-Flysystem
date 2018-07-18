@@ -2,7 +2,6 @@
 namespace Flagbit\Flysystem\Helper;
 
 use \Magento\Framework\App\Helper\AbstractHelper;
-use \Magento\Framework\Filesystem as MagentoFilesystem;
 
 /**
  * Class Config

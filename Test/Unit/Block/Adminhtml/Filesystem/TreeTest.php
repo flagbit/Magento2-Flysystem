@@ -249,19 +249,4 @@ class TreeTest extends \PHPUnit\Framework\TestCase
 
         $this->assertEquals('serializedTree', $this->_object->getTreeWidgetOptions());
     }
-
-
-    public function getTreeBuilderUrl()
-    {
-        $url = 'test.url/test';
-        $route = 'flagbit_flysystem/*/treeJson';
-
-        $this->_urlBuilderMock->expects($this->once())
-            ->method('getUrl')
-            ->with($route)
-            ->willReturn($url);
-
-        $this->assertEquals($url, $this->_object->getTreeBu);
-    }
-
 }

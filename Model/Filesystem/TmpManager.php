@@ -156,8 +156,8 @@ class TmpManager
     }
 
     /**
-     * @param $file
-     * @param null $content
+     * @param string $file
+     * @param null|string $content
      * @return bool
      */
     public function writeTmp($file, $content = null)
@@ -167,7 +167,7 @@ class TmpManager
     }
 
     /**
-     * @param $file
+     * @param string $file
      * @return bool|false|string
      * @throws LocalizedException
      */
@@ -182,7 +182,7 @@ class TmpManager
     }
 
     /**
-     * @param $file
+     * @param string $file
      * @return string
      */
     public function getAbsoluteTmpPath($file)
@@ -210,7 +210,7 @@ class TmpManager
     }
 
     /**
-     * @param $file
+     * @param string $file
      * @return string
      */
     public function getTmpPath($file)
@@ -229,8 +229,8 @@ class TmpManager
     }
 
     /**
-     * @param $file
-     * @param null $content
+     * @param string $file
+     * @param null|string $content
      * @return bool
      */
     public function writePreview($file, $content = null)
@@ -275,7 +275,7 @@ class TmpManager
     }
 
     /**
-     * @param $adapter
+     * @param FilesystemAdapter $adapter
      */
     public function setAdapter($adapter)
     {
@@ -283,7 +283,7 @@ class TmpManager
     }
 
     /**
-     * @param $file
+     * @param array $file
      * @return mixed
      * @throws \Exception
      */
@@ -311,7 +311,7 @@ class TmpManager
     }
 
     /**
-     * @param $file
+     * @param array $file
      * @return mixed
      * @throws LocalizedException
      * @throws \Exception
@@ -349,13 +349,17 @@ class TmpManager
                 $relativePath = rtrim($baseTmpPath, '/') . '/' . ltrim($result['file'], '/');
                 $this->_coreFileStorageDatabase->saveFile($relativePath);
             } catch (\Exception $e) {
-                $this->_logger->critical($e);
+                $this->_logger->critical($e->getMessage());
                 throw new LocalizedException(__('Something went wrong while saving the file(s).'));
             }
         }
         return $result;
     }
 
+    /**
+     * @param array $file
+     * @return bool
+     */
     protected function _validateUploadFile($file)
     {
         $testArray = [

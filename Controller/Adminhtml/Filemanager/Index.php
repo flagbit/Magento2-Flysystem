@@ -1,16 +1,18 @@
 <?php
 namespace Flagbit\Flysystem\Controller\Adminhtml\Filemanager;
 
+use \Flagbit\Flysystem\Controller\Adminhtml\Filesystem\AbstractController;
 use \Flagbit\Flysystem\Model\Filesystem\Manager;
 use \Magento\Backend\App\Action;
 use \Magento\Backend\Model\Session;
+use \Magento\Backend\Model\View\Result\Page;
 use \Magento\Backend\Model\View\Result\PageFactory;
 
 /**
  * Class Index
- * @package Flagbit\Flysystem\Controller\Adminhtml\Flagbit\Flysystem
+ * @package Flagbit\Flysystem\Controller\Adminhtml\Filemanager
  */
-class Index extends \Flagbit\Flysystem\Controller\Adminhtml\Filesystem\AbstractController
+class Index extends AbstractController
 {
     /**
      * @var PageFactory
@@ -35,7 +37,7 @@ class Index extends \Flagbit\Flysystem\Controller\Adminhtml\Filesystem\AbstractC
     }
 
     /**
-     * @return \Magento\Backend\Model\View\Result\Page
+     * @return Page
      */
     public function execute()
     {
@@ -53,8 +55,8 @@ class Index extends \Flagbit\Flysystem\Controller\Adminhtml\Filesystem\AbstractC
 }
 
     /**
-     * @param \Magento\Backend\Model\View\Result\Page $resultPage
-     * @return \Magento\Backend\Model\View\Result\Page
+     * @param Page $resultPage
+     * @return Page
      */
     protected function _initPage($resultPage)
     {
