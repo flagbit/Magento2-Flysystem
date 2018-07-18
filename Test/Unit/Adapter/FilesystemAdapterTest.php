@@ -3,7 +3,6 @@ namespace Flagbit\Flysystem\Test\Unit\Adapter;
 
 use \Flagbit\Flysystem\Adapter\FilesystemAdapter;
 use \League\Flysystem\Filesystem;
-use \League\Flysystem\Handler;
 use \PHPUnit\Framework\MockObject\MockObject;
 use \PHPUnit\Framework\TestCase;
 

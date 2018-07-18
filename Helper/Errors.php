@@ -44,7 +44,7 @@ class Errors extends AbstractHelper
     const ERR_NO_621 = "Invalid Parameters in Observer %1 for event %2";
 
     /**
-     * @param $num
+     * @param string|int $num
      * @param array $params
      * @return \Magento\Framework\Phrase
      */

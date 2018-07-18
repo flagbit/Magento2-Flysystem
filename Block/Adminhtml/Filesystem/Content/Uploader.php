@@ -37,6 +37,9 @@ class Uploader extends MagentoUploader
         );
     }
 
+    /**
+     * @return mixed
+     */
     protected function _getMediaType()
     {
         if ($this->hasData('media_type')) {

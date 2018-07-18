@@ -65,8 +65,8 @@ class CategoryImage implements ObserverInterface
     }
 
     /**
-     * @param $manager
-     * @param $filename
+     * @param Manager $manager
+     * @param string $filename
      * @return array
      */
     protected function createFileArray($manager, $filename) {

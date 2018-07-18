@@ -40,7 +40,7 @@ class FilesystemManager implements ManagerInterface
     }
 
     /**
-     * @param $root
+     * @param string $root
      * @param int $writeFlags
      * @param int $linkHandling
      * @param array $permissions
