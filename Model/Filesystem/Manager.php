@@ -83,7 +83,7 @@ class Manager
     }
 
     /**
-     * @param null $source
+     * @param null|string $source
      * @return FilesystemAdapter|null
      */
     public function create($source = null)
@@ -219,16 +219,26 @@ class Manager
         return $this->_flysystemFactory->create($driver);
     }
 
+    /**
+     * @return Session
+     */
     public function getSession()
     {
         return $this->_session;
     }
 
+    /**
+     * @param string $identifier
+     * @return mixed
+     */
     public function setModalIdentifier($identifier)
     {
         return $this->getSession()->setFlysystemModalId($identifier);
     }
 
+    /**
+     * @return mixed
+     */
     public function getModalIdentifier()
     {
         return $this->getSession()->getFlysystemModalId();

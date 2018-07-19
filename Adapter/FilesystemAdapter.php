@@ -24,7 +24,7 @@ class FilesystemAdapter implements AdapterInterface
     }
 
     /**
-     * @param $path
+     * @param string $path
      * @return bool
      */
     public function has($path)
@@ -33,8 +33,8 @@ class FilesystemAdapter implements AdapterInterface
     }
 
     /**
-     * @param $path
-     * @param $contents
+     * @param string $path
+     * @param string $contents
      * @param array $config
      * @return bool
      */
@@ -44,8 +44,8 @@ class FilesystemAdapter implements AdapterInterface
     }
 
     /**
-     * @param $path
-     * @param $resource
+     * @param string $path
+     * @param resource $resource
      * @param array $config
      * @return bool
      */
@@ -55,8 +55,8 @@ class FilesystemAdapter implements AdapterInterface
     }
 
     /**
-     * @param $path
-     * @param $contents
+     * @param string $path
+     * @param string $contents
      * @param array $config
      * @return bool
      */
@@ -66,8 +66,8 @@ class FilesystemAdapter implements AdapterInterface
     }
 
     /**
-     * @param $path
-     * @param $resource
+     * @param string $path
+     * @param resource $resource
      * @param array $config
      * @return bool
      */
@@ -77,7 +77,7 @@ class FilesystemAdapter implements AdapterInterface
     }
 
     /**
-     * @param $path
+     * @param string $path
      * @return bool|false|string
      */
     public function readAndDelete($path)
@@ -86,8 +86,8 @@ class FilesystemAdapter implements AdapterInterface
     }
 
     /**
-     * @param $path
-     * @param $contents
+     * @param string $path
+     * @param string $contents
      * @param array $config
      * @return bool
      */
@@ -97,8 +97,8 @@ class FilesystemAdapter implements AdapterInterface
     }
 
     /**
-     * @param $path
-     * @param $resource
+     * @param string $path
+     * @param resource $resource
      * @param array $config
      * @return bool
      */
@@ -108,7 +108,7 @@ class FilesystemAdapter implements AdapterInterface
     }
 
     /**
-     * @param $path
+     * @param string $path
      * @return bool|false|string
      */
     public function read($path)
@@ -117,7 +117,7 @@ class FilesystemAdapter implements AdapterInterface
     }
 
     /**
-     * @param $path
+     * @param string $path
      * @return bool|false|resource
      */
     public function readStream($path)
@@ -126,8 +126,8 @@ class FilesystemAdapter implements AdapterInterface
     }
 
     /**
-     * @param $path
-     * @param $newpath
+     * @param string $path
+     * @param string $newpath
      * @return bool
      */
     public function rename($path, $newpath)
@@ -136,8 +136,8 @@ class FilesystemAdapter implements AdapterInterface
     }
 
     /**
-     * @param $path
-     * @param $newpath
+     * @param string $path
+     * @param string $newpath
      * @return bool
      */
     public function copy($path, $newpath)
@@ -146,7 +146,7 @@ class FilesystemAdapter implements AdapterInterface
     }
 
     /**
-     * @param $path
+     * @param string $path
      * @return bool
      */
     public function delete($path)
@@ -155,7 +155,7 @@ class FilesystemAdapter implements AdapterInterface
     }
 
     /**
-     * @param $dirname
+     * @param string $dirname
      * @return bool
      */
     public function deleteDir($dirname)
@@ -164,7 +164,7 @@ class FilesystemAdapter implements AdapterInterface
     }
 
     /**
-     * @param $dirname
+     * @param string $dirname
      * @param array $config
      * @return bool
      */
@@ -184,7 +184,7 @@ class FilesystemAdapter implements AdapterInterface
     }
 
     /**
-     * @param $path
+     * @param string $path
      * @return bool|false|string
      */
     public function getMimetype($path)
@@ -193,7 +193,7 @@ class FilesystemAdapter implements AdapterInterface
     }
 
     /**
-     * @param $path
+     * @param string $path
      * @return bool|false|string
      */
     public function getTimestamp($path)
@@ -202,7 +202,7 @@ class FilesystemAdapter implements AdapterInterface
     }
 
     /**
-     * @param $path
+     * @param string $path
      * @return bool|false|string
      */
     public function getVisibility($path)
@@ -211,7 +211,7 @@ class FilesystemAdapter implements AdapterInterface
     }
 
     /**
-     * @param $path
+     * @param string $path
      * @return bool|false|int
      */
     public function getSize($path)
@@ -220,8 +220,8 @@ class FilesystemAdapter implements AdapterInterface
     }
 
     /**
-     * @param $path
-     * @param $visibility
+     * @param string $path
+     * @param string $visibility
      * @return bool
      */
     public function setVisibility($path, $visibility)
@@ -230,7 +230,7 @@ class FilesystemAdapter implements AdapterInterface
     }
 
     /**
-     * @param $path
+     * @param string $path
      * @return array|false
      */
     public function getMetadata($path)
@@ -239,7 +239,7 @@ class FilesystemAdapter implements AdapterInterface
     }
 
     /**
-     * @param $path
+     * @param string $path
      * @return void
      */
     public function assertPresent($path)
@@ -248,7 +248,7 @@ class FilesystemAdapter implements AdapterInterface
     }
 
     /**
-     * @param $path
+     * @param string $path
      * @return void
      */
     public function assertAbsent($path)

@@ -97,13 +97,16 @@ class OnInsert extends AbstractController
                 $this->setResult($filename);
             }
         } catch (\Exception $e) {
-            $this->_logger->critical($e);
+            $this->_logger->critical($e->getMessage());
         }
 
         $resultRaw = $this->_resultRawFactory->create();
         return $resultRaw->setContents($this->_result);
     }
 
+    /**
+     * @param string $result
+     */
     public function setResult($result)
     {
         $this->_result = $result;

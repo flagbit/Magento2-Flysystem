@@ -101,6 +101,11 @@ class Files extends Template
         return $this->_filesCollection;
     }
 
+    /**
+     * @param array $file
+     * @return bool
+     * @throws \Exception
+     */
     public function validateFile($file)
     {
         $requiredValues = ['type' => null, 'basename' => null, 'path' => null];
@@ -118,6 +123,9 @@ class Files extends Template
         return false;
     }
 
+    /**
+     * @return string
+     */
     public function getMessages()
     {
         $this->_messages->setMessages($this->_messageManager->getMessages());
@@ -135,7 +143,7 @@ class Files extends Template
     }
 
     /**
-     * @param $file
+     * @param array $file
      * @return null|string
      */
     public function getFileId($file)
@@ -147,7 +155,7 @@ class Files extends Template
     }
 
     /**
-     * @param $file
+     * @param array $file
      * @return null|string
      */
     public function getFileShortName($file) {
@@ -158,7 +166,7 @@ class Files extends Template
     }
 
     /**
-     * @param $file
+     * @param array $file
      * @return string
      */
     public function getFileEnding($file) {
@@ -170,7 +178,7 @@ class Files extends Template
     }
 
     /**
-     * @param $file
+     * @param array $file
      * @return string
      */
     public function getFileSize($file) {
@@ -192,7 +200,7 @@ class Files extends Template
     }
 
     /**
-     * @param $file
+     * @param array $file
      * @return false|string
      */
     public function getLastModified($file) {
@@ -204,7 +212,7 @@ class Files extends Template
     }
 
     /**
-     * @param $files
+     * @param array $files
      */
     public function setFilesCollection($files)
     {

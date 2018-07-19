@@ -50,7 +50,7 @@ abstract class AbstractController extends Action
     }
 
     /**
-     * @return \Flagbit\Flysystem\Model\Filesystem\Manager
+     * @return Manager
      */
     public function getStorage()
     {

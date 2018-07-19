@@ -56,6 +56,9 @@ class Preview extends AbstractController
         parent::__construct($context, $flysystemManager, $session);
     }
 
+    /**
+     * @return \Magento\Framework\Controller\Result\Json
+     */
     public function execute()
     {
         try {
@@ -74,7 +77,7 @@ class Preview extends AbstractController
             $result = ['error' => false, 'url' => $url];
         } catch (\Exception $e) {
             $result = ['error' => true, 'message' => $e->getMessage()];
-            $this->_logger->critical($e);
+            $this->_logger->critical($e->getMessage());
         }
 
         $resultJson = $this->_resultJsonFactory->create();

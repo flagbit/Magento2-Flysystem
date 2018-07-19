@@ -115,13 +115,13 @@ class UploadManager
             $this->_uploader = $this->_objectManager->create(Uploader::class, ['fileId' => $fileId]);
             return true;
         } catch (\Exception $e) {
-            $this->_logger->critical($e);
+            $this->_logger->critical($e->getMessage());
             return false;
         }
     }
 
     /**
-     * @param $file
+     * @param array $file
      * @throws \Exception
      */
     public function validateFileType($file)
