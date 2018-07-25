@@ -291,8 +291,8 @@ class TmpManager
     }
 
     /**
-     * @param $file
-     * @param null $content
+     * @param string $file
+     * @param string|null $content
      * @return bool|string
      */
     public function writeWysiwygFile($file, $content = null)

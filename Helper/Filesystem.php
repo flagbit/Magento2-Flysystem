@@ -112,7 +112,7 @@ class Filesystem extends AbstractHelper
     }
 
     /**
-     * @param $filename
+     * @param string $filename
      * @param bool $renderAsTag
      * @return string
      */
