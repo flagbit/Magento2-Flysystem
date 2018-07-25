@@ -1,7 +1,11 @@
 <?php
 namespace Flagbit\Flysystem\Helper;
 
+use \Magento\Cms\Helper\Wysiwyg\Images;
 use \Magento\Framework\App\Helper\AbstractHelper;
+use \Magento\Framework\App\Helper\Context;
+use \Magento\Framework\UrlInterface;
+use \Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Class Config
@@ -10,9 +14,30 @@ use \Magento\Framework\App\Helper\AbstractHelper;
 class Filesystem extends AbstractHelper
 {
     /**
+     * @var StoreManagerInterface
+     */
+    protected $_storeManager;
+
+    /**
+     * @var Images
+     */
+    protected $_imageHelper;
+
+    /**
      * @var string
      */
     protected $_currentPath;
+
+
+    public function __construct(
+        Context $context,
+        StoreManagerInterface $storeManager,
+        Images $imageHelper
+    ) {
+        $this->_storeManager = $storeManager;
+        $this->_imageHelper = $imageHelper;
+        parent::__construct($context);
+    }
 
     /**
      * Ext Tree node key name
@@ -84,5 +109,35 @@ class Filesystem extends AbstractHelper
             return $filename;
         }
         return substr($filename, 0, $maxLength) . '...';
+    }
+
+    /**
+     * @param $filename
+     * @param bool $renderAsTag
+     * @return string
+     */
+    public function getImageHtmlDeclaration($filename, $renderAsTag = false)
+    {
+        $mediaUrl = $this->_storeManager->getStore()->getBaseUrl(UrlInterface::URL_TYPE_MEDIA);
+        $mediaPath = $mediaUrl.$filename;
+        $directive = sprintf('{{media url="%s"}}', $mediaPath);
+        if ($renderAsTag) {
+            $html = sprintf('<img src="%s" alt="" />', $this->_imageHelper->isUsingStaticUrlsAllowed() ? $mediaPath : $directive);
+        } else {
+            if ($this->_imageHelper->isUsingStaticUrlsAllowed()) {
+                $html = $mediaPath; // $mediaPath;
+            } else {
+                $directive = $this->urlEncoder->encode($directive);
+
+                $html = $this->_storeManager->getStore()->getUrl(
+                    'cms/wysiwyg/directive',
+                    [
+                        '___directive' => $directive,
+                        '_escape_params' => false,
+                    ]
+                );
+            }
+        }
+        return $html;
     }
 }

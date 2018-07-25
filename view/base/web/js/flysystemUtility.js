@@ -6,12 +6,18 @@ define([
         window.flysystemUtility = {
             init: function() {
                 $('#preview-file-btn').on('click', function() {
-                    window.flysystemUtility.openPreview(data.url);
+                    window.flysystemUtility.openPreview(data.previewUrl);
                 });
 
                 $('#preview-close-btn').on('click', function() {
                     window.flysystemUtility.closePreview();
                 });
+
+                if($('#open-wysiwyg-btn')) {
+                    $('#open-wysiwyg-btn').on('click', function() {
+                        MediabrowserUtility.openDialog(data.wysiwygUrl);
+                    });
+                }
             },
 
             openPreview: function(url) {
@@ -28,7 +34,7 @@ define([
                         console.log(data.error);
                         if(!data.error) {
                             var previewHtml = $('#flysystem-image-preview');
-                            previewHtml.find('img').attr('src', data.url);
+                            previewHtml.find('img').attr('src', data.previewUrl);
                             previewHtml.show();
                         }
                     }, this)

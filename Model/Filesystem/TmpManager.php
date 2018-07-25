@@ -144,6 +144,14 @@ class TmpManager
     }
 
     /**
+     * @return MagentoFilesystem\Directory\WriteInterface
+     */
+    public function getDirectoryListMedia()
+    {
+        return $this->_directoryList;
+    }
+
+    /**
      * @return FilesystemAdapter|mixed|null
      */
     public function create()
@@ -280,6 +288,33 @@ class TmpManager
     public function setAdapter($adapter)
     {
         $this->_adapter = $adapter;
+    }
+
+    /**
+     * @param $file
+     * @param null $content
+     * @return bool|string
+     */
+    public function writeWysiwygFile($file, $content = null)
+    {
+        $wysiwygFileConst = 'wysiwyg/'.ltrim($file, '/');
+        $wysiwygFile = $wysiwygFileConst;
+
+        for($i=1; $this->getAdapter()->has($wysiwygFile); $i++) {
+            $filePathParts = explode('/', $wysiwygFileConst);
+            $fileParts = explode('.', $filePathParts[(count($filePathParts)-1)]);
+
+            $fileParts[0] = $fileParts[0].'_'.$i;
+            $filePathParts[(count($filePathParts)-1)] = implode('.', $fileParts);
+            $wysiwygFile = implode('/', $filePathParts);
+        }
+
+        if($this->getAdapter()->write($wysiwygFile, $content))
+        {
+            return $wysiwygFile;
+        }
+
+        return false;
     }
 
     /**

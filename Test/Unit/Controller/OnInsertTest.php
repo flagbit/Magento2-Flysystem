@@ -159,15 +159,21 @@ class OnInsertTest extends TestCase
         $decodedfile = '/path/to/file/test.jpg';
         $modalId = 'test_modal';
         $contents = 'filecontent';
+        $as_is = false;
 
         $this->_flysystemManagerMock->expects($this->atLeast(1))
             ->method('getAdapter')
             ->willReturn($this->_flysystemAdapterMock);
 
-        $this->_httpMock->expects($this->once())
+        $this->_httpMock->expects($this->at(0))
             ->method('getParam')
             ->with('filename')
             ->willReturn($filename);
+
+        $this->_httpMock->expects($this->at(1))
+            ->method('getParam')
+            ->with('as_is')
+            ->willReturn($as_is);
 
         $this->_flysystemHelperMock->expects($this->once())
             ->method('idDecode')
@@ -205,7 +211,7 @@ class OnInsertTest extends TestCase
 
     public function testExecuteException()
     {
-        $exception = new \Exception();
+        $exception = new \Exception('test');
 
          $this->_flysystemManagerMock->expects($this->once())
             ->method('getAdapter')
@@ -213,7 +219,7 @@ class OnInsertTest extends TestCase
 
          $this->_loggerMock->expects($this->once())
              ->method('critical')
-             ->with($exception);
+             ->with($exception->getMessage());
 
          $this->_resultRawFactoryMock->expects($this->once())
             ->method('create')

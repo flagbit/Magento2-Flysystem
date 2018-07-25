@@ -245,7 +245,7 @@ class UploadManagerTest extends TestCase
 
         $this->_loggerMock->expects($this->once())
             ->method('critical')
-            ->with($exception);
+            ->with($exception->getMessage());
 
         $this->assertEquals(false, $this->_object->setUploadFile($fileId));
     }

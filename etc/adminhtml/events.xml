@@ -3,6 +3,7 @@
     <event name="flagbit_flysystem_oninsert_after">
         <observer name="productImageObserver" instance="Flagbit\Flysystem\Observer\ProductImage" />
         <observer name="categoryImageObserver" instance="Flagbit\Flysystem\Observer\CategoryImage" />
+        <observer name="cmsImageObserver" instance="Flagbit\Flysystem\Observer\CmsImage" />
     </event>
     <event name="catalog_product_gallery_prepare_layout">
         <observer name="change_template" disabled="true"/>

@@ -429,7 +429,7 @@ class TmpManagerTest extends TestCase
             'url' => 'test.test/category/test.jpg'
         ];
 
-        $exception = new \Exception();
+        $exception = new \Exception('test');
 
         $this->_objectManagerMock->expects($this->once())
             ->method('get')
@@ -479,7 +479,7 @@ class TmpManagerTest extends TestCase
 
         $this->_loggerMock->expects($this->once())
             ->method('critical')
-            ->with($exception);
+            ->with($exception->getMessage());
 
         $this->expectException(LocalizedException::class);
 
@@ -775,5 +775,54 @@ class TmpManagerTest extends TestCase
         $this->expectException(LocalizedException::class);
 
         $this->_object->createCategoryTmp($file);
+    }
+
+    public function testGetDirectoryListMedia()
+    {
+        $this->assertEquals($this->_directoryListMock, $this->_object->getDirectoryListMedia());
+    }
+
+    public function testWriteWysiwygFile()
+    {
+        $file = 'test.jpg';
+        $wysiwygFile = 'wysiwyg/test.jpg';
+        $wysiwygFileNew = 'wysiwyg/test_1.jpg';
+        $content = 'test';
+
+        $this->_flysystemAdapterMock->expects($this->at(0))
+            ->method('has')
+            ->with($wysiwygFile)
+            ->willReturn(true);
+
+        $this->_flysystemAdapterMock->expects($this->at(1))
+            ->method('has')
+            ->with($wysiwygFileNew)
+            ->willReturn(false);
+
+        $this->_flysystemAdapterMock->expects($this->once())
+            ->method('write')
+            ->with($wysiwygFileNew, $content)
+            ->willReturn(true);
+
+        $this->assertEquals($wysiwygFileNew, $this->_object->writeWysiwygFile($file ,$content));
+    }
+
+    public function testWriteWysiwygFileError()
+    {
+        $file = 'test.jpg';
+        $wysiwygFile = 'wysiwyg/test.jpg';
+        $content = 'test';
+
+        $this->_flysystemAdapterMock->expects($this->once())
+            ->method('has')
+            ->with($wysiwygFile)
+            ->willReturn(false);
+
+        $this->_flysystemAdapterMock->expects($this->once())
+            ->method('write')
+            ->with($wysiwygFile, $content)
+            ->willReturn(false);
+
+        $this->assertEquals(false, $this->_object->writeWysiwygFile($file, $content));
     }
 }
