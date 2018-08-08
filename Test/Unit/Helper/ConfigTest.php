@@ -267,7 +267,7 @@ class ConfigTest extends TestCase
 
         $this->_scopeConfigMock->expects($this->once())
             ->method('getValue')
-            ->with(FlysystemConfig::XPATH_CONFIG_FTP_PATH)
+            ->with(FlysystemConfig::XPATH_CONFIG_SFTP_ROOT)
             ->willReturn($sftpRoot);
 
         $this->assertEquals($sftpRoot, $this->_object->getSftpRoot());
@@ -293,7 +293,7 @@ class ConfigTest extends TestCase
 
         $this->_scopeConfigMock->expects($this->once())
             ->method('getValue')
-            ->with(FlysystemConfig::XPATH_CONFIG_SFTP_TIMEOUT)
+            ->with(FlysystemConfig::XPATH_CONFIG_SFTP_DIRECTORY_PERMISSIONS)
             ->willReturn($directoryPermissions);
 
         $this->assertEquals($expected, $this->_object->getSftpDirectoryPermissions());
