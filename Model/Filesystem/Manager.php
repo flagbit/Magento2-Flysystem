@@ -225,7 +225,7 @@ class Manager
             $password = $this->_flysystemConfig->getSftpPassword();
             $privateKeyPathOrContent = $this->_flysystemConfig->getSftpPrivateKeyPathOrContent();
 
-            if(empty($host) || empty($username) || (empty($password) || empty($privateKeyPathOrContent))) {
+            if(empty($host) || empty($username) || (empty($password) && empty($privateKeyPathOrContent))) {
                 throw new LocalizedException(Errors::getErrorMessage(121));
             }
 
