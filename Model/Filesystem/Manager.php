@@ -221,7 +221,7 @@ class Manager
     {
         try {
             $host = $this->_flysystemConfig->getSftpHost();
-            $username = $this->_flysystemConfig->getSftpUsername()();
+            $username = $this->_flysystemConfig->getSftpUsername();
             $password = $this->_flysystemConfig->getSftpPassword();
             $privateKeyPathOrContent = $this->_flysystemConfig->getSftpPrivateKeyPathOrContent();
 
