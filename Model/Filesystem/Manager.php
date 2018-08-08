@@ -248,8 +248,10 @@ class Manager
                 'timeout' => $this->_flysystemConfig->getSftpTimeout()
             ];
 
-            if (null !== $this->_flysystemConfig->getSftpDirectoryPermissions()) {
-                $config['directoryPerm'] = $this->_flysystemConfig->getSftpDirectoryPermissions();
+            $sftpDirectoryPermissions = $this->_flysystemConfig->getSftpDirectoryPermissions();
+
+            if (null !== $sftpDirectoryPermissions) {
+                $config['directoryPerm'] = $sftpDirectoryPermissions;
             }
 
             return $this->_flysystemFactory->create($this->_flysystemManager->createSftpDriver($config));
