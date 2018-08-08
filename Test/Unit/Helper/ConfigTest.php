@@ -275,8 +275,8 @@ class ConfigTest extends TestCase
 
     public function testGetSftpTimeout()
     {
-        $timeout = '40';
-        $expected = 40;
+        $timeout = '10';
+        $expected = 10;
 
         $this->_scopeConfigMock->expects($this->once())
             ->method('getValue')
