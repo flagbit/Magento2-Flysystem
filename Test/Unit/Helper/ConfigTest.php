@@ -232,13 +232,16 @@ class ConfigTest extends TestCase
     {
         $sftpPrivateKeyPath = '/users/home/.ssh/private.key';
 
-        $this->_scopeConfigMock->expects($this->exactly(2))
+        $this->_scopeConfigMock->expects($this->once())
             ->method('getValue')
             ->with(FlysystemConfig::XPATH_CONFIG_SFTP_PRIVATE_KEY_PATH_OR_CONTENT)
             ->willReturn($sftpPrivateKeyPath);
 
         $this->assertEquals($sftpPrivateKeyPath, $this->_object->getSftpPrivateKeyPathOrContent());
+    }
 
+    public function testGetSftpPrivateKeyPathOrContent2()
+    {
         $sftpPrivateKeyContent = '-----BEGIN RSA PRIVATE KEY-----'.
             'MIICXAIBAAKBgQCqGKukO1De7zhZj6+H0qtjTkVxwTCpvKe4eCZ0FPqri0cb2JZfXJ/DgYSF6vUp'.
             'wmJG8wVQZKjeGcjDOL5UlsuusFncCzWBQ7RKNUSesmQRMSGkVb1/3j+skZ6UtW+5u09lHNsj6tQ5'.
@@ -253,7 +256,7 @@ class ConfigTest extends TestCase
             '37sJ5QsW+sJyoNde3xH8vdXhzU7eT82D6X/scw9RZz+/6rCJ4p0='.
             '-----END RSA PRIVATE KEY-----';
 
-        $this->_scopeConfigMock->expects($this->exactly(2))
+        $this->_scopeConfigMock->expects($this->once())
             ->method('getValue')
             ->with(FlysystemConfig::XPATH_CONFIG_SFTP_PRIVATE_KEY_PATH_OR_CONTENT)
             ->willReturn($sftpPrivateKeyContent);
