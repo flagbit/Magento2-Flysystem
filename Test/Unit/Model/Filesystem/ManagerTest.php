@@ -91,7 +91,7 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
     {
         $this->_flysystemManagerMock = $this->getMockBuilder(FilesystemManager::class)
             ->disableOriginalConstructor()
-            ->setMethods(['createLocalDriver', 'createFtpDriver', 'createNullDriver'])
+            ->setMethods(['createLocalDriver', 'createFtpDriver', 'createSftpDriver', 'createNullDriver'])
             ->getMock();
 
         $this->_flysystemFactoryMock = $this->getMockBuilder(FilesystemAdapterFactory::class)
@@ -557,7 +557,7 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
             ->willReturn($configArray['password']);
 
         $this->_configMock->expects($this->never())
-            ->method('getSftpPath');
+            ->method('getSftpRoot');
 
         $this->_loggerMock->expects($this->once())
             ->method('critical')
