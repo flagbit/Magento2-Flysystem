@@ -579,7 +579,7 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
     {
         $testSource = 'sftp';
 
-        $exception = new LocalizedException(__(Errors::getErrorMessage(121)));
+        $exception = new \Exception();
 
         $configArray = [
             'host' => 'sftphost',
