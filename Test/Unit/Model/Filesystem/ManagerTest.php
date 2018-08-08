@@ -542,6 +542,8 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
             'port' => 0,
             'privateKey' => '',
             'root' => '',
+            'timeout' => 10,
+            'directoryPerm' => 0755
         ];
 
         $this->_configMock->expects($this->once())
@@ -588,6 +590,8 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
             'password' => 'sftppassword',
             'privateKey' => '',
             'root' => 'invalidpath',
+            'timeout' => 10,
+            'directoryPerm' => 0755
         ];
 
         $this->_configMock->expects($this->once())
@@ -613,6 +617,14 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
         $this->_configMock->expects($this->once())
             ->method('getSftpRoot')
             ->willReturn($configArray['root']);
+
+        $this->_configMock->expects($this->once())
+            ->method('getSftpTimeout')
+            ->willReturn($configArray['timeout']);
+
+        $this->_configMock->expects($this->once())
+            ->method('getDirectoryPerm')
+            ->willReturn($configArray['directoryPerm']);
 
         $this->_flysystemManagerMock->expects($this->once())
             ->method('createSftpDriver')
