@@ -614,6 +614,11 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
             ->method('getSftpRoot')
             ->willReturn($configArray['root']);
 
+        $this->_flysystemManagerMock->expects($this->once())
+            ->method('createSftpDriver')
+            ->with($configArray)
+            ->willThrowException($exception);
+
         $this->_loggerMock->expects($this->once())
             ->method('critical')
             ->with($exception->getMessage())
