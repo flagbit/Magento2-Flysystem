@@ -241,7 +241,7 @@ class Manager
                 'port' => $this->_flysystemConfig->getSftpPort(),
                 'username' => $username,
                 'password' => $password,
-                'privateKey' => $this->_flysystemConfig->getSftpPrivateKeyPathOrContent(),
+                'privateKey' => $privateKeyPathOrContent,
                 'root' => $this->_flysystemConfig->getSftpRoot(),
                 'timeout' => $this->_flysystemConfig->getSftpTimeout(),
                 'directoryPerm' => $this->_flysystemConfig->getSftpDirectoryPermissions(),
