@@ -119,13 +119,14 @@ class Filesystem extends AbstractHelper
     public function getImageHtmlDeclaration($filename, $renderAsTag = false)
     {
         $mediaUrl = $this->_storeManager->getStore()->getBaseUrl(UrlInterface::URL_TYPE_MEDIA);
-        $mediaPath = $mediaUrl.$filename;
+        $mediaPath = '/'.trim($filename, '/');
+        $fileUrl = $mediaUrl.$filename;
         $directive = sprintf('{{media url="%s"}}', $mediaPath);
         if ($renderAsTag) {
-            $html = sprintf('<img src="%s" alt="" />', $this->_imageHelper->isUsingStaticUrlsAllowed() ? $mediaPath : $directive);
+            $html = sprintf('<img src="%s" alt="" />', $this->_imageHelper->isUsingStaticUrlsAllowed() ? $fileUrl : $directive);
         } else {
             if ($this->_imageHelper->isUsingStaticUrlsAllowed()) {
-                $html = $mediaPath; // $mediaPath;
+                $html = $fileUrl; // $mediaPath;
             } else {
                 $directive = $this->urlEncoder->encode($directive);
 
