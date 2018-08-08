@@ -623,7 +623,7 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
             ->willReturn($configArray['timeout']);
 
         $this->_configMock->expects($this->once())
-            ->method('getDirectoryPerm')
+            ->method('getSftpDirectoryPermissions')
             ->willReturn($configArray['directoryPerm']);
 
         $this->_flysystemManagerMock->expects($this->once())
