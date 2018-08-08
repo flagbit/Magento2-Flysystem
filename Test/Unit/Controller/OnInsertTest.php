@@ -213,7 +213,7 @@ class OnInsertTest extends TestCase
 
          $this->_loggerMock->expects($this->once())
              ->method('critical')
-             ->with($exception);
+             ->with($exception->getMessage());
 
          $this->_resultRawFactoryMock->expects($this->once())
             ->method('create')

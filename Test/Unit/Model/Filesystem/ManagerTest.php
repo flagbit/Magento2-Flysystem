@@ -120,7 +120,15 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
                 'getFtpPort',
                 'getFtpPassive',
                 'getFtpSsl',
-                'getFtpTimeout'
+                'getFtpTimeout',
+                'getSftpHost',
+                'getSftpPort',
+                'getSftpUsername',
+                'getSftpPassword',
+                'getSftpPrivateKeyPathOrContent',
+                'getSftpRoot',
+                'getSftpTimeout',
+                'getSftpDirectoryPermissions'
             ])
             ->getMock();
 
