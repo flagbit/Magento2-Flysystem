@@ -467,10 +467,10 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
         $testSource = 'sftp';
 
         $configArray = [
-            'host' => 'example.com',
+            'host' => 'sftphost',
             'port' => 22,
-            'username' => 'username',
-            'password' => 'password',
+            'username' => 'sftpUsername',
+            'password' => 'sftpPassword',
             'privateKey' => 'path/to/or/contents/of/privatekey',
             'root' => '/path/to/root',
             'timeout' => 10,
