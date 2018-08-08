@@ -169,14 +169,14 @@ class ConfigTest extends TestCase
 
     public function testGetSftpHost()
     {
-        $ftpHost = 'test.sftphost';
+        $sftpHost = 'test.sftphost';
 
         $this->_scopeConfigMock->expects($this->once())
             ->method('getValue')
             ->with(FlysystemConfig::XPATH_CONFIG_SFTP_HOST)
-            ->willReturn($ftpHost);
+            ->willReturn($sftpHost);
 
-        $this->assertEquals($ftpHost, $this->_object->getSftpHost());
+        $this->assertEquals($sftpHost, $this->_object->getSftpHost());
     }
 
     public function testGetSftpPort()

@@ -53,7 +53,7 @@ class FilesystemManagerTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->_ftpAdapterMock = $this->getMockBuilder(SftpAdapter::class)
+        $this->_sftpAdapterMock = $this->getMockBuilder(SftpAdapter::class)
             ->disableOriginalConstructor()
             ->getMock();
 

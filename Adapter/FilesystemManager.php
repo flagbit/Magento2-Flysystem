@@ -3,8 +3,8 @@ namespace Flagbit\Flysystem\Adapter;
 
 use \League\Flysystem\Adapter\Local as LocalAdapter;
 use \League\Flysystem\Adapter\Ftp as FtpAdapter;
-use \League\Flysystem\Sftp\SftpAdapter;
 use \League\Flysystem\Adapter\NullAdapter as NullAdapter;
+use \League\Flysystem\Sftp\SftpAdapter;
 
 use \Magento\Framework\ObjectManagerInterface;
 

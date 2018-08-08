@@ -19,7 +19,6 @@ class Errors extends AbstractHelper
      */
     const ERR_NO_101 = "FTP connection failed. Please check your flysystem configuration.";
     const ERR_NO_111 = "Adapter could not be initialized. Please check your flysystem configuration.";
-
     const ERR_NO_121 = "SFTP connection failed. Please check your flysystem configuration.";
 
     /**
