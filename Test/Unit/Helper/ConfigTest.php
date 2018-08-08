@@ -232,7 +232,7 @@ class ConfigTest extends TestCase
     {
         $sftpPrivateKeyPath = '/users/home/.ssh/private.key';
 
-        $this->_scopeConfigMock->expects($this->once())
+        $this->_scopeConfigMock->expects($this->exactly(2))
             ->method('getValue')
             ->with(FlysystemConfig::XPATH_CONFIG_SFTP_PRIVATE_KEY_PATH_OR_CONTENT)
             ->willReturn($sftpPrivateKeyPath);
@@ -253,7 +253,7 @@ class ConfigTest extends TestCase
             '37sJ5QsW+sJyoNde3xH8vdXhzU7eT82D6X/scw9RZz+/6rCJ4p0='.
             '-----END RSA PRIVATE KEY-----';
 
-        $this->_scopeConfigMock->expects($this->once())
+        $this->_scopeConfigMock->expects($this->exactly(2))
             ->method('getValue')
             ->with(FlysystemConfig::XPATH_CONFIG_SFTP_PRIVATE_KEY_PATH_OR_CONTENT)
             ->willReturn($sftpPrivateKeyContent);
