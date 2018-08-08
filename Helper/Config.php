@@ -221,7 +221,7 @@ class Config
          *  0 is used as base to let php decide how to convert the string value to an integer
          *  @see http://php.net/manual/de/function.intval.php,
          */
-        return intval($this->_scopeConfig->getValue(self::XPATH_CONFIG_SFTP_DIRECTORY_PERMISSIONS), 0);
+        return intval($directoryPermissions, 0);
     }
 
     /**
