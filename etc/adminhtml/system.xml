@@ -54,28 +54,31 @@
                     <label>Timeout</label>
                 </field>
             </group>
-            <group id="sftp" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+            <group id="sftp" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
                 <label>SFTP</label>
                 <field id="host" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Host</label>
                 </field>
-                <field id="port" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="port" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Port</label>
                 </field>
-                <field id="username" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="username" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Username</label>
                 </field>
-                <field id="password" translate="label" type="password" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="password" translate="label" type="password" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Password</label>
                 </field>
-                <field id="private_key" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Private Key</label>
+                <field id="private_key_path_or_content" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Path to Private Key / Content of Private Key</label>
                 </field>
-                <field id="root" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="root" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Root Path</label>
                 </field>
-                <field id="timeout" translate="label" type="text" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="timeout" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Timeout</label>
+                </field>
+                <field id="directory_permissions" translate="label" type="text" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Directory Permissions</label>
                 </field>
             </group>
         </section>

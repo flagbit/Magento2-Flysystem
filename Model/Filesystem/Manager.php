@@ -99,6 +99,9 @@ class Manager
             case 'ftp':
                 $this->setAdapter($this->createFtpAdapter());
                 break;
+            case 'sftp':
+                $this->setAdapter($this->createSftpAdapter());
+                break;
             case 'test':
                 $this->setAdapter($this->createNullAdapter());
                 break;
@@ -209,6 +212,46 @@ class Manager
             return null;
         }
     }
+
+    /**
+     * @return mixed
+     * @throws LocalizedException
+     */
+    protected function createSftpAdapter()
+    {
+        try {
+            $host = $this->_flysystemConfig->getSftpHost();
+            $username = $this->_flysystemConfig->getSftpUsername()();
+            $password = $this->_flysystemConfig->getSftpPassword();
+            $privateKeyPathOrContent = $this->_flysystemConfig->getSftpPrivateKeyPathOrContent();
+
+            if(empty($host) || empty($username) || (empty($password) || empty($privateKeyPathOrContent))) {
+                throw new LocalizedException(Errors::getErrorMessage(121));
+            }
+
+            $sftpRoot = $this->_flysystemConfig->getSftpRoot();
+            if(empty($sftpRoot)) {
+                $sftpRoot = '/';
+            }
+
+            $this->setPath($sftpRoot);
+
+            return $this->_flysystemFactory->create($this->_flysystemManager->createSftpDriver([
+                'host' => $host,
+                'port' => $this->_flysystemConfig->getSftpPort(),
+                'username' => $username,
+                'password' => $password,
+                'privateKey' => $this->_flysystemConfig->getSftpPrivateKeyPathOrContent(),
+                'root' => $this->_flysystemConfig->getSftpRoot(),
+                'timeout' => $this->_flysystemConfig->getSftpTimeout(),
+                'directoryPerm' => $this->_flysystemConfig->getSftpDirectoryPermissions(),
+            ]));
+        } catch (\Exception $e) {
+            $this->_logger->critical($e->getMessage());
+            return null;
+        }
+    }
+
 
     /**
      * @return mixed

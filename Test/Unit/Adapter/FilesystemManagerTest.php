@@ -3,6 +3,7 @@ namespace Flagbit\Flysystem\Test\Unit\Adapter;
 
 use \Flagbit\Flysystem\Adapter\FilesystemManager;
 use \League\Flysystem\Adapter\Ftp;
+use \League\Flysystem\Sftp\SftpAdapter;
 use \League\Flysystem\Adapter\Local;
 use \League\Flysystem\Adapter\NullAdapter;
 use \Magento\Framework\App\ObjectManager;
@@ -20,6 +21,11 @@ class FilesystemManagerTest extends TestCase
      * @var Ftp|MockObject
      */
     protected $_ftpAdapterMock;
+
+    /**
+     * @var SftpAdapter|MockObject
+     */
+    protected $_sftpAdapterMock;
 
     /**
      * @var Local|MockObject
@@ -44,6 +50,10 @@ class FilesystemManagerTest extends TestCase
             ->getMock();
 
         $this->_ftpAdapterMock = $this->getMockBuilder(Ftp::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->_ftpAdapterMock = $this->getMockBuilder(SftpAdapter::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -72,6 +82,20 @@ class FilesystemManagerTest extends TestCase
             ->willReturn($this->_ftpAdapterMock);
 
         $this->assertEquals($this->_ftpAdapterMock, $this->_object->createFtpDriver($config));
+    }
+
+    public function testCreateSftpDriver()
+    {
+        $config = [
+            'config' => []
+        ];
+
+        $this->_objectManagerMock->expects($this->once())
+            ->method('create')
+            ->with(SftpAdapter::class, $this->arrayHasKey('config'))
+            ->willReturn($this->_sftpAdapterMock);
+
+        $this->assertEquals($this->_sftpAdapterMock, $this->_object->createSftpDriver($config));
     }
 
     public function testCreateLocalDriver()
