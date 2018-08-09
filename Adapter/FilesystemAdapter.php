@@ -34,7 +34,7 @@ class FilesystemAdapter implements AdapterInterface
 
     /**
      * @param string $path
-     * @param string $contents
+     * @param null|string $contents
      * @param array $config
      * @return bool
      */
@@ -56,7 +56,7 @@ class FilesystemAdapter implements AdapterInterface
 
     /**
      * @param string $path
-     * @param string $contents
+     * @param null|string $contents
      * @param array $config
      * @return bool
      */
@@ -87,7 +87,7 @@ class FilesystemAdapter implements AdapterInterface
 
     /**
      * @param string $path
-     * @param string $contents
+     * @param null|string $contents
      * @param array $config
      * @return bool
      */
