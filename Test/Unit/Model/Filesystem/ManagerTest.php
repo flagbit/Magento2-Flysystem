@@ -579,7 +579,7 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
 
         $this->_flysystemManagerMock->expects($this->once())
             ->method('createSftpDriver')
-            ->with($configArray)
+            ->with(array_merge($configArray,['root' => '/']))
             ->willReturn($this->_sftpAdapterMock);
 
         $this->_flysystemFactoryMock->expects($this->once())
