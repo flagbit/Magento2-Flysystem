@@ -533,6 +533,8 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
     {
         $testSource = 'sftp';
 
+        $sftpRootConfig = '';
+
         $configArray = [
             'host' => 'sftphost',
             'port' => 22,
@@ -565,7 +567,7 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
 
         $this->_configMock->expects($this->once())
             ->method('getSftpRoot')
-            ->willReturn('');
+            ->willReturn($sftpRootConfig);
 
         $this->_configMock->expects($this->once())
             ->method('getSftpTimeout')
