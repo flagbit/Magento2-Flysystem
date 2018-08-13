@@ -527,6 +527,68 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
+     * Test creation of sftp adapter (via create method because createSftpAdapter is protected)
+     */
+    public function testCreateSftpAdapterWithEmptySftpRoot()
+    {
+        $testSource = 'sftp';
+
+        $configArray = [
+            'host' => 'sftphost',
+            'port' => 22,
+            'username' => 'sftpUsername',
+            'password' => 'sftpPassword',
+            'privateKey' => 'path/to/or/contents/of/privatekey',
+            'timeout' => 10,
+            'directoryPerm' => 0755
+        ];
+
+        $this->_configMock->expects($this->once())
+            ->method('getSftpHost')
+            ->willReturn($configArray['host']);
+
+        $this->_configMock->expects($this->once())
+            ->method('getSftpPort')
+            ->willReturn($configArray['port']);
+
+        $this->_configMock->expects($this->once())
+            ->method('getSftpUsername')
+            ->willReturn($configArray['username']);
+
+        $this->_configMock->expects($this->once())
+            ->method('getSftpPassword')
+            ->willReturn($configArray['password']);
+
+        $this->_configMock->expects($this->once())
+            ->method('getSftpPrivateKeyPathOrContent')
+            ->willReturn($configArray['privateKey']);
+
+        $this->_configMock->expects($this->once())
+            ->method('getSftpTimeout')
+            ->willReturn($configArray['timeout']);
+
+        $this->_configMock->expects($this->once())
+            ->method('getSftpDirectoryPermissions')
+            ->willReturn($configArray['directoryPerm']);
+
+        $this->_flysystemManagerMock->expects($this->once())
+            ->method('createSftpDriver')
+            ->with($configArray)
+            ->willReturn($this->_sftpAdapterMock);
+
+        $this->_flysystemFactoryMock->expects($this->once())
+            ->method('create')
+            ->with($this->_sftpAdapterMock)
+            ->willReturn($this->_flysystemAdapterMock);
+
+        $this->_eventManagerMock->expects($this->once())
+            ->method('dispatch')
+            ->withAnyParameters();
+
+        $this->assertEquals($this->_flysystemAdapterMock, $this->_manager->create($testSource));
+    }
+
+    /**
      * Test create sftp adapter with invalid sftp connection data
      */
     public function testCreateSftpAdapterInvalid1()
