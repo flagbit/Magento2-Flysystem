@@ -68,17 +68,23 @@
                 <field id="password" translate="label" type="password" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Password</label>
                 </field>
-                <field id="private_key_path_or_content" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Path to Private Key / Content of Private Key</label>
+                <field id="private_key_path" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Path to Private Key</label>
+                    <comment>When Path to Private Key and Content of Private Key is set, Path to Private Key takes precedence</comment>
                 </field>
-                <field id="root" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="private_key_content" translate="label" type="textarea" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Content of Private Key</label>
+                    <comment>When Path to Private Key and Content of Private Key is set, Path to Private Key takes precedence</comment>
+                </field>
+                <field id="root" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Root Path</label>
                 </field>
-                <field id="timeout" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="timeout" translate="label" type="text" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Timeout</label>
                 </field>
                 <field id="directory_permissions" translate="label" type="text" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Directory Permissions</label>
+                    <comment>Default Directory Permissions are 0744</comment>
                 </field>
             </group>
         </section>

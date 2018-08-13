@@ -42,7 +42,8 @@ class Config
     const XPATH_CONFIG_SFTP_PORT = 'flagbit_flysystem/sftp/port';
     const XPATH_CONFIG_SFTP_USERNAME = 'flagbit_flysystem/sftp/username';
     const XPATH_CONFIG_SFTP_PASSWORD = 'flagbit_flysystem/sftp/password';
-    const XPATH_CONFIG_SFTP_PRIVATE_KEY_PATH_OR_CONTENT = 'flagbit_flysystem/sftp/private_key_path_or_content';
+    const XPATH_CONFIG_SFTP_PRIVATE_KEY_PATH = 'flagbit_flysystem/sftp/private_key_path';
+    const XPATH_CONFIG_SFTP_PRIVATE_KEY_CONTENT = 'flagbit_flysystem/sftp/private_key_content';
     const XPATH_CONFIG_SFTP_ROOT = 'flagbit_flysystem/sftp/root';
     const XPATH_CONFIG_SFTP_TIMEOUT = 'flagbit_flysystem/sftp/timeout';
     const XPATH_CONFIG_SFTP_DIRECTORY_PERMISSIONS = 'flagbit_flysystem/sftp/directory_permissions';
@@ -187,9 +188,17 @@ class Config
     /**
      * @return mixed
      */
-    public function getSftpPrivateKeyPathOrContent()
+    public function getSftpPrivateKeyPath()
     {
-        return $this->_scopeConfig->getValue(self::XPATH_CONFIG_SFTP_PRIVATE_KEY_PATH_OR_CONTENT);
+        return $this->_scopeConfig->getValue(self::XPATH_CONFIG_SFTP_PRIVATE_KEY_PATH);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSftpPrivateKeyContent()
+    {
+        return $this->_scopeConfig->getValue(self::XPATH_CONFIG_SFTP_PRIVATE_KEY_CONTENT);
     }
 
     /**

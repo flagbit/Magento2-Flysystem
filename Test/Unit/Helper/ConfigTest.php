@@ -216,31 +216,19 @@ class ConfigTest extends TestCase
         $this->assertEquals($sftpPassword, $this->_object->getSftpPassword());
     }
 
-    public function testGetSftpPrivateKey()
-    {
-        $sftpPrivateKey = '/users/home/.ssh/private.key';
-
-        $this->_scopeConfigMock->expects($this->once())
-            ->method('getValue')
-            ->with(FlysystemConfig::XPATH_CONFIG_SFTP_PRIVATE_KEY_PATH_OR_CONTENT)
-            ->willReturn($sftpPrivateKey);
-
-        $this->assertEquals($sftpPrivateKey, $this->_object->getSftpPrivateKeyPathOrContent());
-    }
-
-    public function testGetSftpPrivateKeyPathOrContent()
+    public function testGetSftpPrivateKeyPath()
     {
         $sftpPrivateKeyPath = '/users/home/.ssh/private.key';
 
         $this->_scopeConfigMock->expects($this->once())
             ->method('getValue')
-            ->with(FlysystemConfig::XPATH_CONFIG_SFTP_PRIVATE_KEY_PATH_OR_CONTENT)
+            ->with(FlysystemConfig::XPATH_CONFIG_SFTP_PRIVATE_KEY_PATH)
             ->willReturn($sftpPrivateKeyPath);
 
-        $this->assertEquals($sftpPrivateKeyPath, $this->_object->getSftpPrivateKeyPathOrContent());
+        $this->assertEquals($sftpPrivateKeyPath, $this->_object->getSftpPrivateKeyPath());
     }
 
-    public function testGetSftpPrivateKeyPathOrContent2()
+    public function testGetSftpPrivateKeyContent()
     {
         $sftpPrivateKeyContent = '-----BEGIN RSA PRIVATE KEY-----'.
             'MIICXAIBAAKBgQCqGKukO1De7zhZj6+H0qtjTkVxwTCpvKe4eCZ0FPqri0cb2JZfXJ/DgYSF6vUp'.
@@ -258,10 +246,10 @@ class ConfigTest extends TestCase
 
         $this->_scopeConfigMock->expects($this->once())
             ->method('getValue')
-            ->with(FlysystemConfig::XPATH_CONFIG_SFTP_PRIVATE_KEY_PATH_OR_CONTENT)
+            ->with(FlysystemConfig::XPATH_CONFIG_SFTP_PRIVATE_KEY_CONTENT)
             ->willReturn($sftpPrivateKeyContent);
 
-        $this->assertEquals($sftpPrivateKeyContent, $this->_object->getSftpPrivateKeyPathOrContent());
+        $this->assertEquals($sftpPrivateKeyContent, $this->_object->getSftpPrivateKeyContent());
     }
 
     public function testGetSftpRoot()

@@ -225,9 +225,10 @@ class Manager
             $host = $this->_flysystemConfig->getSftpHost();
             $username = $this->_flysystemConfig->getSftpUsername();
             $password = $this->_flysystemConfig->getSftpPassword();
-            $privateKeyPathOrContent = $this->_flysystemConfig->getSftpPrivateKeyPathOrContent();
+            $privateKeyPath = $this->_flysystemConfig->getSftpPrivateKeyPath();
+            $privateKeyContent = $this->_flysystemConfig->getSftpPrivateKeyContent();
 
-            if (empty($host) || empty($username) || (empty($password) && empty($privateKeyPathOrContent))) {
+            if (empty($host) || empty($username) || (empty($password) && empty($privateKeyPath) && empty($privateKeyContent))) {
                 throw new LocalizedException(Errors::getErrorMessage(121));
             }
 
@@ -243,7 +244,7 @@ class Manager
                 'port' => $this->_flysystemConfig->getSftpPort(),
                 'username' => $username,
                 'password' => $password,
-                'privateKey' => $privateKeyPathOrContent,
+                'privateKey' => !empty($privateKeyPath) ? $privateKeyPath : $privateKeyContent,
                 'root' => $sftpRoot,
                 'timeout' => $this->_flysystemConfig->getSftpTimeout()
             ];
