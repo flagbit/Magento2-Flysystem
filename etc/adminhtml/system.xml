@@ -70,11 +70,11 @@
                 </field>
                 <field id="private_key_path" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Path to Private Key</label>
-                    <comment>When Path to Private Key and Content of Private Key is set, Path to Private Key takes precedence</comment>
+                    <comment>Note: Path to Private Key takes precedence over Content of Private Key, when it is set.</comment>
                 </field>
                 <field id="private_key_content" translate="label" type="textarea" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Content of Private Key</label>
-                    <comment>When Path to Private Key and Content of Private Key is set, Path to Private Key takes precedence</comment>
+                    <comment>Note: Path to Private Key takes precedence over Content of Private Key, when it is set.</comment>
                 </field>
                 <field id="root" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Root Path</label>
