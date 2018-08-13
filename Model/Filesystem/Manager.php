@@ -221,7 +221,7 @@ class Manager
      */
     protected function createSftpAdapter()
     {
-//        try {
+        try {
             $host = $this->_flysystemConfig->getSftpHost();
             $username = $this->_flysystemConfig->getSftpUsername();
             $password = $this->_flysystemConfig->getSftpPassword();
@@ -255,10 +255,10 @@ class Manager
             }
 
             return $this->_flysystemFactory->create($this->_flysystemManager->createSftpDriver($config));
-//        } catch (\Exception $e) {
-//            $this->_logger->critical($e->getMessage());
-//            return null;
-//        }
+        } catch (\Exception $e) {
+            $this->_logger->critical($e->getMessage());
+            return null;
+        }
     }
 
 

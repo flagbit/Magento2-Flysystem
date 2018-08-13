@@ -533,8 +533,6 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
     {
         $testSource = 'sftp';
 
-        $sftpRootConfig = '';
-
         $configArray = [
             'host' => 'sftphost',
             'port' => 22,
@@ -566,10 +564,6 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
             ->willReturn($configArray['privateKey']);
 
         $this->_configMock->expects($this->once())
-            ->method('getSftpRoot')
-            ->willReturn($sftpRootConfig);
-
-        $this->_configMock->expects($this->once())
             ->method('getSftpTimeout')
             ->willReturn($configArray['timeout']);
 
@@ -579,7 +573,7 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
 
         $this->_flysystemManagerMock->expects($this->once())
             ->method('createSftpDriver')
-            ->with(array_merge($configArray,['root' => '/']))
+            ->with(array_merge($configArray, ['root' => '/']))
             ->willReturn($this->_sftpAdapterMock);
 
         $this->_flysystemFactoryMock->expects($this->once())
