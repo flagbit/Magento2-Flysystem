@@ -564,6 +564,10 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
             ->willReturn($configArray['privateKey']);
 
         $this->_configMock->expects($this->once())
+            ->method('getSftpRoot')
+            ->willReturn('');
+
+        $this->_configMock->expects($this->once())
             ->method('getSftpTimeout')
             ->willReturn($configArray['timeout']);
 
