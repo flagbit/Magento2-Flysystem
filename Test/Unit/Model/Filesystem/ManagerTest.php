@@ -540,7 +540,6 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
             'password' => 'sftpPassword',
             'privateKey' => 'path/to/or/contents/of/privatekey',
             'timeout' => 10,
-            'root' => '',
             'directoryPerm' => 0755
         ];
 
