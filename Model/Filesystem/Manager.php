@@ -1,4 +1,5 @@
 <?php
+
 namespace Flagbit\Flysystem\Model\Filesystem;
 
 use \Flagbit\Flysystem\Adapter\FilesystemAdapter;
@@ -73,7 +74,8 @@ class Manager
         Config $flysystemConfig,
         Session $session,
         LoggerInterface $logger
-    ) {
+    )
+    {
         $this->_flysystemManager = $flysystemManager;
         $this->_flysystemFactory = $flysystemFactory;
         $this->_eventManager = $eventManager;
@@ -88,16 +90,19 @@ class Manager
      */
     public function create($source = null)
     {
-        if(!$source) {
+        if (!$source) {
             $source = $this->_flysystemConfig->getSource();
         }
 
-        switch($source) {
+        switch ($source) {
             case 'local':
                 $this->setAdapter($this->createLocalAdapter());
                 break;
             case 'ftp':
                 $this->setAdapter($this->createFtpAdapter());
+                break;
+            case 'sftp':
+                $this->setAdapter($this->createSftpAdapter());
                 break;
             case 'test':
                 $this->setAdapter($this->createNullAdapter());
@@ -116,11 +121,11 @@ class Manager
      */
     public function getAdapter($createIfNotExists = true)
     {
-        if(!$this->_adapter && $createIfNotExists) {
+        if (!$this->_adapter && $createIfNotExists) {
             $this->create();
         }
 
-        if(!$this->_adapter) {
+        if (!$this->_adapter) {
             throw new LocalizedException(Errors::getErrorMessage(111));
         }
         return $this->_adapter;
@@ -157,7 +162,7 @@ class Manager
     public function createLocalAdapter($path = null)
     {
         try {
-            if(empty($path)) {
+            if (empty($path)) {
                 $path = $this->_flysystemConfig->getLocalPath();
                 if (empty($path)) {
                     $path = '/';
@@ -183,12 +188,12 @@ class Manager
             $host = $this->_flysystemConfig->getFtpHost();
             $user = $this->_flysystemConfig->getFtpUser();
             $password = $this->_flysystemConfig->getFtpPassword();
-            if(empty($host) || empty($user) || empty($password)) {
+            if (empty($host) || empty($user) || empty($password)) {
                 throw new LocalizedException(Errors::getErrorMessage(101));
             }
 
             $ftpPath = $this->_flysystemConfig->getFtpPath();
-            if(empty($ftpPath)) {
+            if (empty($ftpPath)) {
                 $ftpPath = '/';
             }
 
@@ -209,6 +214,54 @@ class Manager
             return null;
         }
     }
+
+    /**
+     * @return mixed
+     * @throws LocalizedException
+     */
+    protected function createSftpAdapter()
+    {
+        try {
+            $host = $this->_flysystemConfig->getSftpHost();
+            $username = $this->_flysystemConfig->getSftpUsername();
+            $password = $this->_flysystemConfig->getSftpPassword();
+            $privateKeyPath = $this->_flysystemConfig->getSftpPrivateKeyPath();
+            $privateKeyContent = $this->_flysystemConfig->getSftpPrivateKeyContent();
+
+            if (empty($host) || empty($username) || (empty($password) && empty($privateKeyPath) && empty($privateKeyContent))) {
+                throw new LocalizedException(Errors::getErrorMessage(121));
+            }
+
+            $sftpRoot = $this->_flysystemConfig->getSftpRoot();
+            if (empty($sftpRoot)) {
+                $sftpRoot = '/';
+            }
+
+            $this->setPath($sftpRoot);
+
+            $config = [
+                'host' => $host,
+                'port' => $this->_flysystemConfig->getSftpPort(),
+                'username' => $username,
+                'password' => $password,
+                'privateKey' => !empty($privateKeyPath) ? $privateKeyPath : $privateKeyContent,
+                'root' => $sftpRoot,
+                'timeout' => $this->_flysystemConfig->getSftpTimeout()
+            ];
+
+            $sftpDirectoryPermissions = $this->_flysystemConfig->getSftpDirectoryPermissions();
+
+            if (null !== $sftpDirectoryPermissions) {
+                $config['directoryPerm'] = $sftpDirectoryPermissions;
+            }
+
+            return $this->_flysystemFactory->create($this->_flysystemManager->createSftpDriver($config));
+        } catch (\Exception $e) {
+            $this->_logger->critical($e->getMessage());
+            return null;
+        }
+    }
+
 
     /**
      * @return mixed

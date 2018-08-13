@@ -11,6 +11,11 @@
                 <ssl>1</ssl>
                 <timeout>30</timeout>
             </ftp>
+            <sftp>
+                <port>22</port>
+                <timeout>10</timeout>
+                <directoryPerm>0744</directoryPerm>
+            </sftp>
         </flagbit_flysystem>
     </default>
 </config>

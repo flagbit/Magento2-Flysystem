@@ -16,6 +16,7 @@ use \PHPUnit\Framework\MockObject\MockObject;
 use \League\Flysystem\Adapter\NullAdapter as NullAdapter;
 use \League\Flysystem\Adapter\Local as LocalAdapter;
 use \League\Flysystem\Adapter\Ftp as FtpAdapter;
+use \League\Flysystem\Sftp\SftpAdapter;
 
 /**
  * Class ManagerTest
@@ -74,6 +75,11 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
     protected $_ftpAdapterMock;
 
     /**
+     * @var SftpAdapter|MockObject
+     */
+    protected $_sftpAdapterMock;
+
+    /**
      * @var Manager|MockObject
      */
     protected $_manager;
@@ -85,7 +91,7 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
     {
         $this->_flysystemManagerMock = $this->getMockBuilder(FilesystemManager::class)
             ->disableOriginalConstructor()
-            ->setMethods(['createLocalDriver', 'createFtpDriver', 'createNullDriver'])
+            ->setMethods(['createLocalDriver', 'createFtpDriver', 'createSftpDriver', 'createNullDriver'])
             ->getMock();
 
         $this->_flysystemFactoryMock = $this->getMockBuilder(FilesystemAdapterFactory::class)
@@ -114,7 +120,16 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
                 'getFtpPort',
                 'getFtpPassive',
                 'getFtpSsl',
-                'getFtpTimeout'
+                'getFtpTimeout',
+                'getSftpHost',
+                'getSftpPort',
+                'getSftpUsername',
+                'getSftpPassword',
+                'getSftpPrivateKeyPath',
+                'getSftpPrivateKeyContent',
+                'getSftpRoot',
+                'getSftpTimeout',
+                'getSftpDirectoryPermissions'
             ])
             ->getMock();
 
@@ -137,6 +152,10 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
             ->getMock();
 
         $this->_ftpAdapterMock = $this->getMockBuilder(FtpAdapter::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->_sftpAdapterMock = $this->getMockBuilder(SftpAdapter::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -425,6 +444,274 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
 
         $this->_flysystemManagerMock->expects($this->once())
             ->method('createFtpDriver')
+            ->with($configArray)
+            ->willThrowException($exception);
+
+        $this->_loggerMock->expects($this->once())
+            ->method('critical')
+            ->with($exception->getMessage())
+            ->willReturn(true);
+
+        $this->_eventManagerMock->expects($this->once())
+            ->method('dispatch')
+            ->withAnyParameters();
+
+        $this->expectException(LocalizedException::class);
+        $this->_manager->create($testSource);
+    }
+
+    /**
+     * Test creation of sftp adapter (via create method because createSftpAdapter is protected)
+     */
+    public function testCreateSftpAdapter()
+    {
+        $testSource = 'sftp';
+
+        $privateKeyPath = 'path/to/or/contents/of/privatekey';
+        $privateKeyContent = '';
+
+        $configArray = [
+            'host' => 'sftphost',
+            'port' => 22,
+            'username' => 'sftpUsername',
+            'password' => 'sftpPassword',
+            'privateKey' => $privateKeyPath,
+            'root' => '/path/to/root',
+            'timeout' => 10,
+            'directoryPerm' => 0755
+        ];
+
+        $this->_configMock->expects($this->once())
+            ->method('getSftpHost')
+            ->willReturn($configArray['host']);
+
+        $this->_configMock->expects($this->once())
+            ->method('getSftpPort')
+            ->willReturn($configArray['port']);
+
+        $this->_configMock->expects($this->once())
+            ->method('getSftpUsername')
+            ->willReturn($configArray['username']);
+
+        $this->_configMock->expects($this->once())
+            ->method('getSftpPassword')
+            ->willReturn($configArray['password']);
+
+        $this->_configMock->expects($this->once())
+            ->method('getSftpPrivateKeyPath')
+            ->willReturn($configArray['privateKey']);
+
+        $this->_configMock->expects($this->once())
+            ->method('getSftpPrivateKeyContent')
+            ->willReturn($privateKeyContent);
+
+        $this->_configMock->expects($this->once())
+            ->method('getSftpRoot')
+            ->willReturn($configArray['root']);
+
+        $this->_configMock->expects($this->once())
+            ->method('getSftpTimeout')
+            ->willReturn($configArray['timeout']);
+
+        $this->_configMock->expects($this->once())
+            ->method('getSftpDirectoryPermissions')
+            ->willReturn($configArray['directoryPerm']);
+
+        $this->_flysystemManagerMock->expects($this->once())
+            ->method('createSftpDriver')
+            ->with($configArray)
+            ->willReturn($this->_sftpAdapterMock);
+
+        $this->_flysystemFactoryMock->expects($this->once())
+            ->method('create')
+            ->with($this->_sftpAdapterMock)
+            ->willReturn($this->_flysystemAdapterMock);
+
+        $this->_eventManagerMock->expects($this->once())
+            ->method('dispatch')
+            ->withAnyParameters();
+
+        $this->assertEquals($this->_flysystemAdapterMock, $this->_manager->create($testSource));
+    }
+
+    /**
+     * Test creation of sftp adapter (via create method because createSftpAdapter is protected)
+     */
+    public function testCreateSftpAdapterWithEmptySftpRoot()
+    {
+        $testSource = 'sftp';
+
+        $privateKeyPath = 'path/to/or/contents/of/privatekey';
+        $privateKeyContent = '';
+
+        $configArray = [
+            'host' => 'sftphost',
+            'port' => 22,
+            'username' => 'sftpUsername',
+            'password' => 'sftpPassword',
+            'privateKey' => $privateKeyPath,
+            'timeout' => 10,
+            'directoryPerm' => 0755
+        ];
+
+        $this->_configMock->expects($this->once())
+            ->method('getSftpHost')
+            ->willReturn($configArray['host']);
+
+        $this->_configMock->expects($this->once())
+            ->method('getSftpPort')
+            ->willReturn($configArray['port']);
+
+        $this->_configMock->expects($this->once())
+            ->method('getSftpUsername')
+            ->willReturn($configArray['username']);
+
+        $this->_configMock->expects($this->once())
+            ->method('getSftpPassword')
+            ->willReturn($configArray['password']);
+
+        $this->_configMock->expects($this->once())
+            ->method('getSftpPrivateKeyPath')
+            ->willReturn($configArray['privateKey']);
+
+        $this->_configMock->expects($this->once())
+            ->method('getSftpPrivateKeyContent')
+            ->willReturn($privateKeyContent);
+
+        $this->_configMock->expects($this->once())
+            ->method('getSftpTimeout')
+            ->willReturn($configArray['timeout']);
+
+        $this->_configMock->expects($this->once())
+            ->method('getSftpDirectoryPermissions')
+            ->willReturn($configArray['directoryPerm']);
+
+        $this->_flysystemManagerMock->expects($this->once())
+            ->method('createSftpDriver')
+            ->with(array_merge($configArray, ['root' => '/']))
+            ->willReturn($this->_sftpAdapterMock);
+
+        $this->_flysystemFactoryMock->expects($this->once())
+            ->method('create')
+            ->with($this->_sftpAdapterMock)
+            ->willReturn($this->_flysystemAdapterMock);
+
+        $this->_eventManagerMock->expects($this->once())
+            ->method('dispatch')
+            ->withAnyParameters();
+
+        $this->assertEquals($this->_flysystemAdapterMock, $this->_manager->create($testSource));
+    }
+
+    /**
+     * Test create sftp adapter with invalid sftp connection data
+     */
+    public function testCreateSftpAdapterInvalid1()
+    {
+        $testSource = 'sftp';
+
+        $exception = new LocalizedException(__(Errors::getErrorMessage(121)));
+
+        $configArray = [
+            'host' => null,
+            'username' => null,
+            'password' => null,
+            'port' => 0,
+            'privateKey' => '',
+            'root' => '',
+            'timeout' => 10,
+            'directoryPerm' => 0755
+        ];
+
+        $this->_configMock->expects($this->once())
+            ->method('getSftpHost')
+            ->willReturn($configArray['host']);
+
+        $this->_configMock->expects($this->once())
+            ->method('getSftpUsername')
+            ->willReturn($configArray['username']);
+
+        $this->_configMock->expects($this->once())
+            ->method('getSftpPassword')
+            ->willReturn($configArray['password']);
+
+        $this->_configMock->expects($this->never())
+            ->method('getSftpRoot');
+
+        $this->_loggerMock->expects($this->once())
+            ->method('critical')
+            ->with($exception->getMessage())
+            ->willReturn(true);
+
+        $this->_eventManagerMock->expects($this->once())
+            ->method('dispatch')
+            ->withAnyParameters();
+
+        $this->expectException(LocalizedException::class);
+        $this->_manager->create($testSource);
+    }
+
+    /**
+     * Test create sftp adapter with invalid sftp connection data
+     */
+    public function testCreateSftpAdapterInvalid2()
+    {
+        $testSource = 'sftp';
+
+        $privateKeyPath = '';
+        $privateKeyContent = '';
+
+        $exception = new \Exception();
+
+        $configArray = [
+            'host' => 'sftphost',
+            'port' => 22,
+            'username' => 'sftpuser',
+            'password' => 'sftppassword',
+            'privateKey' => $privateKeyPath,
+            'root' => 'invalidpath',
+            'timeout' => 10,
+            'directoryPerm' => 0755
+        ];
+
+        $this->_configMock->expects($this->once())
+            ->method('getSftpHost')
+            ->willReturn($configArray['host']);
+
+        $this->_configMock->expects($this->once())
+            ->method('getSftpPort')
+            ->willReturn($configArray['port']);
+
+        $this->_configMock->expects($this->once())
+            ->method('getSftpUsername')
+            ->willReturn($configArray['username']);
+
+        $this->_configMock->expects($this->once())
+            ->method('getSftpPassword')
+            ->willReturn($configArray['password']);
+
+        $this->_configMock->expects($this->once())
+            ->method('getSftpPrivateKeyPath')
+            ->willReturn($configArray['privateKey']);
+
+        $this->_configMock->expects($this->once())
+            ->method('getSftpPrivateKeyContent')
+            ->willReturn($privateKeyContent);
+
+        $this->_configMock->expects($this->once())
+            ->method('getSftpRoot')
+            ->willReturn($configArray['root']);
+
+        $this->_configMock->expects($this->once())
+            ->method('getSftpTimeout')
+            ->willReturn($configArray['timeout']);
+
+        $this->_configMock->expects($this->once())
+            ->method('getSftpDirectoryPermissions')
+            ->willReturn($configArray['directoryPerm']);
+
+        $this->_flysystemManagerMock->expects($this->once())
+            ->method('createSftpDriver')
             ->with($configArray)
             ->willThrowException($exception);
 
