@@ -125,7 +125,8 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
                 'getSftpPort',
                 'getSftpUsername',
                 'getSftpPassword',
-                'getSftpPrivateKeyPathOrContent',
+                'getSftpPrivateKeyPath',
+                'getSftpPrivateKeyContent',
                 'getSftpRoot',
                 'getSftpTimeout',
                 'getSftpDirectoryPermissions'
@@ -466,12 +467,15 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
     {
         $testSource = 'sftp';
 
+        $privateKeyPath = 'path/to/or/contents/of/privatekey';
+        $privateKeyContent = '';
+
         $configArray = [
             'host' => 'sftphost',
             'port' => 22,
             'username' => 'sftpUsername',
             'password' => 'sftpPassword',
-            'privateKey' => 'path/to/or/contents/of/privatekey',
+            'privateKey' => $privateKeyPath,
             'root' => '/path/to/root',
             'timeout' => 10,
             'directoryPerm' => 0755
@@ -494,8 +498,12 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
             ->willReturn($configArray['password']);
 
         $this->_configMock->expects($this->once())
-            ->method('getSftpPrivateKeyPathOrContent')
+            ->method('getSftpPrivateKeyPath')
             ->willReturn($configArray['privateKey']);
+
+        $this->_configMock->expects($this->once())
+            ->method('getSftpPrivateKeyContent')
+            ->willReturn($privateKeyContent);
 
         $this->_configMock->expects($this->once())
             ->method('getSftpRoot')
