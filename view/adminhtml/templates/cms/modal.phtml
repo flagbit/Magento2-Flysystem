@@ -1,0 +1,18 @@
+<?php
+$flyUrl = $this->getUrl('flagbit_flysystem/filesystem/index',
+    [
+        'target_element_id' => $this->getRequest()->getParam("target_element_id"),
+        'type' => 'file',
+        'identifier' => 'flagbit_cms_modal'
+    ]);
+?>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Flagbit_Flysystem/js/cms/mediabrowserExtension": {
+                "flysystemButtonTitle": "<?= __('Open Flysystem Browser'); ?>",
+                "flysystemButtonUrl": "<?= $flyUrl ?>"
+            }
+        }
+    }
+</script>

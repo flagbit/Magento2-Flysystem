@@ -4,6 +4,7 @@ namespace Flagbit\Flysystem\Adapter;
 use \League\Flysystem\Adapter\Local as LocalAdapter;
 use \League\Flysystem\Adapter\Ftp as FtpAdapter;
 use \League\Flysystem\Adapter\NullAdapter as NullAdapter;
+use \League\Flysystem\Sftp\SftpAdapter;
 
 use \Magento\Framework\ObjectManagerInterface;
 
@@ -26,6 +27,17 @@ class FilesystemManager implements ManagerInterface
         ObjectManagerInterface $objectManager
     ) {
         $this->objectManager = $objectManager;
+    }
+
+    /**
+     * @param array $config
+     * @return mixed
+     */
+    public function createSftpDriver(array $config)
+    {
+        return $this->objectManager->create(SftpAdapter::class, [
+            'config' => $config
+        ]);
     }
 
     /**

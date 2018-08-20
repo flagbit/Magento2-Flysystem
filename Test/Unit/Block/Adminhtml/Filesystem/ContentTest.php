@@ -98,12 +98,17 @@ class ContentTest extends TestCase
             ->method('remove')
             ->with($this->isType('string'));
 
+        $this->_requestHttpMock->expects($this->at(0))
+            ->method('getParam')
+            ->with('identifier')
+            ->willReturn('flagbit_cms_modal');
+
         $this->_authorizationMock->expects($this->exactly(4))
             ->method('isAllowed')
             ->with($this->isType('string'))
             ->willReturn(true);
 
-        $this->_buttonListMock->expects($this->exactly(5))
+        $this->_buttonListMock->expects($this->exactly(6))
             ->method('add')
             ->with($this->isType('string'), $this->isType('array'), 0, 0, 'header');
 
@@ -158,5 +163,25 @@ class ContentTest extends TestCase
             ->willReturn($url);
 
         $this->assertEquals($url, $this->_object->getPreviewUrl());
+    }
+
+    public function testGetWysiwygModalUrl()
+    {
+        $url = 'test.com/test';
+        $targetElement = 'test_target';
+
+        $this->_requestHttpMock->expects($this->at(0))
+            ->method('getParam')
+            ->with('target_element_id')
+            ->willReturn($targetElement);
+
+        $this->_urlBuilderMock->expects($this->once())
+            ->method('getUrl')
+            ->with('cms/wysiwyg_images/index', [
+                'target_element_id' => $targetElement
+            ])
+            ->willReturn($url);
+
+        $this->assertEquals($url, $this->_object->getWysiwygModalUrl());
     }
 }

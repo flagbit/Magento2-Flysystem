@@ -38,6 +38,16 @@ class Content extends Container
         $this->buttonList->remove('back');
         $this->buttonList->remove('edit');
 
+        if($this->getModalIdentifier() === 'flagbit_cms_modal') {
+            $this->buttonList->add(
+                'open_wysiwyg_browser',
+                ['id' => 'open-wysiwyg-btn', 'label' => __('Open Default Browser'), 'type' => 'button'],
+                0,
+                0,
+                'header'
+            );
+        }
+
         if($this->_authorization->isAllowed('Flagbit_Flysystem::folder_create')) {
             $this->buttonList->add(
                 'new_folder',
@@ -159,6 +169,16 @@ class Content extends Container
     public function getPreviewUrl()
     {
         return $this->getUrl('flagbit_flysystem/*/preview');
+    }
+
+    /**
+     * @return string
+     */
+    public function getWysiwygModalUrl()
+    {
+        return $this->getUrl('cms/wysiwyg_images/index', [
+            'target_element_id' => $this->getTargetElementId()
+        ]);
     }
 
     /**

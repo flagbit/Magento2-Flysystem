@@ -79,6 +79,8 @@ class OnInsert extends AbstractController
             $filename = $this->getRequest()->getParam('filename');
             $filename = $this->_flysystemHelper->idDecode($filename);
 
+            $as_is = $this->getRequest()->getParam('as_is');
+
             $contents = $manager->getAdapter()->read($filename);
 
             $this->_tmpManager->writeTmp($filename, $contents);
@@ -90,7 +92,8 @@ class OnInsert extends AbstractController
                     'controller' => $this,
                     'filename' => $filename,
                     'manager' => $manager,
-                    'modal_id' => $identifier
+                    'modal_id' => $identifier,
+                    'as_is' => $as_is
                 ]);
 
             if (empty($this->_result)) {
