@@ -66,7 +66,7 @@ class CmsImageTest extends TestCase
      */
     protected $_object;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->_tmpManagerMock = $this->getMockBuilder(TmpManager::class)
             ->disableOriginalConstructor()
@@ -120,7 +120,7 @@ class CmsImageTest extends TestCase
         );
     }
 
-    private function _expectObserverInitializeSuccess($filename)
+    private function _expectObserverInitializeSuccess(string $filename): void
     {
         $this->_observerMock->expects($this->exactly(5))
             ->method('getEvent')
@@ -152,7 +152,7 @@ class CmsImageTest extends TestCase
             ->willReturn(true);
     }
 
-    public function testExecute()
+    public function testExecute(): void
     {
         $filename = 'test/test.jpg';
         $content = 'test';
@@ -203,7 +203,7 @@ class CmsImageTest extends TestCase
         $this->_object->execute($this->_observerMock);
     }
 
-    public function testExecuteMediaFile()
+    public function testExecuteMediaFile(): void
     {
         $filename = 'media/wysiwyg/test.jpg';
         $content = 'test';
@@ -252,7 +252,7 @@ class CmsImageTest extends TestCase
         $this->_object->execute($this->_observerMock);
     }
 
-    public function testExecuteInvalidObserverParameters()
+    public function testExecuteInvalidObserverParameters(): void
     {
         $invalidManager = null;
         $invalidController = null;

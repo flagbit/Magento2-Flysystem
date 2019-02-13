@@ -8,163 +8,163 @@ namespace Flagbit\Flysystem\Adapter;
 interface AdapterInterface {
 
     /**
-     * @param $path
-     * @return mixed
+     * @param string $path
+     * @return bool
      */
-    public function has($path);
+    public function has(string $path): bool;
 
     /**
-     * @param $path
-     * @param $contents
+     * @param string $path
+     * @param string $contents
+     * @param array $config
+     * @return bool
+     */
+    public function write(string $path, string $contents, array $config = []): bool;
+
+    /**
+     * @param string $path
+     * @param resource $resource
      * @param array $config
      * @return mixed
      */
-    public function write($path, $contents, array $config = []);
+    public function writeStream(string $path, $resource, array $config = []): bool;
 
     /**
-     * @param $path
-     * @param $resource
+     * @param string $path
+     * @param string $contents
      * @param array $config
-     * @return mixed
+     * @return bool
      */
-    public function writeStream($path, $resource, array $config = []);
+    public function put(string $path, string $contents, array $config = []): bool;
 
     /**
-     * @param $path
-     * @param $contents
+     * @param string $path
+     * @param resource $resource
      * @param array $config
-     * @return mixed
+     * @return bool
      */
-    public function put($path, $contents, array $config = []);
+    public function putStream(string $path, $resource, array $config = []): bool;
 
     /**
-     * @param $path
-     * @param $resource
+     * @param string $path
+     * @return string|false
+     */
+    public function readAndDelete(string $path);
+
+    /**
+     * @param string $path
+     * @param string $contents
      * @param array $config
-     * @return mixed
+     * @return bool
      */
-    public function putStream($path, $resource, array $config = []);
+    public function update(string $path, string $contents, array $config = []): bool;
 
     /**
-     * @param $path
-     * @return mixed
-     */
-    public function readAndDelete($path);
-
-    /**
-     * @param $path
-     * @param $contents
+     * @param string $path
+     * @param resource $resource
      * @param array $config
-     * @return mixed
+     * @return bool
      */
-    public function update($path, $contents, array $config = []);
+    public function updateStream(string $path, $resource, array $config = []): bool;
 
     /**
-     * @param $path
-     * @param $resource
+     * @param string $path
+     * @return string|false
+     */
+    public function read(string $path);
+
+    /**
+     * @param string $path
+     * @return array|false
+     */
+    public function readStream(string $path);
+
+    /**
+     * @param string $path
+     * @param string $newpath
+     * @return bool
+     */
+    public function rename(string $path, string $newpath): bool;
+
+    /**
+     * @param string $path
+     * @param string $newpath
+     * @return bool
+     */
+    public function copy(string $path, string $newpath): bool;
+
+    /**
+     * @param string $path
+     * @return bool
+     */
+    public function delete(string $path): bool;
+
+    /**
+     * @param string $dirname
+     * @return bool
+     */
+    public function deleteDir(string $dirname): bool;
+
+    /**
+     * @param string $dirname
      * @param array $config
-     * @return mixed
+     * @return bool
      */
-    public function updateStream($path, $resource, array $config = []);
-
-    /**
-     * @param $path
-     * @return mixed
-     */
-    public function read($path);
-
-    /**
-     * @param $path
-     * @return mixed
-     */
-    public function readStream($path);
-
-    /**
-     * @param $path
-     * @param $newpath
-     * @return mixed
-     */
-    public function rename($path, $newpath);
-
-    /**
-     * @param $path
-     * @param $newpath
-     * @return mixed
-     */
-    public function copy($path, $newpath);
-
-    /**
-     * @param $path
-     * @return mixed
-     */
-    public function delete($path);
-
-    /**
-     * @param $dirname
-     * @return mixed
-     */
-    public function deleteDir($dirname);
-
-    /**
-     * @param $dirname
-     * @param array $config
-     * @return mixed
-     */
-    public function createDir($dirname, array $config = []);
+    public function createDir(string $dirname, array $config = []): bool;
 
     /**
      * @param string $directory
      * @param bool $recursive
-     * @return mixed
+     * @return array|null
      */
-    public function listContents($directory = '', $recursive = false);
+    public function listContents(string $directory = '', bool $recursive = false): ?array;
 
     /**
-     * @param $path
-     * @return mixed
+     * @param string $path
+     * @return string|false
      */
-    public function getMimetype($path);
+    public function getMimetype(string $path);
 
     /**
-     * @param $path
-     * @return mixed
+     * @param string $path
+     * @return string|false
      */
-    public function getTimestamp($path);
+    public function getTimestamp(string $path);
 
     /**
-     * @param $path
-     * @return mixed
+     * @param string $path
+     * @return string|false
      */
-    public function getVisibility($path);
+    public function getVisibility(string $path);
 
     /**
-     * @param $path
-     * @return mixed
+     * @param string $path
+     * @return int|false
      */
-    public function getSize($path);
+    public function getSize(string $path);
 
     /**
-     * @param $path
-     * @param $visibility
-     * @return mixed
+     * @param string $path
+     * @param string $visibility
+     * @return bool
      */
-    public function setVisibility($path, $visibility);
+    public function setVisibility(string $path, string $visibility): bool;
 
     /**
-     * @param $path
-     * @return mixed
+     * @param string $path
+     * @return array|false
      */
-    public function getMetadata($path);
+    public function getMetadata(string $path);
 
     /**
-     * @param $path
-     * @return mixed
+     * @param string $path
+     * @return void
      */
-    public function assertPresent($path);
+    public function assertPresent(string $path): void;
 
     /**
-     * @param $path
-     * @return mixed
+     * @param string $path
+     * @return void
      */
-    public function assertAbsent($path);
+    public function assertAbsent(string $path): void;
 }

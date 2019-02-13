@@ -19,7 +19,7 @@ class AdapterTest extends \PHPUnit\Framework\TestCase
      *
      * @return void
      */
-    public function setUp()
+    protected function setUp(): void
     {
         $testAdapters = [
             ['identifier' => 'testKey1', 'title' => 'testValue1'],
@@ -34,7 +34,7 @@ class AdapterTest extends \PHPUnit\Framework\TestCase
      *
      * @return void
      */
-    public function testToOptionArray()
+    public function testToOptionArray(): void
     {
         $expectedReturn = [
             null => 'Use no Flysystem Adapter',

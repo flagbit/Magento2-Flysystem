@@ -61,7 +61,7 @@ class FilesTest extends \PHPUnit\Framework\TestCase
     /**
      * Setup tests
      */
-    public function setUp()
+    protected function setUp(): void
     {
         $this->_contextMock = $this->getMockBuilder(Context::class)
             ->disableOriginalConstructor()
@@ -107,7 +107,7 @@ class FilesTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testGetFiles()
+    public function testGetFiles(): void
     {
         $path = '/';
 
@@ -165,7 +165,7 @@ class FilesTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expectedReturn, $this->_object->getFiles());
     }
 
-    public function testGetFilesException()
+    public function testGetFilesException(): void
     {
         $path = 'invalid';
 
@@ -191,7 +191,7 @@ class FilesTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals([], $this->_object->getFiles());
     }
 
-    public function testValidateFileValid()
+    public function testValidateFileValid(): void
     {
         $validateFile = [
             'type' => 'file',
@@ -211,7 +211,7 @@ class FilesTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(true, $this->_object->validateFile($validateFile));
     }
 
-    public function testValidateFileInvalid()
+    public function testValidateFileInvalid(): void
     {
         $validateFile = [
             'type' => 'file',
@@ -231,7 +231,7 @@ class FilesTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(false, $this->_object->validateFile($validateFile));
     }
 
-    public function testValidateFileException()
+    public function testValidateFileException(): void
     {
         $validateFile = [
             'invalid' => 'invalid'
@@ -241,7 +241,7 @@ class FilesTest extends \PHPUnit\Framework\TestCase
         $this->_object->validateFile($validateFile);
     }
 
-    public function testGetMessages()
+    public function testGetMessages(): void
     {
         $messageCollection = $this->getMockBuilder(Collection::class)
             ->disableOriginalConstructor()
@@ -263,7 +263,7 @@ class FilesTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($messagesHtml, $this->_object->getMessages());
     }
 
-    public function testGetFilesCount()
+    public function testGetFilesCount(): void
     {
         $files = ['file1', 'file2'];
         $this->_object->setFilesCollection($files);
@@ -271,7 +271,7 @@ class FilesTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(2, $this->_object->getFilesCount());
     }
 
-    public function testGetFileId()
+    public function testGetFileId(): void
     {
         $file = [
             'path' => '/path/to/file.txt'
@@ -286,14 +286,14 @@ class FilesTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($encodedFile, $this->_object->getFileId($file));
     }
 
-    public function testGetFileIdInvalid()
+    public function testGetFileIdInvalid(): void
     {
         $file = 'invalid';
 
         $this->assertEquals(null, $this->_object->getFileId($file));
     }
 
-    public function testGetFileShortName()
+    public function testGetFileShortName(): void
     {
         $file = [
             'path' => '/path/to/file.txt'
@@ -308,14 +308,14 @@ class FilesTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($shortName, $this->_object->getFileShortName($file));
     }
 
-    public function testGetFileShortNameInvalid()
+    public function testGetFileShortNameInvalid(): void
     {
         $file = 'invalid';
 
         $this->assertEquals(null, $this->_object->getFileShortName($file));
     }
 
-    public function testGetFileEndingInvalid()
+    public function testGetFileEndingInvalid(): void
     {
         $file = [
             'extension' => null
@@ -324,7 +324,7 @@ class FilesTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals('unknown', $this->_object->getFileEnding($file));
     }
 
-    public function testGetFileSize()
+    public function testGetFileSize(): void
     {
         $file = ['size' => 0];
 
@@ -343,14 +343,14 @@ class FilesTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals('4.77 MB', $this->_object->getFileSize($file));
     }
 
-    public function testGetFileSizeInvalid()
+    public function testGetFileSizeInvalid(): void
     {
         $file = ['invalid' => null];
 
         $this->assertEquals('', $this->_object->getFileSize($file));
     }
 
-    public function testGetLastModified()
+    public function testGetLastModified(): void
     {
         $file = ['timestamp' => 1345123434234];
         $date = date('d-m-Y H:i', $file['timestamp']);
@@ -358,7 +358,7 @@ class FilesTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($date, $this->_object->getLastModified($file));
     }
 
-    public function testGetLastModifiedInvalid()
+    public function testGetLastModifiedInvalid(): void
     {
         $file = ['invalid' => null];
 

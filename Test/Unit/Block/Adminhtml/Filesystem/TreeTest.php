@@ -59,7 +59,7 @@ class TreeTest extends \PHPUnit\Framework\TestCase
      */
     protected $_sessionMock;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->_contextMock = $this->getMockBuilder(Context::class)
             ->disableOriginalConstructor()
@@ -117,7 +117,7 @@ class TreeTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testGetTreeJson()
+    public function testGetTreeJson(): void
     {
         $path = '/';
 
@@ -182,7 +182,7 @@ class TreeTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals('jsonString', $this->_object->getTreeJson());
     }
 
-    public function testGetTreeJsonException()
+    public function testGetTreeJsonException(): void
     {
         $path = 'invalid';
 
@@ -213,7 +213,7 @@ class TreeTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals('emptyJson', $this->_object->getTreeJson());
     }
 
-    public function testGetTreeWidgetOptions()
+    public function testGetTreeWidgetOptions(): void
     {
         $loaderUrl = 'test.url/test';
         $loaderRoute = 'flagbit_flysystem/*/treeJson';

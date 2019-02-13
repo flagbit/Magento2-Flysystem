@@ -2,11 +2,13 @@
 namespace Flagbit\Flysystem\Adapter;
 
 use \League\Flysystem\Adapter\Local as LocalAdapter;
+use \League\Flysystem\Adapter\LocalFactory as LocalAdapterFactory;
 use \League\Flysystem\Adapter\Ftp as FtpAdapter;
+use \League\Flysystem\Adapter\FtpFactory as FtpAdapterFactory;
 use \League\Flysystem\Adapter\NullAdapter as NullAdapter;
+use \League\Flysystem\Adapter\NullAdapterFactory as NullAdapterFactory;
 use \League\Flysystem\Sftp\SftpAdapter;
-
-use \Magento\Framework\ObjectManagerInterface;
+use \League\Flysystem\Sftp\SftpAdapterFactory;
 
 /**
  * Class FilesystemManager
@@ -15,38 +17,62 @@ use \Magento\Framework\ObjectManagerInterface;
 class FilesystemManager implements ManagerInterface
 {
     /**
-     * @var ObjectManagerInterface
+     * @var LocalAdapterFactory
      */
-    protected $objectManager;
+    protected $localAdapterFactory;
+
+    /**
+     * @var FtpAdapterFactory
+     */
+    protected $ftpAdapterFactory;
+
+    /**
+     * @var NullAdapterFactory
+     */
+    protected $nullAdapterFactory;
+
+    /**
+     * @var SftpAdapterFactory
+     */
+    protected $sftpAdapterFactory;
 
     /**
      * FilesystemManager constructor.
-     * @param ObjectManagerInterface $objectManager
+     * @param LocalAdapterFactory $localAdapterFactory
+     * @param FtpAdapterFactory $ftpAdapterFactory
+     * @param NullAdapterFactory $nullAdapterFactory
+     * @param SftpAdapterFactory $sftpAdapterFactory
      */
     public function __construct(
-        ObjectManagerInterface $objectManager
+        LocalAdapterFactory $localAdapterFactory,
+        FtpAdapterFactory $ftpAdapterFactory,
+        NullAdapterFactory $nullAdapterFactory,
+        SftpAdapterFactory $sftpAdapterFactory
     ) {
-        $this->objectManager = $objectManager;
+        $this->localAdapterFactory = $localAdapterFactory;
+        $this->ftpAdapterFactory = $ftpAdapterFactory;
+        $this->nullAdapterFactory = $nullAdapterFactory;
+        $this->sftpAdapterFactory = $sftpAdapterFactory;
     }
 
     /**
      * @param array $config
-     * @return mixed
+     * @return SftpAdapter
      */
-    public function createSftpDriver(array $config)
+    public function createSftpDriver(array $config): SftpAdapter
     {
-        return $this->objectManager->create(SftpAdapter::class, [
+        return $this->sftpAdapterFactory->create([
             'config' => $config
         ]);
     }
 
     /**
      * @param array $config
-     * @return mixed
+     * @return FtpAdapter
      */
-    public function createFtpDriver(array $config)
+    public function createFtpDriver(array $config): FtpAdapter
     {
-        return $this->objectManager->create(FtpAdapter::class, [
+        return $this->ftpAdapterFactory->create([
             'config' => $config
         ]);
     }
@@ -56,11 +82,11 @@ class FilesystemManager implements ManagerInterface
      * @param int $writeFlags
      * @param int $linkHandling
      * @param array $permissions
-     * @return mixed
+     * @return LocalAdapter
      */
-    public function createLocalDriver($root, $writeFlags = LOCK_EX, $linkHandling = LocalAdapter::SKIP_LINKS, array $permissions = [])
+    public function createLocalDriver(string $root, int $writeFlags = LOCK_EX, int $linkHandling = LocalAdapter::SKIP_LINKS, array $permissions = []): LocalAdapter
     {
-        return $this->objectManager->create(LocalAdapter::class, [
+        return $this->localAdapterFactory->create([
             'root' => $root,
             'writeFlags' => $writeFlags,
             'linkHandling' => $linkHandling,
@@ -69,10 +95,10 @@ class FilesystemManager implements ManagerInterface
     }
 
     /**
-     * @return mixed
+     * @return NullAdapter
      */
-    public function createNullDriver()
+    public function createNullDriver(): NullAdapter
     {
-        return $this->objectManager->create(NullAdapter::class);
+        return $this->nullAdapterFactory->create([]);
     }
 }

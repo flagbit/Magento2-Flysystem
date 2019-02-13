@@ -61,7 +61,7 @@ class UploadManagerTest extends TestCase
     protected $_object;
 
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->_flysystemManagerMock = $this->getMockBuilder(FilesystemManager::class)
             ->disableOriginalConstructor()
@@ -126,7 +126,7 @@ class UploadManagerTest extends TestCase
         );
     }
 
-    public function testValidateFileTypesTest()
+    public function testValidateFileTypesTest(): void
     {
         $file = [
             'name' => 'test.jpg',
@@ -141,7 +141,7 @@ class UploadManagerTest extends TestCase
         $this->_object->validateFileType($file);
     }
 
-    public function testValidateFileTypesException()
+    public function testValidateFileTypesException(): void
     {
         $file = [
             'name' => 'test'
@@ -158,7 +158,7 @@ class UploadManagerTest extends TestCase
         $this->_object->validateFileType($file);
     }
 
-    public function testUpload()
+    public function testUpload(): void
     {
         /** @var FilesystemAdapter|MockObject $adapter */
         $adapter = $this->getMockBuilder(FilesystemAdapter::class)
@@ -207,7 +207,7 @@ class UploadManagerTest extends TestCase
         $this->assertEquals(true, $this->_object->upload($adapter, $targetPath));
     }
 
-    public function testUploadException()
+    public function testUploadException(): void
     {
         /** @var FilesystemAdapter|MockObject $adapter */
         $adapter = $this->getMockBuilder(FilesystemAdapter::class)
@@ -233,7 +233,7 @@ class UploadManagerTest extends TestCase
         $this->_object->upload($adapter, $targetPath);
     }
 
-    public function testSetUploadFileException()
+    public function testSetUploadFileException(): void
     {
         $exception = new \Exception('test');
         $fileId = 'test';

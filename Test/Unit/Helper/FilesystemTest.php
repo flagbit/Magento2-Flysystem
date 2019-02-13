@@ -48,7 +48,7 @@ class FilesystemTest extends \PHPUnit\Framework\TestCase
      */
     protected $_object;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->_contextMock = $this->getMockBuilder(Context::class)
             ->disableOriginalConstructor()
@@ -95,7 +95,7 @@ class FilesystemTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testGetCurrentPath()
+    public function testGetCurrentPath(): void
     {
         $requestPath = $this->_object->idEncode('/test/path');
         $expectedPath = '/test/path';
@@ -108,7 +108,7 @@ class FilesystemTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expectedPath, $this->_object->getCurrentPath());
     }
 
-    public function testGetCurrentPathEmpty()
+    public function testGetCurrentPathEmpty(): void
     {
         $path = '/';
 
@@ -120,14 +120,14 @@ class FilesystemTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($path, $this->_object->getCurrentPath());
     }
 
-    public function testGetShortFilenameShort()
+    public function testGetShortFilenameShort(): void
     {
         $filename = 'test';
 
         $this->assertEquals($filename, $this->_object->getShortFilename($filename));
     }
 
-    public function testGetShortFilenameLong()
+    public function testGetShortFilenameLong(): void
     {
         $filename = 'test';
         $expected = 'tes...';
@@ -135,7 +135,7 @@ class FilesystemTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expected, $this->_object->getShortFilename($filename, 3));
     }
 
-    public function testGetImageHtmlDeclaration()
+    public function testGetImageHtmlDeclaration(): void
     {
         $filename = 'test.jpg';
         $baseUrl = 'https://test.de/media/';
@@ -159,7 +159,7 @@ class FilesystemTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($returnVal, $this->_object->getImageHtmlDeclaration($filename, $asTag));
     }
 
-    public function testGetImageHtmlDeclarationAsTag()
+    public function testGetImageHtmlDeclarationAsTag(): void
     {
         $filename = 'test.jpg';
         $baseUrl = 'https://test.de/media/';
@@ -197,7 +197,7 @@ class FilesystemTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($url, $this->_object->getImageHtmlDeclaration($filename));
     }
 
-    public function testGetImageHtmlDeclarationWithStaticUrls()
+    public function testGetImageHtmlDeclarationWithStaticUrls(): void
     {
         $filename = 'test.jpg';
         $baseUrl = 'https://test.de/media/';

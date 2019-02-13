@@ -48,7 +48,7 @@ class ContentTest extends TestCase
      */
     protected $_object;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->_contextMock = $this->getMockBuilder(Context::class)
             ->disableOriginalConstructor()
@@ -118,7 +118,7 @@ class ContentTest extends TestCase
         );
     }
 
-    public function testGetFileBrowserSetupObject()
+    public function testGetFileBrowserSetupObject(): void
     {
         $elementId = 'element_id';
         $jsonString = 'jsonString';
@@ -141,7 +141,7 @@ class ContentTest extends TestCase
         $this->assertEquals($jsonString, $this->_object->getFilebrowserSetupObject());
     }
 
-    public function testGetModalIdentifier()
+    public function testGetModalIdentifier(): void
     {
         $identifier = 'modal_id';
 
@@ -153,7 +153,7 @@ class ContentTest extends TestCase
         $this->assertEquals($identifier, $this->_object->getModalIdentifier());
     }
 
-    public function testGetPreviewUrl()
+    public function testGetPreviewUrl(): void
     {
         $url = 'test.com/preview';
 
@@ -165,7 +165,7 @@ class ContentTest extends TestCase
         $this->assertEquals($url, $this->_object->getPreviewUrl());
     }
 
-    public function testGetWysiwygModalUrl()
+    public function testGetWysiwygModalUrl(): void
     {
         $url = 'test.com/test';
         $targetElement = 'test_target';
