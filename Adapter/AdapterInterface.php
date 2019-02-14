@@ -25,7 +25,7 @@ interface AdapterInterface {
      * @param string $path
      * @param resource $resource
      * @param array $config
-     * @return mixed
+     * @return bool
      */
     public function writeStream(string $path, $resource, array $config = []): bool;
 

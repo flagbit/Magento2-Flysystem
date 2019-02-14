@@ -59,7 +59,7 @@ class UploadManager
      * @param FilesystemAdapterFactory $flysystemFactory
      * @param Config $flysystemConfig
      * @param LoggerInterface $logger
-     * @param ObjectManagerInterface $objectManager
+     * @param UploaderFactory $uploaderFactory
      */
     public function __construct(
         FilesystemManager $flysystemManager,

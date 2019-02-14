@@ -361,6 +361,7 @@ class TmpManager
      * @return array
      * @throws LocalizedException
      * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @suppress PhanUndeclaredClassConstant
      */
     public function createCategoryTmp(array $file): array
     {
@@ -384,10 +385,12 @@ class TmpManager
             throw new LocalizedException(__('File can not be saved to the destination folder.'));
         }
 
+        /** @var \Magento\Store\Model\Store $store */
+        $store = $this->_storeManager->getStore();
         $result['tmp_name'] = str_replace('\\', '/', $result['tmp_name']);
-        $result['url'] = $this->_storeManager
-                ->getStore()
-                ->getBaseUrl(UrlInterface::URL_TYPE_MEDIA) . $imageUploader->getFilePath($baseTmpPath, $result['file']);
+
+        /** @phan-suppress-next-line PhanUndeclaredMethod */
+        $result['url'] = $store->getBaseUrl(UrlInterface::URL_TYPE_MEDIA) . $imageUploader->getFilePath($baseTmpPath, $result['file']);
         $result['name'] = $result['file'];
 
         if (isset($result['file'])) {

@@ -123,7 +123,11 @@ class Filesystem extends AbstractHelper
      */
     public function getImageHtmlDeclaration(string $filename, bool $renderAsTag = false): string
     {
-        $mediaUrl = $this->_storeManager->getStore()->getBaseUrl(UrlInterface::URL_TYPE_MEDIA);
+        /** @var \Magento\Store\Model\Store $store */
+        $store = $this->_storeManager->getStore();
+
+        /** @phan-suppress-next-line PhanUndeclaredMethod */
+        $mediaUrl = $store->getBaseUrl(UrlInterface::URL_TYPE_MEDIA);
         $mediaPath = '/'.trim($filename, '/');
         $fileUrl = $mediaUrl.$filename;
         $directive = sprintf('{{media url="%s"}}', $mediaPath);
@@ -135,7 +139,8 @@ class Filesystem extends AbstractHelper
             } else {
                 $directive = $this->urlEncoder->encode($directive);
 
-                $html = $this->_storeManager->getStore()->getUrl(
+                /** @phan-suppress-next-line PhanUndeclaredMethod */
+                $html = $store->getUrl(
                     'cms/wysiwyg/directive',
                     [
                         '___directive' => $directive,

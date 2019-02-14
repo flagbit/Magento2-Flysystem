@@ -6,7 +6,7 @@ use \Flagbit\Flysystem\Model\Filesystem\Manager;
 use \Magento\Backend\App\Action;
 use \Magento\Backend\Model\Session;
 use \Magento\Backend\Model\View\Result\Page;
-use \Magento\Backend\Model\View\Result\PageFactory;
+use \Magento\Framework\View\Result\PageFactory;
 
 /**
  * Class Index
@@ -37,9 +37,9 @@ class Index extends AbstractController
     }
 
     /**
-     * @return Page
+     * @return Page|\Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface|\Magento\Framework\View\Result\Page
      */
-    public function execute(): Page
+    public function execute()
     {
         try {
             $this->_initAction();
@@ -55,10 +55,10 @@ class Index extends AbstractController
 }
 
     /**
-     * @param Page $resultPage
-     * @return Page
+     * @param Page|\Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface|\Magento\Framework\View\Result\Page $resultPage
+     * @return Page|\Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface|\Magento\Framework\View\Result\Page
      */
-    protected function _initPage(Page $resultPage): Page
+    protected function _initPage($resultPage)
     {
         $resultPage->setActiveMenu('Flagbit_Flysystem::flysystem_page')
             ->addBreadcrumb(__('Flagbit Flysystem'), __('Flagbit Flysystem'));

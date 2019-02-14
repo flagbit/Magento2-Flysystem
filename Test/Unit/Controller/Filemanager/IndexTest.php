@@ -7,7 +7,7 @@ use \Flagbit\Flysystem\Model\Filesystem\Manager;
 use \Magento\Backend\App\Action\Context;
 use \Magento\Backend\Model\Session;
 use \Magento\Backend\Model\View\Result\Page;
-use \Magento\Backend\Model\View\Result\PageFactory;
+use \Magento\Framework\View\Result\PageFactory;
 use \Magento\Framework\View\Page\Config;
 use \Magento\Framework\View\Page\Title;
 use \PHPUnit\Framework\MockObject\MockObject;

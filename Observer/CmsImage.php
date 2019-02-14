@@ -8,7 +8,6 @@ use \Flagbit\Flysystem\Model\Filesystem\Manager;
 use \Flagbit\Flysystem\Model\Filesystem\TmpManager;
 use \Magento\Framework\Event\Observer;
 use \Magento\Framework\Event\ObserverInterface;
-use \Magento\Framework\Exception\LocalizedException;
 use \Psr\Log\LoggerInterface;
 
 /**

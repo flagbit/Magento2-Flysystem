@@ -55,9 +55,12 @@ class TreeJson extends AbstractController
             $this->_initAction();
             /** @var \Magento\Framework\View\Layout $layout */
             $layout = $this->_layoutFactory->create();
-            $resultJson->setJsonData(
-                $layout->createBlock(Tree::class)->getTreeJson()
-            );
+
+            /** @var Tree $layoutBlock */
+            $layoutBlock = $layout->createBlock(Tree::class);
+
+            /** @phan-suppress-next-line PhanUndeclaredMethod */
+            $resultJson->setJsonData($layoutBlock->getTreeJson());
         } catch (\Exception $e) {
             $result = ['error' => true, 'message' => $e->getMessage()];
             $resultJson->setData($result);
