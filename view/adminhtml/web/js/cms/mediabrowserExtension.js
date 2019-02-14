@@ -15,9 +15,9 @@ define([
             });
 
 
-            if($('#modal_dialog_message').find('.page-action-buttons')) {
+            if($('#modal_dialog_message').find('.page-action-buttons').length) {
                 $('#modal_dialog_message').find('.page-action-buttons').first().prepend(newButton);
-            } else if($('#modal_dialog_message').find('.insert-actions')) {
+            } else if($('#modal_dialog_message').find('.insert-actions').length) {
                 $('#modal_dialog_message').find('.insert-actions').first().prepend(newButton);
             }
         }
