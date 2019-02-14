@@ -15,6 +15,7 @@ use \Magento\Framework\App\Filesystem\DirectoryList;
 use \Magento\Framework\App\ObjectManager;
 use \Magento\Framework\Exception\LocalizedException;
 use \Magento\Framework\Filesystem as MagentoFilesystem;
+use Magento\Framework\Filesystem\Directory\Write;
 use \Magento\Framework\Logger\Monolog;
 use \Magento\MediaStorage\Helper\File\Storage\Database;
 use \Magento\MediaStorage\Model\File\Uploader;
@@ -82,7 +83,7 @@ class TmpManagerTest extends TestCase
     protected $_storeManagerMock;
 
     /**
-     * @var DirectoryList|MockObject
+     * @var Write|MockObject
      */
     protected $_directoryListMock;
 
@@ -176,7 +177,7 @@ class TmpManagerTest extends TestCase
             ->setMethods(['getStore'])
             ->getMock();
 
-        $this->_directoryListMock = $this->getMockBuilder(DirectoryList::class)
+        $this->_directoryListMock = $this->getMockBuilder(Write::class)
             ->disableOriginalConstructor()
             ->setMethods(['getAbsolutePath'])
             ->getMock();
@@ -198,11 +199,6 @@ class TmpManagerTest extends TestCase
 
         $this->_localAdapterMock = $this->getMockBuilder(Local::class)
             ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->_directoryListMock = $this->getMockBuilder(DirectoryList::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['getAbsolutePath'])
             ->getMock();
 
         $this->_storeMock = $this->getMockBuilder(Store::class)
@@ -707,7 +703,7 @@ class TmpManagerTest extends TestCase
 
     public function testCreateProductTmpValidateFileException(): void
     {
-        $file = 'invalid';
+        $file = ['invalid' => null];
 
         $this->expectException(LocalizedException::class);
 
@@ -719,7 +715,7 @@ class TmpManagerTest extends TestCase
 
     public function testCreateCategoryTmpValidateFileException(): void
     {
-        $file = 'invalid';
+        $file = ['invalid' => null];
 
         $this->expectException(LocalizedException::class);
 
@@ -823,6 +819,8 @@ class TmpManagerTest extends TestCase
             ->with($wysiwygFile, $content)
             ->willReturn(false);
 
-        $this->assertEquals(false, $this->_object->writeWysiwygFile($file, $content));
+
+        $this->expectException(LocalizedException::class);
+        $this->_object->writeWysiwygFile($file, $content);
     }
 }

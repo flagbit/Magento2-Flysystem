@@ -122,6 +122,7 @@ class ContentTest extends TestCase
     {
         $elementId = 'element_id';
         $jsonString = 'jsonString';
+        $url = 'testUrl';
 
         $this->_requestHttpMock->expects($this->once())
             ->method('getParam')
@@ -131,7 +132,7 @@ class ContentTest extends TestCase
         $this->_urlBuilderMock->expects($this->exactly(5))
             ->method('getUrl')
             ->withAnyParameters()
-            ->willReturn($this->isType('string'));
+            ->willReturn($url);
 
         $this->_jsonEncoderMock->expects($this->once())
             ->method('serialize')

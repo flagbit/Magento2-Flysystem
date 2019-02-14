@@ -288,7 +288,7 @@ class FilesTest extends \PHPUnit\Framework\TestCase
 
     public function testGetFileIdInvalid(): void
     {
-        $file = 'invalid';
+        $file = ['invalid' => null];
 
         $this->assertEquals(null, $this->_object->getFileId($file));
     }
@@ -310,7 +310,7 @@ class FilesTest extends \PHPUnit\Framework\TestCase
 
     public function testGetFileShortNameInvalid(): void
     {
-        $file = 'invalid';
+        $file = ['invalid' => null];
 
         $this->assertEquals(null, $this->_object->getFileShortName($file));
     }

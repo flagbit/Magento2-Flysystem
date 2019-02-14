@@ -746,7 +746,8 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
 
         $this->_sessionMock->expects($this->at(0))
             ->method('setFlysystemModalId')
-            ->with($modalId);
+            ->with($modalId)
+            ->willReturn($this->_sessionMock);
 
         $this->_sessionMock->expects($this->at(1))
             ->method('getFlysystemModalId')

@@ -7,9 +7,9 @@ use \Flagbit\Flysystem\Adapter\FilesystemManager;
 use \Flagbit\Flysystem\Helper\Config;
 use \Flagbit\Flysystem\Model\Filesystem\UploadManager;
 use \League\Flysystem\Adapter\Local;
-use \Magento\Framework\App\ObjectManager;
 use \Magento\Framework\Logger\Monolog;
 use \Magento\MediaStorage\Model\File\Uploader;
+use \Magento\MediaStorage\Model\File\UploaderFactory;
 use \PHPUnit\Framework\MockObject\MockObject;
 use \PHPUnit\Framework\TestCase;
 
@@ -36,9 +36,9 @@ class UploadManagerTest extends TestCase
     protected $_loggerMock;
 
     /**
-     * @var ObjectManager|MockObject
+     * @var UploaderFactory|MockObject
      */
-    protected $_objectManagerMock;
+    protected $_uploaderFactoryMock;
 
     /**
      * @var Local|MockObject
@@ -83,7 +83,7 @@ class UploadManagerTest extends TestCase
             ->setMethods(['critical'])
             ->getMock();
 
-        $this->_objectManagerMock = $this->getMockBuilder(ObjectManager::class)
+        $this->_uploaderFactoryMock = $this->getMockBuilder(UploaderFactory::class)
             ->disableOriginalConstructor()
             ->setMethods(['create'])
             ->getMock();
@@ -112,9 +112,9 @@ class UploadManagerTest extends TestCase
             ->with($this->_localAdapterMock)
             ->willReturn($this->_flysystemAdapterMock);
 
-        $this->_objectManagerMock->expects($this->at(0))
+        $this->_uploaderFactoryMock->expects($this->at(0))
             ->method('create')
-            ->with(Uploader::class, ['fileId' => Config::FLYSYSTEM_UPLOAD_ID])
+            ->with(['fileId' => Config::FLYSYSTEM_UPLOAD_ID])
             ->willReturn($this->_uploaderMock);
 
         $this->_object = new UploadManager(
@@ -122,7 +122,7 @@ class UploadManagerTest extends TestCase
             $this->_flysystemFactoryMock,
             $this->_flysystemConfigMock,
             $this->_loggerMock,
-            $this->_objectManagerMock
+            $this->_uploaderFactoryMock
         );
     }
 
@@ -238,9 +238,9 @@ class UploadManagerTest extends TestCase
         $exception = new \Exception('test');
         $fileId = 'test';
 
-        $this->_objectManagerMock->expects($this->at(0))
+        $this->_uploaderFactoryMock->expects($this->at(0))
             ->method('create')
-            ->with(Uploader::class, $this->arrayHasKey('fileId'))
+            ->with($this->arrayHasKey('fileId'))
             ->willThrowException($exception);
 
         $this->_loggerMock->expects($this->once())
