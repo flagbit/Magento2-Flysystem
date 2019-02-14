@@ -55,7 +55,7 @@ class CategoryImageTest extends TestCase
     protected $_object;
 
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->_tmpManagerMock = $this->getMockBuilder(TmpManager::class)
             ->disableOriginalConstructor()
@@ -98,7 +98,7 @@ class CategoryImageTest extends TestCase
         );
     }
 
-    public function testExecute()
+    public function testExecute(): void
     {
         $modalId = 'category_modal';
         $filename = 'test.jpg';
@@ -171,7 +171,7 @@ class CategoryImageTest extends TestCase
         $this->_object->execute($this->_observerMock);
     }
 
-    public function testExecuteWrongModalId()
+    public function testExecuteWrongModalId(): void
     {
         $modalId = 'invalid';
 
@@ -187,7 +187,7 @@ class CategoryImageTest extends TestCase
         $this->_object->execute($this->_observerMock);
     }
 
-    public function testExecuteException()
+    public function testExecuteException(): void
     {
         $modalId = 'category_modal';
         $filename = 'test.jpg';

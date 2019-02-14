@@ -18,7 +18,7 @@ class ConfigTest extends TestCase
      */
     protected $_object;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->_scopeConfigMock = $this->getMockBuilder(Config::class)
             ->disableOriginalConstructor()
@@ -30,7 +30,7 @@ class ConfigTest extends TestCase
         );
     }
 
-    public function testGetSource()
+    public function testGetSource(): void
     {
         $value = 'local';
 
@@ -42,7 +42,7 @@ class ConfigTest extends TestCase
         $this->assertEquals($value, $this->_object->getSource());
     }
 
-    public function testGetLocalPath()
+    public function testGetLocalPath(): void
     {
         $path = '/test/path';
 
@@ -54,7 +54,7 @@ class ConfigTest extends TestCase
         $this->assertEquals($path, $this->_object->getLocalPath());
     }
 
-    public function testGetLocalLock()
+    public function testGetLocalLock(): void
     {
         $lock = '1';
         $expected = 1;
@@ -67,7 +67,7 @@ class ConfigTest extends TestCase
         $this->assertEquals($expected, $this->_object->getLocalLock());
     }
 
-    public function testGetFtpHost()
+    public function testGetFtpHost(): void
     {
         $ftpHost = 'test.host';
 
@@ -79,7 +79,7 @@ class ConfigTest extends TestCase
         $this->assertEquals($ftpHost, $this->_object->getFtpHost());
     }
 
-    public function testGetFtpUser()
+    public function testGetFtpUser(): void
     {
         $ftpUser = 'test';
 
@@ -91,7 +91,7 @@ class ConfigTest extends TestCase
         $this->assertEquals($ftpUser, $this->_object->getFtpUser());
     }
 
-    public function testGetFtpPassword()
+    public function testGetFtpPassword(): void
     {
         $ftpPassword = 'test';
 
@@ -103,7 +103,7 @@ class ConfigTest extends TestCase
         $this->assertEquals($ftpPassword, $this->_object->getFtpPassword());
     }
 
-    public function testGetFtpPort()
+    public function testGetFtpPort(): void
     {
         $port = '20';
         $expected = 20;
@@ -116,7 +116,7 @@ class ConfigTest extends TestCase
         $this->assertEquals($expected, $this->_object->getFtpPort());
     }
 
-    public function testGetFtpPath()
+    public function testGetFtpPath(): void
     {
         $ftpPath = '/test/path';
 
@@ -128,7 +128,7 @@ class ConfigTest extends TestCase
         $this->assertEquals($ftpPath, $this->_object->getFtpPath());
     }
 
-    public function testGetFtpPassive()
+    public function testGetFtpPassive(): void
     {
         $passive = '0';
         $expected = false;
@@ -141,7 +141,7 @@ class ConfigTest extends TestCase
         $this->assertEquals($expected, $this->_object->getFtpPassive());
     }
 
-    public function testGetFtpSsl()
+    public function testGetFtpSsl(): void
     {
         $ssl = 1;
         $expected = true;
@@ -154,7 +154,7 @@ class ConfigTest extends TestCase
         $this->assertEquals($expected, $this->_object->getFtpSsl());
     }
 
-    public function testGetFtpTimeout()
+    public function testGetFtpTimeout(): void
     {
         $timeout = '30';
         $expected = 30;
@@ -167,7 +167,7 @@ class ConfigTest extends TestCase
         $this->assertEquals($expected, $this->_object->getFtpTimeout());
     }
 
-    public function testGetSftpHost()
+    public function testGetSftpHost(): void
     {
         $sftpHost = 'test.sftphost';
 
@@ -179,7 +179,7 @@ class ConfigTest extends TestCase
         $this->assertEquals($sftpHost, $this->_object->getSftpHost());
     }
 
-    public function testGetSftpPort()
+    public function testGetSftpPort(): void
     {
         $port = '22';
         $expected = 22;
@@ -192,7 +192,7 @@ class ConfigTest extends TestCase
         $this->assertEquals($expected, $this->_object->getSftpPort());
     }
 
-    public function testGetSftpUsername()
+    public function testGetSftpUsername(): void
     {
         $sftpUsername = 'testUsername';
 
@@ -204,7 +204,7 @@ class ConfigTest extends TestCase
         $this->assertEquals($sftpUsername, $this->_object->getSftpUsername());
     }
 
-    public function testGetSftpPassword()
+    public function testGetSftpPassword(): void
     {
         $sftpPassword = 'testSftpPassword';
 
@@ -216,7 +216,7 @@ class ConfigTest extends TestCase
         $this->assertEquals($sftpPassword, $this->_object->getSftpPassword());
     }
 
-    public function testGetSftpPrivateKeyPath()
+    public function testGetSftpPrivateKeyPath(): void
     {
         $sftpPrivateKeyPath = '/users/home/.ssh/private.key';
 
@@ -228,7 +228,7 @@ class ConfigTest extends TestCase
         $this->assertEquals($sftpPrivateKeyPath, $this->_object->getSftpPrivateKeyPath());
     }
 
-    public function testGetSftpPrivateKeyContent()
+    public function testGetSftpPrivateKeyContent(): void
     {
         $sftpPrivateKeyContent = '-----BEGIN RSA PRIVATE KEY-----'.
             'MIICXAIBAAKBgQCqGKukO1De7zhZj6+H0qtjTkVxwTCpvKe4eCZ0FPqri0cb2JZfXJ/DgYSF6vUp'.
@@ -252,7 +252,7 @@ class ConfigTest extends TestCase
         $this->assertEquals($sftpPrivateKeyContent, $this->_object->getSftpPrivateKeyContent());
     }
 
-    public function testGetSftpRoot()
+    public function testGetSftpRoot(): void
     {
         $sftpRoot = '/sftp/root';
 
@@ -264,7 +264,7 @@ class ConfigTest extends TestCase
         $this->assertEquals($sftpRoot, $this->_object->getSftpRoot());
     }
 
-    public function testGetSftpTimeout()
+    public function testGetSftpTimeout(): void
     {
         $timeout = '10';
         $expected = 10;
@@ -277,7 +277,7 @@ class ConfigTest extends TestCase
         $this->assertEquals($expected, $this->_object->getSftpTimeout());
     }
 
-    public function testGetSftpDirectoryPermissions()
+    public function testGetSftpDirectoryPermissions(): void
     {
         $directoryPermissions = '0755';
         $expected = 0755;
@@ -290,8 +290,8 @@ class ConfigTest extends TestCase
         $this->assertEquals($expected, $this->_object->getSftpDirectoryPermissions());
     }
 
-    public function testGetSupportedFileTypes()
+    public function testGetSupportedFileTypes(): void
     {
-        $this->assertInternalType('array', $this->_object->getSupportedFileTypes());
+        $this->assertIsArray($this->_object->getSupportedFileTypes());
     }
 }

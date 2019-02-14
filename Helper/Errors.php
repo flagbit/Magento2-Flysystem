@@ -45,11 +45,11 @@ class Errors extends AbstractHelper
     const ERR_NO_621 = "Invalid Parameters in Observer %1 for event %2";
 
     /**
-     * @param string|int $num
+     * @param int $num
      * @param array $params
      * @return \Magento\Framework\Phrase
      */
-    static function getErrorMessage($num, $params = [])
+    static function getErrorMessage(int $num, array $params = []): \Magento\Framework\Phrase
     {
 
         $errorMsg = 'self::ERR_NO_' . $num;

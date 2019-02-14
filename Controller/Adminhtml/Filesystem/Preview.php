@@ -57,7 +57,7 @@ class Preview extends AbstractController
     }
 
     /**
-     * @return \Magento\Framework\Controller\Result\Json
+     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\Result\Json|\Magento\Framework\Controller\ResultInterface
      */
     public function execute()
     {
@@ -72,7 +72,12 @@ class Preview extends AbstractController
             $this->_tmpManager->writePreview($filename, $contents);
 
             $resultFile = $this->_tmpManager->getUserPreviewDir().'/'.basename($filename);
-            $url = $this->_storeManager->getStore()->getBaseUrl(UrlInterface::URL_TYPE_MEDIA).'/'.$resultFile;
+
+            /** @var \Magento\Store\Model\Store $store */
+            $store = $this->_storeManager->getStore();
+
+            /** @phan-suppress-next-line PhanUndeclaredMethod */
+            $url = $store->getBaseUrl(UrlInterface::URL_TYPE_MEDIA).'/'.$resultFile;
 
             $result = ['error' => false, 'url' => $url];
         } catch (\Exception $e) {

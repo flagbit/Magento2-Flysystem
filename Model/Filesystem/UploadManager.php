@@ -6,8 +6,8 @@ use \Flagbit\Flysystem\Adapter\FilesystemAdapterFactory;
 use \Flagbit\Flysystem\Adapter\FilesystemManager;
 use \Flagbit\Flysystem\Helper\Config;
 use \Flagbit\Flysystem\Helper\Errors;
-use \Magento\Framework\ObjectManagerInterface;
 use \Magento\MediaStorage\Model\File\Uploader;
+use \Magento\MediaStorage\Model\File\UploaderFactory;
 use \Psr\Log\LoggerInterface;
 
 /**
@@ -39,9 +39,9 @@ class UploadManager
     protected $_logger;
 
     /**
-     * @var ObjectManagerInterface
+     * @var UploaderFactory
      */
-    protected $_objectManager;
+    protected $_uploaderFactory;
 
     /**
      * @var null|Uploader
@@ -59,29 +59,29 @@ class UploadManager
      * @param FilesystemAdapterFactory $flysystemFactory
      * @param Config $flysystemConfig
      * @param LoggerInterface $logger
-     * @param ObjectManagerInterface $objectManager
+     * @param UploaderFactory $uploaderFactory
      */
     public function __construct(
         FilesystemManager $flysystemManager,
         FilesystemAdapterFactory $flysystemFactory,
         Config $flysystemConfig,
         LoggerInterface $logger,
-        ObjectManagerInterface $objectManager
+        UploaderFactory $uploaderFactory
     ) {
         $this->_flysystemManager = $flysystemManager;
         $this->_flysystemFactory = $flysystemFactory;
         $this->_flysystemConfig = $flysystemConfig;
         $this->_logger = $logger;
-        $this->_objectManager = $objectManager;
+        $this->_uploaderFactory = $uploaderFactory;
 
         $this->create();
         $this->setUploadFile();
     }
 
     /**
-     * @return FilesystemAdapter|mixed|null
+     * @return FilesystemAdapter|null
      */
-    public function create()
+    public function create(): ?FilesystemAdapter
     {
         if(!$this->_adapter) {
             $this->_adapter = $this->_flysystemFactory->create($this->_flysystemManager->createLocalDriver(self::SERVER_TMP_PATH));
@@ -92,7 +92,7 @@ class UploadManager
     /**
      * @return Uploader|null
      */
-    public function getUploader()
+    public function getUploader(): ?Uploader
     {
         return $this->_uploader;
     }
@@ -100,7 +100,7 @@ class UploadManager
     /**
      * @return FilesystemAdapter|null
      */
-    public function getAdapter()
+    public function getAdapter(): ?FilesystemAdapter
     {
         return $this->_adapter;
     }
@@ -109,10 +109,10 @@ class UploadManager
      * @param string $fileId
      * @return bool
      */
-    public function setUploadFile($fileId = \Flagbit\Flysystem\Helper\Config::FLYSYSTEM_UPLOAD_ID)
+    public function setUploadFile(string $fileId = \Flagbit\Flysystem\Helper\Config::FLYSYSTEM_UPLOAD_ID): bool
     {
         try {
-            $this->_uploader = $this->_objectManager->create(Uploader::class, ['fileId' => $fileId]);
+            $this->_uploader = $this->_uploaderFactory->create(['fileId' => $fileId]);
             return true;
         } catch (\Exception $e) {
             $this->_logger->critical($e->getMessage());
@@ -122,9 +122,10 @@ class UploadManager
 
     /**
      * @param array $file
+     * @return void
      * @throws \Exception
      */
-    public function validateFileType($file)
+    public function validateFileType(array $file): void
     {
         $filetype = '';
 
@@ -144,34 +145,32 @@ class UploadManager
     /**
      * @param FilesystemAdapter $adapter
      * @param string $targetPath
-     * @return mixed
+     * @return bool
      * @throws \Exception
+     * @throws \League\Flysystem\FileExistsException
+     * @throws \League\Flysystem\FileNotFoundException
      */
-    public function upload($adapter, $targetPath)
+    public function upload(FilesystemAdapter $adapter, string $targetPath): bool
     {
-        try {
-            $file = $this->getUploader()->validateFile();
+        $file = $this->getUploader()->validateFile();
 
-            $this->validateFileType($file);
+        $this->validateFileType($file);
 
-            if(!isset($file['tmp_name'])) {
-                throw new \Exception(Errors::getErrorMessage(501));
-            }
-
-            $contents = $this->getAdapter()->read(basename($file['tmp_name']));
-            $filename = $file['name'];
-
-            for($i = 1; $adapter->has($targetPath.'/'.$filename); $i++) {
-                $fileparts = explode('.', $file['name']);
-                if(is_array($fileparts)) {
-                    $fileparts[0] = $fileparts[0] . '_' . $i;
-                    $filename = implode('.', $fileparts);
-                }
-            }
-
-            return $adapter->write($targetPath.'/'.$filename, $contents);
-        } catch (\Exception $e) {
-            throw $e;
+        if(!isset($file['tmp_name'])) {
+            throw new \Exception(Errors::getErrorMessage(501));
         }
+
+        $contents = $this->getAdapter()->read(basename($file['tmp_name']));
+        $filename = $file['name'];
+
+        for($i = 1; $adapter->has($targetPath.'/'.$filename); $i++) {
+            $fileparts = explode('.', $file['name']);
+            if(is_array($fileparts)) {
+                $fileparts[0] = $fileparts[0] . '_' . $i;
+                $filename = implode('.', $fileparts);
+            }
+        }
+
+        return $adapter->write($targetPath.'/'.$filename, $contents);
     }
 }

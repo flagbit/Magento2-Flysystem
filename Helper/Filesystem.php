@@ -28,7 +28,12 @@ class Filesystem extends AbstractHelper
      */
     protected $_currentPath;
 
-
+    /**
+     * Filesystem constructor.
+     * @param Context $context
+     * @param StoreManagerInterface $storeManager
+     * @param Images $imageHelper
+     */
     public function __construct(
         Context $context,
         StoreManagerInterface $storeManager,
@@ -44,7 +49,7 @@ class Filesystem extends AbstractHelper
      *
      * @return string
      */
-    public function getTreeNodeName()
+    public function getTreeNodeName(): string
     {
         return 'node';
     }
@@ -55,7 +60,7 @@ class Filesystem extends AbstractHelper
      * @param string $string
      * @return string
      */
-    public function idEncode($string)
+    public function idEncode(string $string): string
     {
         return strtr(base64_encode($string), '+/=', ':_-');
     }
@@ -67,7 +72,7 @@ class Filesystem extends AbstractHelper
      * @param string $string
      * @return string
      */
-    public function idDecode($string)
+    public function idDecode(string $string): string
     {
         $string = strtr($string, ':_-', '+/=');
         return base64_decode($string);
@@ -78,9 +83,8 @@ class Filesystem extends AbstractHelper
      * Try to create target directory if it doesn't exist
      *
      * @return string
-     * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function getCurrentPath()
+    public function getCurrentPath(): string
     {
         if (!$this->_currentPath) {
             $currentPath = '/';
@@ -97,10 +101,10 @@ class Filesystem extends AbstractHelper
      * Reduce filename by replacing some characters with dots
      *
      * @param string $filename
-     * @param int $maxLength Maximum filename
-     * @return string Truncated filename
+     * @param int $maxLength
+     * @return string
      */
-    public function getShortFilename($filename, $maxLength = 20)
+    public function getShortFilename(string $filename, int $maxLength = 20): string
     {
         $path = explode('/', $filename);
         $filename = $path[(count($path)-1)];
@@ -115,10 +119,15 @@ class Filesystem extends AbstractHelper
      * @param string $filename
      * @param bool $renderAsTag
      * @return string
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-    public function getImageHtmlDeclaration($filename, $renderAsTag = false)
+    public function getImageHtmlDeclaration(string $filename, bool $renderAsTag = false): string
     {
-        $mediaUrl = $this->_storeManager->getStore()->getBaseUrl(UrlInterface::URL_TYPE_MEDIA);
+        /** @var \Magento\Store\Model\Store $store */
+        $store = $this->_storeManager->getStore();
+
+        /** @phan-suppress-next-line PhanUndeclaredMethod */
+        $mediaUrl = $store->getBaseUrl(UrlInterface::URL_TYPE_MEDIA);
         $mediaPath = '/'.trim($filename, '/');
         $fileUrl = $mediaUrl.$filename;
         $directive = sprintf('{{media url="%s"}}', $mediaPath);
@@ -130,7 +139,8 @@ class Filesystem extends AbstractHelper
             } else {
                 $directive = $this->urlEncoder->encode($directive);
 
-                $html = $this->_storeManager->getStore()->getUrl(
+                /** @phan-suppress-next-line PhanUndeclaredMethod */
+                $html = $store->getUrl(
                     'cms/wysiwyg/directive',
                     [
                         '___directive' => $directive,

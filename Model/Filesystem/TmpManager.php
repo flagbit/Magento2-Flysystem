@@ -113,6 +113,7 @@ class TmpManager
      * @param ObjectManagerInterface $objectManager
      * @param Database $coreFileStorageDatabase
      * @param StoreManagerInterface $storeManager
+     * @throws \Magento\Framework\Exception\FileSystemException
      */
     public function __construct(
         FilesystemManager $flysystemManager,
@@ -146,15 +147,15 @@ class TmpManager
     /**
      * @return MagentoFilesystem\Directory\WriteInterface
      */
-    public function getDirectoryListMedia()
+    public function getDirectoryListMedia(): MagentoFilesystem\Directory\WriteInterface
     {
         return $this->_directoryList;
     }
 
     /**
-     * @return FilesystemAdapter|mixed|null
+     * @return FilesystemAdapter|null
      */
-    public function create()
+    public function create(): ?FilesystemAdapter
     {
         if(!$this->_adapter) {
             $path = $this->_directoryList->getAbsolutePath();
@@ -165,10 +166,11 @@ class TmpManager
 
     /**
      * @param string $file
-     * @param null|string $content
+     * @param string|null $content
      * @return bool
+     * @throws \League\Flysystem\FileExistsException
      */
-    public function writeTmp($file, $content = null)
+    public function writeTmp(string $file, ?string $content = null): bool
     {
         $this->clearTmp();
         return $this->getAdapter()->write($this->getTmpPath($file), $content);
@@ -176,10 +178,11 @@ class TmpManager
 
     /**
      * @param string $file
-     * @return bool|false|string
+     * @return false|string
      * @throws LocalizedException
+     * @throws \League\Flysystem\FileNotFoundException
      */
-    public function getTmp($file)
+    public function getTmp(string $file)
     {
         $tmpPath = $this->getTmpPath($file);
         if($this->getAdapter()->has($tmpPath)){
@@ -192,8 +195,9 @@ class TmpManager
     /**
      * @param string $file
      * @return string
+     * @throws \Exception
      */
-    public function getAbsoluteTmpPath($file)
+    public function getAbsoluteTmpPath(string $file): string
     {
         $encodedFile = $this->_flysystemHelper->idEncode($file);
         return $this->_directoryList->getAbsolutePath().'/'.$this->getUserTmpDir().'/'.$encodedFile;
@@ -201,9 +205,9 @@ class TmpManager
 
     /**
      * @return string
-     * @throws \Exception
+     * @throws LocalizedException
      */
-    public function getUserTmpDir()
+    public function getUserTmpDir(): string
     {
         if(!$this->_userTmpDir) {
             $adminUser = $this->_adminSession->getUser();
@@ -220,8 +224,9 @@ class TmpManager
     /**
      * @param string $file
      * @return string
+     * @throws LocalizedException
      */
-    public function getTmpPath($file)
+    public function getTmpPath(string $file): string
     {
         $file = $this->_flysystemHelper->idEncode($file);
 
@@ -230,18 +235,21 @@ class TmpManager
 
     /**
      * @return bool
+     * @throws LocalizedException
      */
-    public function clearTmp()
+    public function clearTmp(): bool
     {
         return $this->getAdapter()->deleteDir($this->getUserTmpDir());
     }
 
     /**
      * @param string $file
-     * @param null|string $content
+     * @param string|null $content
      * @return bool
+     * @throws LocalizedException
+     * @throws \League\Flysystem\FileExistsException
      */
-    public function writePreview($file, $content = null)
+    public function writePreview(string $file, ?string $content = null): bool
     {
         $this->clearPreview();
         $previewFilename = $this->getUserPreviewDir().'/'.basename($file);
@@ -252,7 +260,7 @@ class TmpManager
      * @return string
      * @throws LocalizedException
      */
-    public function getUserPreviewDir()
+    public function getUserPreviewDir(): string
     {
         if(!$this->_userPreviewDir) {
             $adminUser = $this->_adminSession->getUser();
@@ -268,8 +276,9 @@ class TmpManager
 
     /**
      * @return bool
+     * @throws LocalizedException
      */
-    public function clearPreview()
+    public function clearPreview(): bool
     {
         return $this->getAdapter()->deleteDir($this->getUserPreviewDir());
     }
@@ -277,15 +286,15 @@ class TmpManager
     /**
      * @return FilesystemAdapter|null
      */
-    public function getAdapter()
+    public function getAdapter(): ?FilesystemAdapter
     {
         return $this->_adapter;
     }
 
     /**
-     * @param FilesystemAdapter $adapter
+     * @param FilesystemAdapter|null $adapter
      */
-    public function setAdapter($adapter)
+    public function setAdapter(?FilesystemAdapter $adapter): void
     {
         $this->_adapter = $adapter;
     }
@@ -293,9 +302,11 @@ class TmpManager
     /**
      * @param string $file
      * @param string|null $content
-     * @return bool|string
+     * @return string
+     * @throws LocalizedException
+     * @throws \League\Flysystem\FileExistsException
      */
-    public function writeWysiwygFile($file, $content = null)
+    public function writeWysiwygFile(string $file, ?string $content = null): string
     {
         $wysiwygFileConst = 'wysiwyg/'.ltrim($file, '/');
         $wysiwygFile = $wysiwygFileConst;
@@ -314,15 +325,15 @@ class TmpManager
             return $wysiwygFile;
         }
 
-        return false;
+        throw new LocalizedException(__('File could not be written to wysiwyg folder!'));
     }
 
     /**
      * @param array $file
-     * @return mixed
-     * @throws \Exception
+     * @return array
+     * @throws LocalizedException
      */
-    public function createProductTmp($file)
+    public function createProductTmp(array $file): array
     {
         if(!$this->_validateUploadFile($file)) {
             throw new LocalizedException(__('File Structure is not valid'));
@@ -347,11 +358,12 @@ class TmpManager
 
     /**
      * @param array $file
-     * @return mixed
+     * @return array
      * @throws LocalizedException
-     * @throws \Exception
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @suppress PhanUndeclaredClassConstant
      */
-    public function createCategoryTmp($file)
+    public function createCategoryTmp(array $file): array
     {
         if(!$this->_validateUploadFile($file)) {
             throw new LocalizedException(__('File Structure is not valid'));
@@ -373,10 +385,12 @@ class TmpManager
             throw new LocalizedException(__('File can not be saved to the destination folder.'));
         }
 
+        /** @var \Magento\Store\Model\Store $store */
+        $store = $this->_storeManager->getStore();
         $result['tmp_name'] = str_replace('\\', '/', $result['tmp_name']);
-        $result['url'] = $this->_storeManager
-                ->getStore()
-                ->getBaseUrl(UrlInterface::URL_TYPE_MEDIA) . $imageUploader->getFilePath($baseTmpPath, $result['file']);
+
+        /** @phan-suppress-next-line PhanUndeclaredMethod */
+        $result['url'] = $store->getBaseUrl(UrlInterface::URL_TYPE_MEDIA) . $imageUploader->getFilePath($baseTmpPath, $result['file']);
         $result['name'] = $result['file'];
 
         if (isset($result['file'])) {
@@ -395,7 +409,7 @@ class TmpManager
      * @param array $file
      * @return bool
      */
-    protected function _validateUploadFile($file)
+    protected function _validateUploadFile(array $file): bool
     {
         $testArray = [
             'name' => null,

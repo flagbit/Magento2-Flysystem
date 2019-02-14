@@ -27,18 +27,19 @@ class FilesystemAdapter implements AdapterInterface
      * @param string $path
      * @return bool
      */
-    public function has($path)
+    public function has(string $path): bool
     {
         return $this->filesystem->has($path);
     }
 
     /**
      * @param string $path
-     * @param null|string $contents
+     * @param string|null $contents
      * @param array $config
      * @return bool
+     * @throws \League\Flysystem\FileExistsException
      */
-    public function write($path, $contents, array $config = [])
+    public function write(string $path, ?string $contents, array $config = []): bool
     {
         return $this->filesystem->write($path, $contents, $config);
     }
@@ -48,19 +49,20 @@ class FilesystemAdapter implements AdapterInterface
      * @param resource $resource
      * @param array $config
      * @return bool
+     * @throws \League\Flysystem\FileExistsException
      */
-    public function writeStream($path, $resource, array $config = [])
+    public function writeStream(string $path, $resource, array $config = []): bool
     {
         return $this->filesystem->writeStream($path, $resource, $config);
     }
 
     /**
      * @param string $path
-     * @param null|string $contents
+     * @param string|null $contents
      * @param array $config
      * @return bool
      */
-    public function put($path, $contents, array $config = [])
+    public function put(string $path, ?string $contents, array $config = []): bool
     {
         return $this->filesystem->put($path, $contents, $config);
     }
@@ -71,27 +73,29 @@ class FilesystemAdapter implements AdapterInterface
      * @param array $config
      * @return bool
      */
-    public function putStream($path, $resource, array $config = [])
+    public function putStream(string $path, $resource, array $config = []): bool
     {
         return $this->filesystem->putStream($path, $resource, $config);
     }
 
     /**
      * @param string $path
-     * @return bool|false|string
+     * @return string|false
+     * @throws \League\Flysystem\FileNotFoundException
      */
-    public function readAndDelete($path)
+    public function readAndDelete(string $path)
     {
         return $this->filesystem->readAndDelete($path);
     }
 
     /**
      * @param string $path
-     * @param null|string $contents
+     * @param string|null $contents
      * @param array $config
      * @return bool
+     * @throws \League\Flysystem\FileNotFoundException
      */
-    public function update($path, $contents, array $config = [])
+    public function update(string $path, ?string $contents, array $config = []): bool
     {
         return $this->filesystem->update($path, $contents, $config);
     }
@@ -101,26 +105,29 @@ class FilesystemAdapter implements AdapterInterface
      * @param resource $resource
      * @param array $config
      * @return bool
+     * @throws \League\Flysystem\FileNotFoundException
      */
-    public function updateStream($path, $resource, array $config = [])
+    public function updateStream(string $path, $resource, array $config = []): bool
     {
         return $this->filesystem->updateStream($path, $resource, $config);
     }
 
     /**
      * @param string $path
-     * @return bool|false|string
+     * @return string|false
+     * @throws \League\Flysystem\FileNotFoundException
      */
-    public function read($path)
+    public function read(string $path)
     {
         return $this->filesystem->read($path);
     }
 
     /**
      * @param string $path
-     * @return bool|false|resource
+     * @return array|false
+     * @throws \League\Flysystem\FileNotFoundException
      */
-    public function readStream($path)
+    public function readStream(string $path)
     {
         return $this->filesystem->readStream($path);
     }
@@ -129,8 +136,10 @@ class FilesystemAdapter implements AdapterInterface
      * @param string $path
      * @param string $newpath
      * @return bool
+     * @throws \League\Flysystem\FileExistsException
+     * @throws \League\Flysystem\FileNotFoundException
      */
-    public function rename($path, $newpath)
+    public function rename(string $path, string $newpath): bool
     {
         return $this->filesystem->rename($path, $newpath);
     }
@@ -139,8 +148,10 @@ class FilesystemAdapter implements AdapterInterface
      * @param string $path
      * @param string $newpath
      * @return bool
+     * @throws \League\Flysystem\FileExistsException
+     * @throws \League\Flysystem\FileNotFoundException
      */
-    public function copy($path, $newpath)
+    public function copy(string $path, string $newpath): bool
     {
         return $this->filesystem->copy($path, $newpath);
     }
@@ -148,8 +159,9 @@ class FilesystemAdapter implements AdapterInterface
     /**
      * @param string $path
      * @return bool
+     * @throws \League\Flysystem\FileNotFoundException
      */
-    public function delete($path)
+    public function delete(string $path): bool
     {
         return $this->filesystem->delete($path);
     }
@@ -158,7 +170,7 @@ class FilesystemAdapter implements AdapterInterface
      * @param string $dirname
      * @return bool
      */
-    public function deleteDir($dirname)
+    public function deleteDir(string $dirname): bool
     {
         return $this->filesystem->deleteDir($dirname);
     }
@@ -168,7 +180,7 @@ class FilesystemAdapter implements AdapterInterface
      * @param array $config
      * @return bool
      */
-    public function createDir($dirname, array $config = [])
+    public function createDir(string $dirname, array $config = []): bool
     {
         return $this->filesystem->createDir($dirname, $config);
     }
@@ -176,45 +188,48 @@ class FilesystemAdapter implements AdapterInterface
     /**
      * @param string $directory
      * @param bool $recursive
-     * @return array
+     * @return array|null
      */
-    public function listContents($directory = '', $recursive = false)
+    public function listContents(string $directory = '', bool $recursive = false): ?array
     {
         return $this->filesystem->listContents($directory, $recursive);
     }
 
     /**
      * @param string $path
-     * @return bool|false|string
+     * @return string|false
+     * @throws \League\Flysystem\FileNotFoundException
      */
-    public function getMimetype($path)
+    public function getMimetype(string $path)
     {
         return $this->filesystem->getMimetype($path);
     }
 
     /**
      * @param string $path
-     * @return bool|false|string
+     * @return string|false
+     * @throws \League\Flysystem\FileNotFoundException
      */
-    public function getTimestamp($path)
+    public function getTimestamp(string $path)
     {
         return $this->filesystem->getTimestamp($path);
     }
 
     /**
      * @param string $path
-     * @return bool|false|string
+     * @return string|false
+     * @throws \League\Flysystem\FileNotFoundException
      */
-    public function getVisibility($path)
+    public function getVisibility(string $path)
     {
         return $this->filesystem->getVisibility($path);
     }
 
     /**
      * @param string $path
-     * @return bool|false|int
+     * @return int|false
      */
-    public function getSize($path)
+    public function getSize(string $path)
     {
         return $this->filesystem->getSize($path);
     }
@@ -224,7 +239,7 @@ class FilesystemAdapter implements AdapterInterface
      * @param string $visibility
      * @return bool
      */
-    public function setVisibility($path, $visibility)
+    public function setVisibility(string $path, string $visibility): bool
     {
         return $this->filesystem->setVisibility($path, $visibility);
     }
@@ -232,8 +247,9 @@ class FilesystemAdapter implements AdapterInterface
     /**
      * @param string $path
      * @return array|false
+     * @throws \League\Flysystem\FileNotFoundException
      */
-    public function getMetadata($path)
+    public function getMetadata(string $path)
     {
         return $this->filesystem->getMetadata($path);
     }
@@ -241,8 +257,9 @@ class FilesystemAdapter implements AdapterInterface
     /**
      * @param string $path
      * @return void
+     * @throws \League\Flysystem\FileNotFoundException
      */
-    public function assertPresent($path)
+    public function assertPresent(string $path): void
     {
         $this->filesystem->assertPresent($path);
     }
@@ -250,8 +267,9 @@ class FilesystemAdapter implements AdapterInterface
     /**
      * @param string $path
      * @return void
+     * @throws \League\Flysystem\FileExistsException
      */
-    public function assertAbsent($path)
+    public function assertAbsent(string $path): void
     {
         $this->filesystem->assertAbsent($path);
     }

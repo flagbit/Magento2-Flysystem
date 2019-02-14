@@ -4,6 +4,7 @@ namespace Flagbit\Flysystem\Test\Unit\Block\Adminhtml\Filesystem\Content;
 use \Flagbit\Flysystem\Block\Adminhtml\Filesystem\Content\Uploader;
 use \Magento\Backend\Block\Template\Context;
 use \Magento\Backend\Model\Url;
+use \Magento\Framework\App\ObjectManager;
 use \Magento\Framework\App\Request\Http;
 use \Magento\Framework\Data\Form\FormKey;
 use \Magento\Framework\File\Size;
@@ -44,11 +45,16 @@ class UploaderTest extends TestCase
     protected $_formKeyMock;
 
     /**
+     * @var ObjectManager|MockObject
+     */
+    protected $_objectManagerMock;
+
+    /**
      * @var Uploader
      */
     protected $_object;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->_contextMock = $this->getMockBuilder(Context::class)
             ->disableOriginalConstructor()
@@ -79,6 +85,13 @@ class UploaderTest extends TestCase
             ->setMethods(['getFormKey'])
             ->getMock();
 
+        $this->_objectManagerMock = $this->getMockBuilder(ObjectManager::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['get'])
+            ->getMock();
+
+        ObjectManager::setInstance($this->_objectManagerMock);
+
         $this->_contextMock->expects($this->once())
             ->method('getUrlBuilder')
             ->willReturn($this->_urlBuilderMock);
@@ -96,7 +109,7 @@ class UploaderTest extends TestCase
             ->willReturn($this->_formKeyMock);
     }
 
-    public function testContructor()
+    public function testContructor(): void
     {
         $uniqueHash = 'id_test';
         $uri = 'flagbit_flysystem/*/upload';
@@ -142,7 +155,7 @@ class UploaderTest extends TestCase
         );
     }
 
-    public function testContructorWithMediaType()
+    public function testContructorWithMediaType(): void
     {
         $uniqueHash = 'id_test';
         $uri = 'flagbit_flysystem/*/upload';

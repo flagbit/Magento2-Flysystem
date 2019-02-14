@@ -49,10 +49,10 @@ class Tree extends \Magento\Backend\Block\Template
     }
 
     /**
-     * @return bool|string
+     * @return string|null
      * @throws \Exception
      */
-    public function getTreeJson()
+    public function getTreeJson(): ?string
     {
         $jsonArray = [];
 
@@ -76,7 +76,9 @@ class Tree extends \Magento\Backend\Block\Template
             $jsonArray = [];
         }
 
-        return $this->_serializer->serialize($jsonArray);
+        $serialized = $this->_serializer->serialize($jsonArray);
+
+        return $serialized ? $serialized : null;
     }
 
     /**
@@ -84,7 +86,7 @@ class Tree extends \Magento\Backend\Block\Template
      *
      * @return string
      */
-    public function getTreeLoaderUrl()
+    public function getTreeLoaderUrl(): string
     {
         return $this->getUrl('flagbit_flysystem/*/treeJson');
     }
@@ -94,7 +96,7 @@ class Tree extends \Magento\Backend\Block\Template
      *
      * @return \Magento\Framework\Phrase
      */
-    public function getRootNodeName()
+    public function getRootNodeName(): \Magento\Framework\Phrase
     {
         return __('Storage Root');
     }
@@ -104,7 +106,7 @@ class Tree extends \Magento\Backend\Block\Template
      *
      * @return array
      */
-    public function getTreeCurrentPath()
+    public function getTreeCurrentPath(): array
     {
         $treePath = ['root'];
         if ($path = $this->_flysystemManager->getSession()->getCurrentPath()) {
@@ -121,16 +123,18 @@ class Tree extends \Magento\Backend\Block\Template
     }
 
     /**
-     * @return bool|string
+     * @return string|null
      */
-    public function getTreeWidgetOptions()
+    public function getTreeWidgetOptions(): ?string
     {
-        return $this->_serializer->serialize([
+        $serialized = $this->_serializer->serialize([
             "folderTree" => [
                 "rootName" => $this->getRootNodeName(),
                 "url" => $this->getTreeLoaderUrl(),
                 "currentPath" => array_reverse($this->getTreeCurrentPath())
             ]
         ]);
+
+        return $serialized ? $serialized : null;
     }
 }

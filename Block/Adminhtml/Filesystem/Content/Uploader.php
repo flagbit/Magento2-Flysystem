@@ -25,7 +25,7 @@ class Uploader extends MagentoUploader
         parent::__construct($context, $fileSize, $data);
     }
 
-    protected function _construct()
+    protected function _construct(): void
     {
         parent::_construct();
         $type = $this->_getMediaType();
@@ -38,9 +38,9 @@ class Uploader extends MagentoUploader
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
-    protected function _getMediaType()
+    protected function _getMediaType(): ?string
     {
         if ($this->hasData('media_type')) {
             return $this->_getData('media_type');

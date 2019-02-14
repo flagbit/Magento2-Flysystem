@@ -37,13 +37,17 @@ class NewFolder extends AbstractController
     }
 
     /**
-     * @return \Magento\Framework\Controller\ResultInterface
+     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\Result\Json|\Magento\Framework\Controller\ResultInterface
      */
     public function execute()
     {
         try {
             $manager = $this->getStorage();
-            $name = $this->getRequest()->getPost('name');
+            /** @var \Magento\Framework\App\Request\Http\Proxy $request */
+            $request = $this->getRequest();
+
+            /** @phan-suppress-next-line PhanUndeclaredMethod */
+            $name = $request->getPost('name');
             $path = rtrim($manager->getSession()->getCurrentPath(), '/');
             $result = $manager->getAdapter()->createDir($path.'/'.$name);
         } catch(\Exception $e) {

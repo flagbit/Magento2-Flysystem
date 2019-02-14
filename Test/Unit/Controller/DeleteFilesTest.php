@@ -61,7 +61,7 @@ class DeleteFilesTest extends TestCase
     protected $_object;
 
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->_contextMock = $this->getMockBuilder(Context::class)
             ->disableOriginalConstructor()
@@ -116,7 +116,7 @@ class DeleteFilesTest extends TestCase
     }
 
 
-    public function testExecute()
+    public function testExecute(): void
     {
         $files = ['filea.jpg', 'fileb.png'];
 
@@ -164,7 +164,7 @@ class DeleteFilesTest extends TestCase
         $this->assertEquals($this->_resultJsonMock, $this->_object->execute());
     }
 
-    public function testExecuteException()
+    public function testExecuteException(): void
     {
         $this->_httpMock->expects($this->once())
             ->method('isPost')

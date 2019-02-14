@@ -30,7 +30,7 @@ class InsertModalToProductForm implements ObserverInterface
     /**
      * @param Observer $observer
      */
-    public function execute(Observer $observer)
+    public function execute(Observer $observer): void
     {
         try {
             $observer->getBlock()->setTemplate('Flagbit_Flysystem::/product/form/gallery.phtml');

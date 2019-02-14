@@ -15,6 +15,7 @@ use \Magento\Framework\App\Filesystem\DirectoryList;
 use \Magento\Framework\App\ObjectManager;
 use \Magento\Framework\Exception\LocalizedException;
 use \Magento\Framework\Filesystem as MagentoFilesystem;
+use Magento\Framework\Filesystem\Directory\Write;
 use \Magento\Framework\Logger\Monolog;
 use \Magento\MediaStorage\Helper\File\Storage\Database;
 use \Magento\MediaStorage\Model\File\Uploader;
@@ -82,7 +83,7 @@ class TmpManagerTest extends TestCase
     protected $_storeManagerMock;
 
     /**
-     * @var DirectoryList|MockObject
+     * @var Write|MockObject
      */
     protected $_directoryListMock;
 
@@ -122,7 +123,7 @@ class TmpManagerTest extends TestCase
     protected $_object;
 
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->_flysystemManagerMock = $this->getMockBuilder(FilesystemManager::class)
             ->disableOriginalConstructor()
@@ -176,7 +177,7 @@ class TmpManagerTest extends TestCase
             ->setMethods(['getStore'])
             ->getMock();
 
-        $this->_directoryListMock = $this->getMockBuilder(DirectoryList::class)
+        $this->_directoryListMock = $this->getMockBuilder(Write::class)
             ->disableOriginalConstructor()
             ->setMethods(['getAbsolutePath'])
             ->getMock();
@@ -198,11 +199,6 @@ class TmpManagerTest extends TestCase
 
         $this->_localAdapterMock = $this->getMockBuilder(Local::class)
             ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->_directoryListMock = $this->getMockBuilder(DirectoryList::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['getAbsolutePath'])
             ->getMock();
 
         $this->_storeMock = $this->getMockBuilder(Store::class)
@@ -250,7 +246,7 @@ class TmpManagerTest extends TestCase
     }
 
 
-    public function testCreateProductTmp()
+    public function testCreateProductTmp(): void
     {
         $file = [
             'name' => 'test.jpg',
@@ -301,7 +297,7 @@ class TmpManagerTest extends TestCase
         $this->assertEquals($expectedReturn, $this->_object->createProductTmp($file));
     }
 
-    public function testCreateProductTmpException()
+    public function testCreateProductTmpException(): void
     {
         $file = [
             'name' => 'test.jpg',
@@ -329,7 +325,7 @@ class TmpManagerTest extends TestCase
         $this->_object->createProductTmp($file);
     }
 
-    public function testCreateCategoryTmp()
+    public function testCreateCategoryTmp(): void
     {
         $baseTmpPath = '/category/tmp';
         $absolutePath = '/var/www/html/pub/category/tmp';
@@ -403,7 +399,7 @@ class TmpManagerTest extends TestCase
         $this->assertEquals($expectedReturn, $this->_object->createCategoryTmp($file));
     }
 
-    public function testCreateCategoryTmpException()
+    public function testCreateCategoryTmpException(): void
     {
         $baseTmpPath = '/category/tmp';
         $absolutePath = '/var/www/html/pub/category/tmp';
@@ -486,7 +482,7 @@ class TmpManagerTest extends TestCase
         $this->_object->createCategoryTmp($file);
     }
 
-    public function testGetTmp()
+    public function testGetTmp(): void
     {
         $file = 'test.jpg';
         $encodedFile = 'encodedFile';
@@ -528,7 +524,7 @@ class TmpManagerTest extends TestCase
         $this->assertEquals($fileContent, $this->_object->getTmp($file));
     }
 
-    public function testWritePreview()
+    public function testWritePreview(): void
     {
         $username = 'test';
         $userDir = 'userhash';
@@ -563,7 +559,7 @@ class TmpManagerTest extends TestCase
         $this->assertEquals(true, $this->_object->writePreview($file, $content));
     }
 
-    public function testGetUserPreviewDirException()
+    public function testGetUserPreviewDirException(): void
     {
         $this->_adminSessionMock->expects($this->once())
             ->method('getUser')
@@ -574,7 +570,7 @@ class TmpManagerTest extends TestCase
         $this->_object->getUserPreviewDir();
     }
 
-    public function testWriteTmp()
+    public function testWriteTmp(): void
     {
         $username = 'test';
         $userDir = 'userhash';
@@ -615,7 +611,7 @@ class TmpManagerTest extends TestCase
         $this->assertEquals(true, $this->_object->writeTmp($file, $content));
     }
 
-    public function testGetTmpException()
+    public function testGetTmpException(): void
     {
         $file = 'path/filename.png';
         $encodedfile = 'ENCODED';
@@ -652,7 +648,7 @@ class TmpManagerTest extends TestCase
         $this->_object->getTmp($file);
     }
 
-    public function testGetAbsoluteTmpPath()
+    public function testGetAbsoluteTmpPath(): void
     {
         $file = 'path/filename.png';
         $encodedfile = 'ENCODED';
@@ -687,7 +683,7 @@ class TmpManagerTest extends TestCase
         $this->assertEquals($fullPath, $this->_object->getAbsoluteTmpPath($file));
     }
 
-    public function testGetUserTmpDirException()
+    public function testGetUserTmpDirException(): void
     {
         $this->_adminSessionMock->expects($this->once())
             ->method('getUser')
@@ -698,16 +694,16 @@ class TmpManagerTest extends TestCase
         $this->_object->getUserTmpDir();
     }
 
-    public function testSetAdapter()
+    public function testSetAdapter(): void
     {
         $this->_object->setAdapter($this->_flysystemAdapterMock);
 
         $this->assertEquals($this->_object->getAdapter(), $this->_flysystemAdapterMock);
     }
 
-    public function testCreateProductTmpValidateFileException()
+    public function testCreateProductTmpValidateFileException(): void
     {
-        $file = 'invalid';
+        $file = ['invalid' => null];
 
         $this->expectException(LocalizedException::class);
 
@@ -717,9 +713,9 @@ class TmpManagerTest extends TestCase
         $this->_object->createProductTmp($file);
     }
 
-    public function testCreateCategoryTmpValidateFileException()
+    public function testCreateCategoryTmpValidateFileException(): void
     {
-        $file = 'invalid';
+        $file = ['invalid' => null];
 
         $this->expectException(LocalizedException::class);
 
@@ -729,7 +725,7 @@ class TmpManagerTest extends TestCase
         $this->_object->createCategoryTmp($file);
     }
 
-    public function testCreateCategoryTmpSaveException()
+    public function testCreateCategoryTmpSaveException(): void
     {
         $baseTmpPath = '/category/tmp';
         $absolutePath = '/var/www/html/pub/category/tmp';
@@ -777,12 +773,12 @@ class TmpManagerTest extends TestCase
         $this->_object->createCategoryTmp($file);
     }
 
-    public function testGetDirectoryListMedia()
+    public function testGetDirectoryListMedia(): void
     {
         $this->assertEquals($this->_directoryListMock, $this->_object->getDirectoryListMedia());
     }
 
-    public function testWriteWysiwygFile()
+    public function testWriteWysiwygFile(): void
     {
         $file = 'test.jpg';
         $wysiwygFile = 'wysiwyg/test.jpg';
@@ -807,7 +803,7 @@ class TmpManagerTest extends TestCase
         $this->assertEquals($wysiwygFileNew, $this->_object->writeWysiwygFile($file ,$content));
     }
 
-    public function testWriteWysiwygFileError()
+    public function testWriteWysiwygFileError(): void
     {
         $file = 'test.jpg';
         $wysiwygFile = 'wysiwyg/test.jpg';
@@ -823,6 +819,8 @@ class TmpManagerTest extends TestCase
             ->with($wysiwygFile, $content)
             ->willReturn(false);
 
-        $this->assertEquals(false, $this->_object->writeWysiwygFile($file, $content));
+
+        $this->expectException(LocalizedException::class);
+        $this->_object->writeWysiwygFile($file, $content);
     }
 }

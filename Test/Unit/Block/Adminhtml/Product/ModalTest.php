@@ -18,14 +18,14 @@ class ModalTest extends TestCase
      */
     protected $_object;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->_contextMock = $this->getMockBuilder(Context::class)
             ->disableOriginalConstructor()
             ->getMock();
     }
 
-    public function testConstructor()
+    public function testConstructor(): void
     {
         $this->_object = new Modal(
             $this->_contextMock

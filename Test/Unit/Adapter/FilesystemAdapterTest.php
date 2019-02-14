@@ -18,7 +18,7 @@ class FilesystemAdapterTest extends TestCase
      */
     protected $_object;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->_filesystemMock = $this->getMockBuilder(Filesystem::class)
             ->disableOriginalConstructor()
@@ -57,7 +57,7 @@ class FilesystemAdapterTest extends TestCase
         );
     }
 
-    public function testHas()
+    public function testHas(): void
     {
         $path = '/test/path';
 
@@ -69,7 +69,7 @@ class FilesystemAdapterTest extends TestCase
         $this->assertEquals(true, $this->_object->has($path));
     }
 
-    public function testWrite()
+    public function testWrite(): void
     {
         $path = '/test/path/file.txt';
         $contents = 'content';
@@ -82,7 +82,7 @@ class FilesystemAdapterTest extends TestCase
         $this->assertEquals(true, $this->_object->write($path, $contents));
     }
 
-    public function testWriteStream()
+    public function testWriteStream(): void
     {
         $path = '/test/path/file.txt';
         $resource = 'writestream';
@@ -95,7 +95,7 @@ class FilesystemAdapterTest extends TestCase
         $this->assertEquals(true, $this->_object->writeStream($path, $resource));
     }
 
-    public function testPut()
+    public function testPut(): void
     {
         $path = '/test/path/file.txt';
         $contents = 'content';
@@ -108,7 +108,7 @@ class FilesystemAdapterTest extends TestCase
         $this->assertEquals(true, $this->_object->put($path, $contents));
     }
 
-    public function testPutStream()
+    public function testPutStream(): void
     {
         $path = '/test/path/file.txt';
         $stream = 'writeStream';
@@ -121,7 +121,7 @@ class FilesystemAdapterTest extends TestCase
         $this->assertEquals(true, $this->_object->putStream($path, $stream));
     }
 
-    public function testReadAndDelete()
+    public function testReadAndDelete(): void
     {
         $path = '/test/path/file.txt';
         $content = 'content';
@@ -134,7 +134,7 @@ class FilesystemAdapterTest extends TestCase
         $this->assertEquals($content, $this->_object->readAndDelete($path));
     }
 
-    public function testUpdate()
+    public function testUpdate(): void
     {
         $path = '/test/path/file.txt';
         $contents = 'content';
@@ -147,7 +147,7 @@ class FilesystemAdapterTest extends TestCase
         $this->assertEquals(true, $this->_object->update($path, $contents));
     }
 
-    public function testUpdateStream()
+    public function testUpdateStream(): void
     {
         $path = '/test/path/file.txt';
         $stream = 'writeStream';
@@ -160,7 +160,7 @@ class FilesystemAdapterTest extends TestCase
         $this->assertEquals(true, $this->_object->updateStream($path, $stream));
     }
 
-    public function testRead()
+    public function testRead(): void
     {
         $path = '/test/path/file.txt';
         $contents = 'content';
@@ -173,7 +173,7 @@ class FilesystemAdapterTest extends TestCase
         $this->assertEquals($contents, $this->_object->read($path));
     }
 
-    public function testReadStream()
+    public function testReadStream(): void
     {
         $path = '/test/path/file.txt';
         $stream = 'readStream';
@@ -186,7 +186,7 @@ class FilesystemAdapterTest extends TestCase
         $this->assertEquals($stream, $this->_object->readStream($path));
     }
 
-    public function testRename()
+    public function testRename(): void
     {
         $path = '/test/path/file.txt';
         $newPath = '/test/path/new_file.txt';
@@ -199,7 +199,7 @@ class FilesystemAdapterTest extends TestCase
         $this->assertEquals(true, $this->_object->rename($path, $newPath));
     }
 
-    public function testCopy()
+    public function testCopy(): void
     {
         $path = '/test/path/file.txt';
         $newPath = '/test/path/new_file.txt';
@@ -212,7 +212,7 @@ class FilesystemAdapterTest extends TestCase
         $this->assertEquals(true, $this->_object->copy($path, $newPath));
     }
 
-    public function testDelete()
+    public function testDelete(): void
     {
         $path = '/test/path/file.txt';
 
@@ -224,7 +224,7 @@ class FilesystemAdapterTest extends TestCase
         $this->assertEquals(true, $this->_object->delete($path));
     }
 
-    public function testDeleteDir()
+    public function testDeleteDir(): void
     {
         $path = '/test/path/';
 
@@ -236,7 +236,7 @@ class FilesystemAdapterTest extends TestCase
         $this->assertEquals(true, $this->_object->deleteDir($path));
     }
 
-    public function testCreateDir()
+    public function testCreateDir(): void
     {
         $path = '/test/path/';
 
@@ -248,7 +248,7 @@ class FilesystemAdapterTest extends TestCase
         $this->assertEquals(true, $this->_object->createDir($path));
     }
 
-    public function testListContents()
+    public function testListContents(): void
     {
         $path = '/test/path/';
         $contents = ['file1.jpg', 'file2.png'];
@@ -261,7 +261,7 @@ class FilesystemAdapterTest extends TestCase
         $this->assertEquals($contents, $this->_object->listContents($path));
     }
 
-    public function testGetMimetype()
+    public function testGetMimetype(): void
     {
         $path = '/test/path/test.txt';
         $mimeType = 'mimetype/test';
@@ -274,7 +274,7 @@ class FilesystemAdapterTest extends TestCase
         $this->assertEquals($mimeType, $this->_object->getMimetype($path));
     }
 
-    public function testGetTimestamp()
+    public function testGetTimestamp(): void
     {
         $path = '/test/path/test.txt';
         $timestamp = 100000;
@@ -287,7 +287,7 @@ class FilesystemAdapterTest extends TestCase
         $this->assertEquals($timestamp, $this->_object->getTimestamp($path));
     }
 
-    public function testGetVisibility()
+    public function testGetVisibility(): void
     {
         $path = '/test/path/test.txt';
         $visibility = 'public';
@@ -300,7 +300,7 @@ class FilesystemAdapterTest extends TestCase
         $this->assertEquals($visibility, $this->_object->getVisibility($path));
     }
 
-    public function testGetSize()
+    public function testGetSize(): void
     {
         $path = '/test/path/test.txt';
         $size = 100;
@@ -313,7 +313,7 @@ class FilesystemAdapterTest extends TestCase
         $this->assertEquals($size, $this->_object->getSize($path));
     }
 
-    public function testSetVisibility()
+    public function testSetVisibility(): void
     {
         $path = '/test/path/test.txt';
         $visibility = 'public';
@@ -326,7 +326,7 @@ class FilesystemAdapterTest extends TestCase
         $this->assertEquals(true, $this->_object->setVisibility($path, $visibility));
     }
 
-    public function testGetMetadata()
+    public function testGetMetadata(): void
     {
         $path = '/test/path/test.txt';
         $metadata = ['mime-type' => 'mimetype/test', 'user' => 'test'];
@@ -339,7 +339,7 @@ class FilesystemAdapterTest extends TestCase
         $this->assertEquals($metadata, $this->_object->getMetadata($path));
     }
 
-    public function testAssertPresent()
+    public function testAssertPresent(): void
     {
         $path = '/test/path/test.txt';
 
@@ -350,7 +350,7 @@ class FilesystemAdapterTest extends TestCase
         $this->_object->assertPresent($path);
     }
 
-    public function testAssertAbsent()
+    public function testAssertAbsent(): void
     {
         $path = '/test/path/test.txt';
 

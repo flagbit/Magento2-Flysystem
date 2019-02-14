@@ -44,9 +44,7 @@ class Index extends AbstractController
     }
 
     /**
-     * Index action
-     *
-     * @return \Magento\Framework\Controller\ResultInterface
+     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\Result\Json|\Magento\Framework\Controller\ResultInterface|\Magento\Framework\View\Result\Layout
      */
     public function execute()
     {

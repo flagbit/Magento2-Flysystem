@@ -47,12 +47,16 @@ class DeleteFiles extends AbstractController
     }
 
     /**
-     * @return \Magento\Framework\Controller\ResultInterface
+     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\Result\Json|\Magento\Framework\Controller\ResultInterface
      */
     public function execute()
     {
         try {
-            if (!$this->getRequest()->isPost()) {
+            /** @var \Magento\Framework\App\Request\Http\Proxy $request */
+            $request = $this->getRequest();
+
+            /** @phan-suppress-next-line PhanUndeclaredMethod */
+            if (!$request->isPost()) {
                 throw new \Exception(Errors::getErrorMessage(351));
             }
             $files = $this->getRequest()->getParam('files');
