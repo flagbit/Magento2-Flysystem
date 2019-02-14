@@ -33,7 +33,7 @@ class Adapter extends \Magento\Framework\DataObject implements \Magento\Framewor
     /**
      * @return array
      */
-    public function toOptionArray()
+    public function toOptionArray(): array
     {
         if(count($this->_options) === 0) {
             $options = [null => 'Use no Flysystem Adapter'];

@@ -34,12 +34,12 @@ class FilesystemAdapter implements AdapterInterface
 
     /**
      * @param string $path
-     * @param string $contents
+     * @param string|null $contents
      * @param array $config
      * @return bool
      * @throws \League\Flysystem\FileExistsException
      */
-    public function write(string $path, string $contents, array $config = []): bool
+    public function write(string $path, ?string $contents, array $config = []): bool
     {
         return $this->filesystem->write($path, $contents, $config);
     }
@@ -58,11 +58,11 @@ class FilesystemAdapter implements AdapterInterface
 
     /**
      * @param string $path
-     * @param string $contents
+     * @param string|null $contents
      * @param array $config
      * @return bool
      */
-    public function put(string $path, string $contents, array $config = []): bool
+    public function put(string $path, ?string $contents, array $config = []): bool
     {
         return $this->filesystem->put($path, $contents, $config);
     }
@@ -90,12 +90,12 @@ class FilesystemAdapter implements AdapterInterface
 
     /**
      * @param string $path
-     * @param string $contents
+     * @param string|null $contents
      * @param array $config
      * @return bool
      * @throws \League\Flysystem\FileNotFoundException
      */
-    public function update(string $path, string $contents, array $config = []): bool
+    public function update(string $path, ?string $contents, array $config = []): bool
     {
         return $this->filesystem->update($path, $contents, $config);
     }

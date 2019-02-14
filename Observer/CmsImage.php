@@ -51,7 +51,7 @@ class CmsImage implements ObserverInterface
     /**
      * @param Observer $observer
      */
-    public function execute(Observer $observer)
+    public function execute(Observer $observer): void
     {
         try {
             $modalId = $observer->getEvent()->getData('modal_id');
@@ -72,9 +72,6 @@ class CmsImage implements ObserverInterface
 
                 if(strpos($fullFilePath, $mediaPath) === false) {
                     $filename = $this->_tmpManager->writeWysiwygFile(basename($filename), $content);
-                    if($filename === false) {
-                        throw new LocalizedException(__('File could not be written to wysiwyg folder!'));
-                    }
                 } else {
                     $filename = trim(str_replace($mediaPath, '', $fullFilePath), '/');
                 }

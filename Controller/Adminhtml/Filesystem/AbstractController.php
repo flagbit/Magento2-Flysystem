@@ -39,11 +39,10 @@ abstract class AbstractController extends Action
     }
 
     /**
-     * Init storage
-     *
      * @return $this
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
-    protected function _initAction()
+    protected function _initAction(): self
     {
         $this->getStorage();
         return $this;
@@ -51,8 +50,9 @@ abstract class AbstractController extends Action
 
     /**
      * @return Manager
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function getStorage()
+    public function getStorage(): Manager
     {
         $this->_flysystemManager->getAdapter();
         return $this->_flysystemManager;

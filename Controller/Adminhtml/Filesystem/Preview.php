@@ -57,7 +57,7 @@ class Preview extends AbstractController
     }
 
     /**
-     * @return \Magento\Framework\Controller\Result\Json
+     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\Result\Json|\Magento\Framework\Controller\ResultInterface
      */
     public function execute()
     {

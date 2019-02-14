@@ -41,7 +41,7 @@ class CategoryImage implements ObserverInterface
     /**
      * @param Observer $observer
      */
-    public function execute(Observer $observer)
+    public function execute(Observer $observer): void
     {
         try {
             $modalId = $observer->getEvent()->getData('modal_id');
@@ -68,8 +68,10 @@ class CategoryImage implements ObserverInterface
      * @param Manager $manager
      * @param string $filename
      * @return array
+     * @throws \League\Flysystem\FileNotFoundException
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
-    protected function createFileArray($manager, $filename) {
+    protected function createFileArray(Manager $manager, string $filename): array {
         $file = [
             'name' => basename($filename),
             'type' => $manager->getAdapter()->getMimetype($filename),

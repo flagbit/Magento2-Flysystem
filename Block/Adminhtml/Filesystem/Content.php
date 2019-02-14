@@ -31,7 +31,7 @@ class Content extends Container
         parent::__construct($context, $data);
     }
 
-    protected function _construct()
+    protected function _construct(): void
     {
         parent::_construct();
         $this->_headerText = __('File Storage');
@@ -98,9 +98,9 @@ class Content extends Container
     }
 
     /**
-     * @return bool|string
+     * @return string|null
      */
-    public function getFilebrowserSetupObject()
+    public function getFilebrowserSetupObject(): ?string
     {
         $setupObject = [
             'newFolderPrompt' => __('New Folder Name:'),
@@ -120,13 +120,15 @@ class Content extends Container
             'showBreadcrumbs' => true,
         ];
 
-        return $this->_jsonEncoder->serialize($setupObject);
+        $encodedJson = $this->_jsonEncoder->serialize($setupObject);
+
+        return $encodedJson ? $encodedJson : null;
     }
 
     /**
      * @return string
      */
-    public function getContentsUrl()
+    public function getContentsUrl(): string
     {
         return $this->getUrl('flagbit_flysystem/*/contents');
     }
@@ -134,7 +136,7 @@ class Content extends Container
     /**
      * @return string
      */
-    public function getOnInsertUrl()
+    public function getOnInsertUrl(): string
     {
         return $this->getUrl('flagbit_flysystem/*/onInsert');
     }
@@ -142,7 +144,7 @@ class Content extends Container
     /**
      * @return string
      */
-    public function getNewfolderUrl()
+    public function getNewfolderUrl(): string
     {
         return $this->getUrl('flagbit_flysystem/*/newFolder');
     }
@@ -150,7 +152,7 @@ class Content extends Container
     /**
      * @return string
      */
-    protected function getDeletefolderUrl()
+    protected function getDeletefolderUrl(): string
     {
         return $this->getUrl('flagbit_flysystem/*/deleteFolder');
     }
@@ -158,7 +160,7 @@ class Content extends Container
     /**
      * @return string
      */
-    public function getDeleteFilesUrl()
+    public function getDeleteFilesUrl(): string
     {
         return $this->getUrl('flagbit_flysystem/*/deleteFiles');
     }
@@ -166,7 +168,7 @@ class Content extends Container
     /**
      * @return string
      */
-    public function getPreviewUrl()
+    public function getPreviewUrl(): string
     {
         return $this->getUrl('flagbit_flysystem/*/preview');
     }
@@ -174,7 +176,7 @@ class Content extends Container
     /**
      * @return string
      */
-    public function getWysiwygModalUrl()
+    public function getWysiwygModalUrl(): string
     {
         return $this->getUrl('cms/wysiwyg_images/index', [
             'target_element_id' => $this->getTargetElementId()
@@ -182,18 +184,18 @@ class Content extends Container
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
-    public function getTargetElementId()
+    public function getTargetElementId(): ?string
     {
-        return $this->getRequest()->getParam('target_element_id');
+        return (string)$this->getRequest()->getParam('target_element_id');
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
-    public function getModalIdentifier()
+    public function getModalIdentifier(): ?string
     {
-        return $this->getRequest()->getParam('identifier');
+        return (string)$this->getRequest()->getParam('identifier');
     }
 }

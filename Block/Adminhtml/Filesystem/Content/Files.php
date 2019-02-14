@@ -80,7 +80,7 @@ class Files extends Template
      *
      * @return array
      */
-    public function getFiles()
+    public function getFiles(): array
     {
         try {
             if (count($this->_filesCollection) === 0) {
@@ -106,7 +106,7 @@ class Files extends Template
      * @return bool
      * @throws \Exception
      */
-    public function validateFile($file)
+    public function validateFile(array $file): bool
     {
         $requiredValues = ['type' => null, 'basename' => null, 'path' => null];
         if(!is_array($file) || count(array_diff_key($requiredValues, $file)) > 0) {
@@ -126,7 +126,7 @@ class Files extends Template
     /**
      * @return string
      */
-    public function getMessages()
+    public function getMessages(): string
     {
         $this->_messages->setMessages($this->_messageManager->getMessages());
         return $this->_messages->getGroupedHtml();
@@ -137,16 +137,16 @@ class Files extends Template
      *
      * @return int
      */
-    public function getFilesCount()
+    public function getFilesCount(): int
     {
         return count($this->getFiles());
     }
 
     /**
      * @param array $file
-     * @return null|string
+     * @return string|null
      */
-    public function getFileId($file)
+    public function getFileId(array $file): ?string
     {
         if(!isset($file['path'])) {
             return null;
@@ -156,9 +156,9 @@ class Files extends Template
 
     /**
      * @param array $file
-     * @return null|string
+     * @return string|null
      */
-    public function getFileShortName($file) {
+    public function getFileShortName(array $file): ?string {
         if(!isset($file['path'])) {
             return null;
         }
@@ -169,7 +169,7 @@ class Files extends Template
      * @param array $file
      * @return string
      */
-    public function getFileEnding($file) {
+    public function getFileEnding(array $file): string {
         if(!isset($file['extension']) || empty($file['extension'])) {
             return 'unknown';
         }
@@ -181,7 +181,7 @@ class Files extends Template
      * @param array $file
      * @return string
      */
-    public function getFileSize($file) {
+    public function getFileSize(array $file): string {
         if(!isset($file['size'])) {
             return '';
         }
@@ -201,20 +201,27 @@ class Files extends Template
 
     /**
      * @param array $file
-     * @return false|string
+     * @return string
      */
-    public function getLastModified($file) {
+    public function getLastModified(array $file): string {
         if(!isset($file['timestamp'])) {
             return '';
         }
 
-        return date('d-m-Y H:i', $file['timestamp']);
+        // because date returns false on failure
+        $date = date('d-m-Y H:i', $file['timestamp']);
+        if(!$date) {
+            return '';
+        }
+
+        return $date;
     }
 
     /**
      * @param array $files
+     * @return void
      */
-    public function setFilesCollection($files)
+    public function setFilesCollection(array $files): void
     {
         $this->_filesCollection = $files;
     }

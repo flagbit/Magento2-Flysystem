@@ -66,17 +66,17 @@ class Config
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
-    public function getSource()
+    public function getSource(): ?string
     {
         return $this->_scopeConfig->getValue(self::XPATH_CONFIG_GENERAL_SOURCE);
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
-    public function getLocalPath()
+    public function getLocalPath(): ?string
     {
         return $this->_scopeConfig->getValue(self::XPATH_CONFIG_LOCAL_PATH);
     }
@@ -84,31 +84,31 @@ class Config
     /**
      * @return int
      */
-    public function getLocalLock()
+    public function getLocalLock(): int
     {
         return (int)$this->_scopeConfig->getValue(self::XPATH_CONFIG_LOCAL_LOCK);
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
-    public function getFtpHost()
+    public function getFtpHost(): ?string
     {
         return $this->_scopeConfig->getValue(self::XPATH_CONFIG_FTP_HOST);
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
-    public function getFtpUser()
+    public function getFtpUser(): ?string
     {
         return $this->_scopeConfig->getValue(self::XPATH_CONFIG_FTP_USER);
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
-    public function getFtpPassword()
+    public function getFtpPassword(): ?string
     {
         return $this->_scopeConfig->getValue(self::XPATH_CONFIG_FTP_PASSWORD);
     }
@@ -116,15 +116,15 @@ class Config
     /**
      * @return int
      */
-    public function getFtpPort()
+    public function getFtpPort(): int
     {
         return (int)$this->_scopeConfig->getValue(self::XPATH_CONFIG_FTP_PORT);
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
-    public function getFtpPath()
+    public function getFtpPath(): ?string
     {
         return $this->_scopeConfig->getValue(self::XPATH_CONFIG_FTP_PATH);
     }
@@ -132,7 +132,7 @@ class Config
     /**
      * @return bool
      */
-    public function getFtpPassive()
+    public function getFtpPassive(): bool
     {
         return (bool)$this->_scopeConfig->getValue(self::XPATH_CONFIG_FTP_PASSIVE);
     }
@@ -140,7 +140,7 @@ class Config
     /**
      * @return bool
      */
-    public function getFtpSsl()
+    public function getFtpSsl(): bool
     {
         return (bool)$this->_scopeConfig->getValue(self::XPATH_CONFIG_FTP_SSL);
     }
@@ -148,15 +148,15 @@ class Config
     /**
      * @return int
      */
-    public function getFtpTimeout()
+    public function getFtpTimeout(): int
     {
         return (int)$this->_scopeConfig->getValue(self::XPATH_CONFIG_FTP_TIMEOUT);
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
-    public function getSftpHost()
+    public function getSftpHost(): ?string
     {
         return $this->_scopeConfig->getValue(self::XPATH_CONFIG_SFTP_HOST);
     }
@@ -164,63 +164,63 @@ class Config
     /**
      * @return int
      */
-    public function getSftpPort()
+    public function getSftpPort(): int
     {
         return (int)$this->_scopeConfig->getValue(self::XPATH_CONFIG_SFTP_PORT);
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
-    public function getSftpUsername()
+    public function getSftpUsername(): ?string
     {
         return $this->_scopeConfig->getValue(self::XPATH_CONFIG_SFTP_USERNAME);
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
-    public function getSftpPassword()
+    public function getSftpPassword(): ?string
     {
         return $this->_scopeConfig->getValue(self::XPATH_CONFIG_SFTP_PASSWORD);
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
-    public function getSftpPrivateKeyPath()
+    public function getSftpPrivateKeyPath(): ?string
     {
         return $this->_scopeConfig->getValue(self::XPATH_CONFIG_SFTP_PRIVATE_KEY_PATH);
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
-    public function getSftpPrivateKeyContent()
+    public function getSftpPrivateKeyContent(): ?string
     {
         return $this->_scopeConfig->getValue(self::XPATH_CONFIG_SFTP_PRIVATE_KEY_CONTENT);
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
-    public function getSftpRoot()
+    public function getSftpRoot(): ?string
     {
         return $this->_scopeConfig->getValue(self::XPATH_CONFIG_SFTP_ROOT);
     }
 
     /**
-     * @return mixed
+     * @return int
      */
-    public function getSftpTimeout()
+    public function getSftpTimeout(): int
     {
-        return $this->_scopeConfig->getValue(self::XPATH_CONFIG_SFTP_TIMEOUT);
+        return (int)$this->_scopeConfig->getValue(self::XPATH_CONFIG_SFTP_TIMEOUT);
     }
 
     /**
      * @return int|null
      */
-    public function getSftpDirectoryPermissions()
+    public function getSftpDirectoryPermissions(): ?int
     {
         $directoryPermissions = $this->_scopeConfig->getValue(self::XPATH_CONFIG_SFTP_DIRECTORY_PERMISSIONS);
 
@@ -236,7 +236,7 @@ class Config
     /**
      * @return array
      */
-    public function getSupportedFileTypes()
+    public function getSupportedFileTypes(): array
     {
         return $this->_supportedFileTypes;
     }

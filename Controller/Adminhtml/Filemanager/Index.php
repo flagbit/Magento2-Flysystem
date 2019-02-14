@@ -39,7 +39,7 @@ class Index extends AbstractController
     /**
      * @return Page
      */
-    public function execute()
+    public function execute(): Page
     {
         try {
             $this->_initAction();
@@ -58,7 +58,7 @@ class Index extends AbstractController
      * @param Page $resultPage
      * @return Page
      */
-    protected function _initPage($resultPage)
+    protected function _initPage(Page $resultPage): Page
     {
         $resultPage->setActiveMenu('Flagbit_Flysystem::flysystem_page')
             ->addBreadcrumb(__('Flagbit Flysystem'), __('Flagbit Flysystem'));
