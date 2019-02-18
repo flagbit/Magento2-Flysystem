@@ -78,7 +78,7 @@ class OnInsertTest extends TestCase
      */
     protected $_object;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->_contextMock = $this->getMockBuilder(Context::class)
             ->disableOriginalConstructor()
@@ -153,7 +153,7 @@ class OnInsertTest extends TestCase
         );
     }
 
-    public function testExecute()
+    public function testExecute(): void
     {
         $filename = 'TEST';
         $decodedfile = '/path/to/file/test.jpg';
@@ -209,7 +209,7 @@ class OnInsertTest extends TestCase
         $this->assertEquals($this->_resultRawMock, $this->_object->execute());
     }
 
-    public function testExecuteException()
+    public function testExecuteException(): void
     {
         $exception = new \Exception('test');
 

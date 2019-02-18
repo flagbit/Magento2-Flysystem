@@ -5,6 +5,7 @@ use \Flagbit\Flysystem\Adapter\FilesystemAdapter;
 use \Flagbit\Flysystem\Adapter\FilesystemAdapterFactory;
 use \League\Flysystem\Adapter\Local;
 use \League\Flysystem\Filesystem;
+use \League\Flysystem\FilesystemFactory;
 use \Magento\Framework\App\ObjectManager;
 use \PHPUnit\Framework\MockObject\MockObject;
 use \PHPUnit\Framework\TestCase;
@@ -22,6 +23,11 @@ class FilesystemAdapterFactoryTest extends TestCase
     protected $_flysystemMock;
 
     /**
+     * @var FilesystemFactory|MockObject
+     */
+    protected $_flysystemFactoryMock;
+
+    /**
      * @var FilesystemAdapter|MockObject
      */
     protected $_flysystemAdapterMock;
@@ -32,7 +38,7 @@ class FilesystemAdapterFactoryTest extends TestCase
     protected $_object;
 
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->_objectManagerMock = $this->getMockBuilder(ObjectManager::class)
             ->disableOriginalConstructor()
@@ -43,29 +49,35 @@ class FilesystemAdapterFactoryTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
+        $this->_flysystemFactoryMock = $this->getMockBuilder(FilesystemFactory::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['create'])
+            ->getMock();
+
         $this->_flysystemAdapterMock = $this->getMockBuilder(FilesystemAdapter::class)
             ->disableOriginalConstructor()
             ->getMock();
 
         $this->_object = new FilesystemAdapterFactory(
-            $this->_objectManagerMock
+            $this->_objectManagerMock,
+            $this->_flysystemFactoryMock
         );
     }
 
 
-    public function testCreate()
+    public function testCreate(): void
     {
         /** @var Local|MockObject $adapterMock */
         $adapterMock = $this->getMockBuilder(Local::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->_objectManagerMock->expects($this->at(0))
+        $this->_flysystemFactoryMock->expects($this->once())
             ->method('create')
             ->withAnyParameters()
             ->willReturn($this->_flysystemMock);
 
-        $this->_objectManagerMock->expects($this->at(1))
+        $this->_objectManagerMock->expects($this->once())
             ->method('create')
             ->with(FilesystemAdapter::class, ['filesystem' => $this->_flysystemMock])
             ->willReturn($this->_flysystemAdapterMock);
@@ -73,14 +85,14 @@ class FilesystemAdapterFactoryTest extends TestCase
         $this->assertEquals($this->_flysystemAdapterMock, $this->_object->create($adapterMock, []));
     }
 
-    public function testCreateInvalidConfig()
+    public function testCreateInvalidConfig(): void
     {
         /** @var Local|MockObject $adapterMock */
         $adapterMock = $this->getMockBuilder(Local::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->_objectManagerMock->expects($this->at(0))
+        $this->_flysystemFactoryMock->expects($this->once())
             ->method('create')
             ->withAnyParameters()
             ->willThrowException(new \LogicException());

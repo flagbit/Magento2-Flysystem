@@ -85,7 +85,7 @@ class PreviewTest extends TestCase
      */
     protected $_object;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->_flysystemHelperMock = $this->getMockBuilder(Filesystem::class)
             ->disableOriginalConstructor()
@@ -162,7 +162,7 @@ class PreviewTest extends TestCase
         );
     }
 
-    public function testExecute()
+    public function testExecute(): void
     {
         $encodedFile = 'TESTTEST';
         $decodedFile = 'path/test.jpg';
@@ -220,7 +220,7 @@ class PreviewTest extends TestCase
         $this->assertEquals($this->_resultJsonMock, $this->_object->execute());
     }
 
-    public function testExecuteException()
+    public function testExecuteException(): void
     {
         $exception = new \Exception('test');
 

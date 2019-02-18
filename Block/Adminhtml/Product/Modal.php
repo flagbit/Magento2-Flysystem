@@ -26,7 +26,7 @@ class Modal extends \Magento\Backend\Block\Widget
         parent::__construct($context, $data);
     }
 
-    protected function _construct()
+    protected function _construct(): void
     {
         parent::_construct();
     }

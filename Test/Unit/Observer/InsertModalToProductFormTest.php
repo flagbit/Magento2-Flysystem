@@ -31,7 +31,7 @@ class InsertModalToProductFormTest extends TestCase
      */
     protected $_object;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->_loggerMock = $this->getMockBuilder(Monolog::class)
             ->disableOriginalConstructor()
@@ -53,7 +53,7 @@ class InsertModalToProductFormTest extends TestCase
         );
     }
 
-    public function testExecute()
+    public function testExecute(): void
     {
         $template = 'Flagbit_Flysystem::/product/form/gallery.phtml';
         $block_id = 'flysystem-modal';
@@ -73,7 +73,7 @@ class InsertModalToProductFormTest extends TestCase
         $this->_object->execute($this->_observerMock);
     }
 
-    public function testExecuteException()
+    public function testExecuteException(): void
     {
         $exception = new \Exception();
 

@@ -45,11 +45,10 @@ class Contents extends AbstractController
     }
 
     /**
-     * Save current path in session
-     *
-     * @return $this
+     * @return Contents
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
-    protected function _saveSessionCurrentPath()
+    protected function _saveSessionCurrentPath(): self
     {
         $this->getStorage()->getSession()->setCurrentPath(
             $this->_objectManager->get(Filesystem::class)->getCurrentPath()
@@ -58,9 +57,7 @@ class Contents extends AbstractController
     }
 
     /**
-     * Contents action
-     *
-     * @return \Magento\Framework\Controller\ResultInterface
+     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\Result\Json|\Magento\Framework\Controller\ResultInterface|\Magento\Framework\View\Result\Layout
      */
     public function execute()
     {

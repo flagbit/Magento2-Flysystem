@@ -87,7 +87,7 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
     /**
      * Set up Unit Tests
      */
-    public function setUp()
+    protected function setUp(): void
     {
         $this->_flysystemManagerMock = $this->getMockBuilder(FilesystemManager::class)
             ->disableOriginalConstructor()
@@ -172,7 +172,7 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
     /**
      * Test create method without source
      */
-    public function testGetAdapter()
+    public function testGetAdapter(): void
     {
         $this->_configMock->expects($this->once())
             ->method('getSource')
@@ -199,7 +199,7 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
     /**
      * Test create method with invalid source param
      */
-    public function testCreateInvalidSource()
+    public function testCreateInvalidSource(): void
     {
         $testSource = 'invalid';
 
@@ -220,7 +220,7 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
     /**
      * Test creation of local adapter without path param
      */
-    public function testCreateLocalAdapter()
+    public function testCreateLocalAdapter(): void
     {
         $source = 'local';
         $pathConfig = '/';
@@ -252,7 +252,7 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
     /**
      * Test creation of local adapter with invalid path param
      */
-    public function testCreateLocalAdapterException()
+    public function testCreateLocalAdapterException(): void
     {
         $pathParam = 'invalidPath';
         $exception = new \Exception();
@@ -276,7 +276,7 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
     /**
      * Test creation of ftp adapter (via create method because createFtpAdapter is protected)
      */
-    public function testCreateFtpAdapter()
+    public function testCreateFtpAdapter(): void
     {
         $testSource = 'ftp';
 
@@ -345,7 +345,7 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
     /**
      * Test create ftp adapter with invalid ftp connection data
      */
-    public function testCreateFtpAdapterInvalid1()
+    public function testCreateFtpAdapterInvalid1(): void
     {
         $testSource = 'ftp';
 
@@ -393,7 +393,7 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
     /**
      * Test create ftp adapter
      */
-    public function testCreateFtpAdapterInvalid2()
+    public function testCreateFtpAdapterInvalid2(): void
     {
         $testSource = 'ftp';
 
@@ -463,7 +463,7 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
     /**
      * Test creation of sftp adapter (via create method because createSftpAdapter is protected)
      */
-    public function testCreateSftpAdapter()
+    public function testCreateSftpAdapter(): void
     {
         $testSource = 'sftp';
 
@@ -537,7 +537,7 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
     /**
      * Test creation of sftp adapter (via create method because createSftpAdapter is protected)
      */
-    public function testCreateSftpAdapterWithEmptySftpRoot()
+    public function testCreateSftpAdapterWithEmptySftpRoot(): void
     {
         $testSource = 'sftp';
 
@@ -606,7 +606,7 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
     /**
      * Test create sftp adapter with invalid sftp connection data
      */
-    public function testCreateSftpAdapterInvalid1()
+    public function testCreateSftpAdapterInvalid1(): void
     {
         $testSource = 'sftp';
 
@@ -654,7 +654,7 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
     /**
      * Test create sftp adapter with invalid sftp connection data
      */
-    public function testCreateSftpAdapterInvalid2()
+    public function testCreateSftpAdapterInvalid2(): void
     {
         $testSource = 'sftp';
 
@@ -728,25 +728,26 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
         $this->_manager->create($testSource);
     }
 
-    public function testGetPath()
+    public function testGetPath(): void
     {
         $path = '/test/path';
         $this->_manager->setPath($path);
         $this->assertEquals($path, $this->_manager->getPath());
     }
 
-    public function testGetSession()
+    public function testGetSession(): void
     {
         $this->assertEquals($this->_sessionMock, $this->_manager->getSession());
     }
 
-    public function testModalIdentifier()
+    public function testModalIdentifier(): void
     {
         $modalId = 'test';
 
         $this->_sessionMock->expects($this->at(0))
             ->method('setFlysystemModalId')
-            ->with($modalId);
+            ->with($modalId)
+            ->willReturn($this->_sessionMock);
 
         $this->_sessionMock->expects($this->at(1))
             ->method('getFlysystemModalId')

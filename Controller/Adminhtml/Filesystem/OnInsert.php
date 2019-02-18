@@ -69,7 +69,7 @@ class OnInsert extends AbstractController
     }
 
     /**
-     * @return \Magento\Framework\Controller\Result\Raw
+     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\Result\Raw|\Magento\Framework\Controller\ResultInterface|void
      */
     public function execute()
     {
@@ -110,7 +110,7 @@ class OnInsert extends AbstractController
     /**
      * @param string $result
      */
-    public function setResult($result)
+    public function setResult(string $result): void
     {
         $this->_result = $result;
     }

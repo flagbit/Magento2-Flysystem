@@ -54,7 +54,7 @@ class UploadTest extends TestCase
      */
     protected $_object;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->_contextMock = $this->getMockBuilder(Context::class)
             ->disableOriginalConstructor()
@@ -98,7 +98,7 @@ class UploadTest extends TestCase
         );
     }
 
-    public function testExecute()
+    public function testExecute(): void
     {
         $currentPath = '/test/path';
 
@@ -130,7 +130,7 @@ class UploadTest extends TestCase
         $this->assertEquals($this->_resultJsonMock, $this->_object->execute());
     }
 
-    public function testExecuteException()
+    public function testExecuteException(): void
     {
         $exception = new \Exception();
 
