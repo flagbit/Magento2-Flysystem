@@ -34,7 +34,7 @@ define([
                         console.log(data.error);
                         if(!data.error) {
                             var previewHtml = $('#flysystem-image-preview');
-                            previewHtml.find('img').attr('src', data.previewUrl);
+                            previewHtml.find('img').first().attr('src', data.url);
                             previewHtml.show();
                         }
                     }, this)
