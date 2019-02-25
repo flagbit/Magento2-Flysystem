@@ -18,7 +18,7 @@
     }
   ],
   "require": {
-    "php": ">=7.0.0",
+    "php": ">=7.1.0",
     "league/flysystem": "1.0.43",
     "league/flysystem-sftp": "^1.0"
   },

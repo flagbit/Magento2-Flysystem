@@ -6,6 +6,8 @@ use \Flagbit\Flysystem\Controller\Adminhtml\Filesystem\OnInsert;
 use \Flagbit\Flysystem\Helper\Filesystem;
 use \Flagbit\Flysystem\Model\Filesystem\Manager;
 use \Flagbit\Flysystem\Model\Filesystem\TmpManager;
+use \Flagbit\Flysystem\Model\Pool\FileModifierPool;
+use \Flagbit\Flysystem\Test\Unit\Model\Pool\TestModifiers\TestFileModifier001;
 use \Magento\Backend\App\Action\Context;
 use \Magento\Backend\Model\Session;
 use \Magento\Framework\App\Request\Http;
@@ -57,6 +59,16 @@ class OnInsertTest extends TestCase
      * @var Monolog|MockObject
      */
     protected $_loggerMock;
+
+    /**
+     * @var FileModifierPool|MockObject
+     */
+    protected $_fileModifierPoolMock;
+
+    /**
+     * @var TestFileModifier001|MockObject
+     */
+    protected $_fileModifierMock;
 
     /**
      * @var FilesystemAdapter|MockObject
@@ -119,6 +131,16 @@ class OnInsertTest extends TestCase
             ->setMethods(['critical'])
             ->getMock();
 
+        $this->_fileModifierPoolMock = $this->getMockBuilder(FileModifierPool::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['getModifierInstances'])
+            ->getMock();
+
+        $this->_fileModifierMock = $this->getMockBuilder(TestFileModifier001::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['modifyFile'])
+            ->getMock();
+
         $this->_flysystemAdapterMock = $this->getMockBuilder(FilesystemAdapter::class)
             ->disableOriginalConstructor()
             ->setMethods(['read'])
@@ -149,7 +171,8 @@ class OnInsertTest extends TestCase
             $this->_resultRawFactoryMock,
             $this->_flysystemHelperMock,
             $this->_tmpManagerMock,
-            $this->_loggerMock
+            $this->_loggerMock,
+            $this->_fileModifierPoolMock
         );
     }
 
@@ -192,6 +215,14 @@ class OnInsertTest extends TestCase
         $this->_flysystemManagerMock->expects($this->once())
             ->method('getModalIdentifier')
             ->willReturn($modalId);
+
+        $this->_fileModifierPoolMock->expects($this->once())
+            ->method('getModifierInstances')
+            ->willReturn([$this->_fileModifierMock]);
+
+        $this->_fileModifierMock->expects($this->once())
+            ->method('modifyFile')
+            ->willReturn($decodedfile);
 
         $this->_eventManagerMock->expects($this->once())
             ->method('dispatch')

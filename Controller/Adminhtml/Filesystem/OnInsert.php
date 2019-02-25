@@ -4,6 +4,7 @@ namespace Flagbit\Flysystem\Controller\Adminhtml\Filesystem;
 use \Flagbit\Flysystem\Helper\Filesystem;
 use \Flagbit\Flysystem\Model\Filesystem\Manager;
 use \Flagbit\Flysystem\Model\Filesystem\TmpManager;
+use \Flagbit\Flysystem\Model\Pool\FileModifierPoolInterface;
 use \Magento\Backend\App\Action\Context;
 use \Magento\Framework\Controller\Result\RawFactory;
 use \Magento\Backend\Model\Session;
@@ -38,6 +39,11 @@ class OnInsert extends AbstractController
     protected $_logger;
 
     /**
+     * @var FileModifierPoolInterface
+     */
+    protected $_pool;
+
+    /**
      * @var string
      */
     protected $_result = '';
@@ -51,6 +57,7 @@ class OnInsert extends AbstractController
      * @param Filesystem $flysystemHelper
      * @param TmpManager $tmpManager
      * @param LoggerInterface $logger
+     * @param FileModifierPoolInterface $pool
      */
     public function __construct(
         Context $context,
@@ -59,12 +66,14 @@ class OnInsert extends AbstractController
         RawFactory $rawFactory,
         Filesystem $flysystemHelper,
         TmpManager $tmpManager,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        FileModifierPoolInterface $pool
     ) {
         $this->_resultRawFactory = $rawFactory;
         $this->_flysystemHelper = $flysystemHelper;
         $this->_tmpManager = $tmpManager;
         $this->_logger = $logger;
+        $this->_pool = $pool;
         parent::__construct($context, $flysystemManager, $session);
     }
 
@@ -87,6 +96,19 @@ class OnInsert extends AbstractController
 
             $identifier = $manager->getModalIdentifier();
 
+            $modifierInstances = $this->_pool->getModifierInstances();
+            foreach($modifierInstances as $modifier) {
+                $modifiedfilename = $modifier->modifyFile([
+                    'filename' => $filename,
+                    'as_is' => $as_is
+                ]);
+
+                if(!empty($modifiedfilename)) {
+                    $filename = $modifiedfilename;
+                }
+            }
+
+            /** @deprecated since version 0.2.1 use \Flagbit\Flysystem\Model\Pool\FileModifierPool instead */
             $this->_eventManager->dispatch('flagbit_flysystem_oninsert_after',
                 [
                     'controller' => $this,
@@ -102,6 +124,7 @@ class OnInsert extends AbstractController
         } catch (\Exception $e) {
             $this->_logger->critical($e->getMessage());
         }
+
 
         $resultRaw = $this->_resultRawFactory->create();
         return $resultRaw->setContents($this->_result);

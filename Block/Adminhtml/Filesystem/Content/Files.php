@@ -204,17 +204,15 @@ class Files extends Template
      * @return string
      */
     public function getLastModified(array $file): string {
-        if(!isset($file['timestamp'])) {
-            return '';
+        if(isset($file['timestamp'])) {
+            // because date returns false on failure
+            $date = date('d-m-Y H:i', $file['timestamp']);
+            if($date) {
+                return $date;
+            }
         }
 
-        // because date returns false on failure
-        $date = date('d-m-Y H:i', $file['timestamp']);
-        if(!$date) {
-            return '';
-        }
-
-        return $date;
+        return '';
     }
 
     /**
