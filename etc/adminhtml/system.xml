@@ -13,6 +13,12 @@
                     <comment>Select a Flysystem source adapter to select the product/category images from</comment>
                     <source_model>Flagbit\Flysystem\Model\Config\Source\Adapter</source_model>
                 </field>
+                <field id="enable_file_compare" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Compare files</label>
+                    <comment>Compare files when synchronizing files between Adapter and Magento Filestorage.
+                        (Will improve performance of inserting flysystem files but disabling may lead to doubled files in magento storage)</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
             </group>
             <group id="local" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
                 <label>Local</label>
