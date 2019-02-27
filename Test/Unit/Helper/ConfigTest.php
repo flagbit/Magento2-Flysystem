@@ -42,6 +42,23 @@ class ConfigTest extends TestCase
         $this->assertEquals($value, $this->_object->getSource());
     }
 
+    public function testGetFileComparingEnabled(): void
+    {
+        $this->_scopeConfigMock->expects($this->at(0))
+            ->method('getValue')
+            ->with(FlysystemConfig::XPATH_CONFIG_GENERAL_ENABLE_FILE_COMPARE)
+            ->willReturn(1);
+
+        $this->assertEquals(true, $this->_object->getFileComparingEnabled());
+
+        $this->_scopeConfigMock->expects($this->at(0))
+            ->method('getValue')
+            ->with(FlysystemConfig::XPATH_CONFIG_GENERAL_ENABLE_FILE_COMPARE)
+            ->willReturn(0);
+
+        $this->assertEquals(false, $this->_object->getFileComparingEnabled());
+    }
+
     public function testGetLocalPath(): void
     {
         $path = '/test/path';

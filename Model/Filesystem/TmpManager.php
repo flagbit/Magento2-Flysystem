@@ -305,13 +305,24 @@ class TmpManager
      * @return string
      * @throws LocalizedException
      * @throws \League\Flysystem\FileExistsException
+     * @throws \League\Flysystem\FileNotFoundException
      */
     public function writeWysiwygFile(string $file, ?string $content = null): string
     {
         $wysiwygFileConst = 'wysiwyg/'.ltrim($file, '/');
         $wysiwygFile = $wysiwygFileConst;
 
+        $createFile = true;
+
         for($i=1; $this->getAdapter()->has($wysiwygFile); $i++) {
+            if($this->_flysystemConfig->getFileComparingEnabled()) {
+                $oldContent = $this->getAdapter()->read($wysiwygFile);
+                if($oldContent === $content) {
+                    $createFile = false;
+                    break;
+                }
+            }
+
             $filePathParts = explode('/', $wysiwygFileConst);
             $fileParts = explode('.', $filePathParts[(count($filePathParts)-1)]);
 
@@ -320,7 +331,7 @@ class TmpManager
             $wysiwygFile = implode('/', $filePathParts);
         }
 
-        if($this->getAdapter()->write($wysiwygFile, $content))
+        if(!$createFile || $this->getAdapter()->write($wysiwygFile, $content))
         {
             return $wysiwygFile;
         }

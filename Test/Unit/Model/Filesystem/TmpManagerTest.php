@@ -137,6 +137,7 @@ class TmpManagerTest extends TestCase
 
         $this->_flysystemConfigMock = $this->getMockBuilder(Config::class)
             ->disableOriginalConstructor()
+            ->setMethods(['getFileComparingEnabled'])
             ->getMock();
 
         $this->_flysystemHelperMock = $this->getMockBuilder(Filesystem::class)
@@ -795,12 +796,44 @@ class TmpManagerTest extends TestCase
             ->with($wysiwygFileNew)
             ->willReturn(false);
 
+        $this->_flysystemConfigMock->expects($this->any())
+            ->method('getFileComparingEnabled')
+            ->willReturn(false);
+
         $this->_flysystemAdapterMock->expects($this->once())
             ->method('write')
             ->with($wysiwygFileNew, $content)
             ->willReturn(true);
 
         $this->assertEquals($wysiwygFileNew, $this->_object->writeWysiwygFile($file ,$content));
+    }
+
+    public function testWriteWysiwygFileAlreadyExists(): void
+    {
+        $file = 'test.jpg';
+        $wysiwygFile = 'wysiwyg/test.jpg';
+        $content = 'test';
+
+        $oldContent = $content;
+
+        $this->_flysystemAdapterMock->expects($this->at(0))
+            ->method('has')
+            ->with($wysiwygFile)
+            ->willReturn(true);
+
+        $this->_flysystemConfigMock->expects($this->any())
+            ->method('getFileComparingEnabled')
+            ->willReturn(true);
+
+        $this->_flysystemAdapterMock->expects($this->at(1))
+            ->method('read')
+            ->with($wysiwygFile)
+            ->willReturn($oldContent);
+
+        $this->_flysystemAdapterMock->expects($this->never())
+            ->method('write');
+
+        $this->assertEquals($wysiwygFile, $this->_object->writeWysiwygFile($file, $content));
     }
 
     public function testWriteWysiwygFileError(): void
