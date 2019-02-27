@@ -25,6 +25,9 @@
     "require-dev": {
         "roave/security-advisories": "dev-master"
     },
+    "suggest": {
+        "flagbit/magento2-flysystem-s3": "S3 Adapter for Magento2 Flysystem integration"
+    },
     "autoload": {
         "files": [
             "registration.php"
