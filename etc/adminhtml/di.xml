@@ -22,4 +22,32 @@
             </argument>
         </arguments>
     </type>
+
+    <virtualType name="Flagbit\Flysystem\Pool\OnInsertPool" type="Flagbit\Flysystem\Model\Pool\FileModifierPool">
+        <arguments>
+            <argument name="modifiers" xsi:type="array">
+                <item name="cms_wysiwyg_image" xsi:type="array">
+                    <item name="class" xsi:type="string">Flagbit\Flysystem\Model\Pool\Modifier\CmsWysiwygImage</item>
+                    <item name="scope" xsi:type="string">flagbit_cms_modal</item>
+                    <item name="sortOrder" xsi:type="number">10</item>
+                </item>
+                <item name="category_image" xsi:type="array">
+                    <item name="class" xsi:type="string">Flagbit\Flysystem\Model\Pool\Modifier\CategoryImage</item>
+                    <item name="scope" xsi:type="string">category_modal</item>
+                    <item name="sortOrder" xsi:type="number">10</item>
+                </item>
+                <item name="product_image" xsi:type="array">
+                    <item name="class" xsi:type="string">Flagbit\Flysystem\Model\Pool\Modifier\ProductImage</item>
+                    <item name="scope" xsi:type="string">product_gallery</item>
+                    <item name="sortOrder" xsi:type="number">10</item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Flagbit\Flysystem\Controller\Adminhtml\Filesystem\OnInsert">
+        <arguments>
+            <argument name="pool" xsi:type="object">Flagbit\Flysystem\Pool\OnInsertPool</argument>
+        </arguments>
+    </type>
 </config>

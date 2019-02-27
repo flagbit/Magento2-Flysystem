@@ -43,6 +43,7 @@ class Errors extends AbstractHelper
      * Development Errors while using Flysystem
      */
     const ERR_NO_621 = "Invalid Parameters in Observer %1 for event %2";
+    const ERR_NO_631 = "Missing parameter filename in FileModifier";
 
     /**
      * @param int $num
