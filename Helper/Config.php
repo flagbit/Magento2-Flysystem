@@ -25,6 +25,7 @@ class Config
     ];
 
     const XPATH_CONFIG_GENERAL_SOURCE = 'flagbit_flysystem/general/source';
+    const XPATH_CONFIG_GENERAL_ENABLE_FILE_COMPARE = 'flagbit_flysystem/general/enable_file_compare';
 
     const XPATH_CONFIG_LOCAL_PATH = 'flagbit_flysystem/local/path';
     const XPATH_CONFIG_LOCAL_LOCK = 'flagbit_flysystem/local/lock';
@@ -71,6 +72,14 @@ class Config
     public function getSource(): ?string
     {
         return $this->_scopeConfig->getValue(self::XPATH_CONFIG_GENERAL_SOURCE);
+    }
+
+    /**
+     * @return bool
+     */
+    public function getFileComparingEnabled(): bool
+    {
+        return (bool)$this->_scopeConfig->getValue(self::XPATH_CONFIG_GENERAL_ENABLE_FILE_COMPARE);
     }
 
     /**
