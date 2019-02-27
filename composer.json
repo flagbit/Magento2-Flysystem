@@ -1,39 +1,39 @@
 {
-  "name": "flagbit/magento2-flysystem",
-  "description": "Flysystem integration for Magento2",
-  "type": "magento2-module",
-  "license": [
-    "proprietary"
-  ],
-  "authors": [
-    {
-      "name": "Robin Homberg",
-      "email": "robin.homberg@flagbit.de",
-      "role": "Developer"
-    },
-    {
-      "name": "Björn Meyer",
-      "email": "bjoern.meyer@flagbit.de",
-      "role": "DevOps"
-    }
-  ],
-  "require": {
-    "php": ">=7.1.0",
-    "league/flysystem": "1.0.43",
-    "league/flysystem-sftp": "^1.0"
-  },
-  "require-dev": {
-    "roave/security-advisories": "dev-master"
-  },
-  "autoload": {
-    "files": [
-      "registration.php"
+    "name": "flagbit/magento2-flysystem",
+    "description": "Flysystem integration for Magento2",
+    "type": "magento2-module",
+    "license": [
+        "GPL-3.0-or-later"
     ],
-    "psr-4": {
-      "Flagbit\\Flysystem\\": ""
+    "authors": [
+        {
+            "name": "Robin Homberg",
+            "email": "robin.homberg@flagbit.de",
+            "role": "Developer"
+        },
+        {
+            "name": "Björn Meyer",
+            "email": "bjoern.meyer@flagbit.de",
+            "role": "DevOps"
+        }
+    ],
+    "require": {
+        "php": ">=7.1.0",
+        "league/flysystem": "1.0.43",
+        "league/flysystem-sftp": "^1.0"
+    },
+    "require-dev": {
+        "roave/security-advisories": "dev-master"
+    },
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Flagbit\\Flysystem\\": ""
+        }
+    },
+    "config": {
+        "sort-packages": true
     }
-  },
-  "config": {
-    "sort-packages": true
-  }
 }
