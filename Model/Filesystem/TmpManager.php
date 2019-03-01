@@ -294,7 +294,7 @@ class TmpManager
     /**
      * @param FilesystemAdapter|null $adapter
      */
-    public function setAdapter(?FilesystemAdapter $adapter): void
+    public function setAdapter(?FilesystemAdapter $adapter)
     {
         $this->_adapter = $adapter;
     }
