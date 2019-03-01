@@ -219,7 +219,7 @@ class Files extends Template
      * @param array $files
      * @return void
      */
-    public function setFilesCollection(array $files): void
+    public function setFilesCollection(array $files)
     {
         $this->_filesCollection = $files;
     }
