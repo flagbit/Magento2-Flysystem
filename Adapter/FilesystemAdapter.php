@@ -259,7 +259,7 @@ class FilesystemAdapter implements AdapterInterface
      * @return void
      * @throws \League\Flysystem\FileNotFoundException
      */
-    public function assertPresent(string $path): void
+    public function assertPresent(string $path)
     {
         $this->filesystem->assertPresent($path);
     }
@@ -269,7 +269,7 @@ class FilesystemAdapter implements AdapterInterface
      * @return void
      * @throws \League\Flysystem\FileExistsException
      */
-    public function assertAbsent(string $path): void
+    public function assertAbsent(string $path)
     {
         $this->filesystem->assertAbsent($path);
     }

@@ -160,11 +160,11 @@ interface AdapterInterface {
      * @param string $path
      * @return void
      */
-    public function assertPresent(string $path): void;
+    public function assertPresent(string $path);
 
     /**
      * @param string $path
      * @return void
      */
-    public function assertAbsent(string $path): void;
+    public function assertAbsent(string $path);
 }
