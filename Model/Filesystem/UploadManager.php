@@ -125,7 +125,7 @@ class UploadManager
      * @return void
      * @throws \Exception
      */
-    public function validateFileType(array $file): void
+    public function validateFileType(array $file)
     {
         $filetype = '';
 

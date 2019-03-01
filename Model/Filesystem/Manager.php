@@ -136,7 +136,7 @@ class Manager
      * @param FilesystemAdapter|null $adapter
      * @return void
      */
-    public function setAdapter(?FilesystemAdapter $adapter): void
+    public function setAdapter(?FilesystemAdapter $adapter)
     {
         $this->_adapter = $adapter;
     }
@@ -152,7 +152,7 @@ class Manager
     /**
      * @param string|null $path
      */
-    public function setPath(?string $path): void
+    public function setPath(?string $path)
     {
         $this->_path = $path;
     }
