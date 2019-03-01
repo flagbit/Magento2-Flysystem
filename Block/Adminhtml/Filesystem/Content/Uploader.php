@@ -25,7 +25,7 @@ class Uploader extends MagentoUploader
         parent::__construct($context, $fileSize, $data);
     }
 
-    protected function _construct(): void
+    protected function _construct()
     {
         parent::_construct();
         $type = $this->_getMediaType();

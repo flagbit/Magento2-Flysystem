@@ -133,7 +133,7 @@ class OnInsert extends AbstractController
     /**
      * @param string $result
      */
-    public function setResult(string $result): void
+    public function setResult(string $result)
     {
         $this->_result = $result;
     }

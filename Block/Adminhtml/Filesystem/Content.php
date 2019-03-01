@@ -31,7 +31,7 @@ class Content extends Container
         parent::__construct($context, $data);
     }
 
-    protected function _construct(): void
+    protected function _construct()
     {
         parent::_construct();
         $this->_headerText = __('File Storage');
