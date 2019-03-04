@@ -89,7 +89,7 @@ class Manager
      * @return FilesystemAdapter|null
      * @throws LocalizedException
      */
-    public function create(?string $source = null): ?FilesystemAdapter
+    public function create($source = null)
     {
         if (!$source) {
             $source = $this->_flysystemConfig->getSource();
@@ -120,7 +120,7 @@ class Manager
      * @return FilesystemAdapter|null
      * @throws LocalizedException
      */
-    public function getAdapter(bool $createIfNotExists = true): ?FilesystemAdapter
+    public function getAdapter(bool $createIfNotExists = true)
     {
         if (!$this->_adapter && $createIfNotExists) {
             $this->create();
@@ -136,7 +136,7 @@ class Manager
      * @param FilesystemAdapter|null $adapter
      * @return void
      */
-    public function setAdapter(?FilesystemAdapter $adapter)
+    public function setAdapter($adapter)
     {
         $this->_adapter = $adapter;
     }
@@ -144,7 +144,7 @@ class Manager
     /**
      * @return string|null
      */
-    public function getPath(): ?string
+    public function getPath()
     {
         return $this->_path;
     }
@@ -152,7 +152,7 @@ class Manager
     /**
      * @param string|null $path
      */
-    public function setPath(?string $path)
+    public function setPath($path)
     {
         $this->_path = $path;
     }
@@ -161,7 +161,7 @@ class Manager
      * @param string|null $path
      * @return FilesystemAdapter|null
      */
-    public function createLocalAdapter(?string $path = null): ?FilesystemAdapter
+    public function createLocalAdapter($path = null)
     {
         try {
             if (empty($path)) {
@@ -183,7 +183,7 @@ class Manager
     /**
      * @return FilesystemAdapter|null
      */
-    protected function createFtpAdapter(): ?FilesystemAdapter
+    protected function createFtpAdapter()
     {
         try {
             $host = $this->_flysystemConfig->getFtpHost();
@@ -219,7 +219,7 @@ class Manager
     /**
      * @return FilesystemAdapter|null
      */
-    protected function createSftpAdapter(): ?FilesystemAdapter
+    protected function createSftpAdapter()
     {
         try {
             $host = $this->_flysystemConfig->getSftpHost();
@@ -284,7 +284,7 @@ class Manager
      * @param string|null $identifier
      * @return Session
      */
-    public function setModalIdentifier(?string $identifier): Session
+    public function setModalIdentifier($identifier): Session
     {
         return $this->getSession()->setFlysystemModalId($identifier);
     }
@@ -292,7 +292,7 @@ class Manager
     /**
      * @return string|null
      */
-    public function getModalIdentifier(): ?string
+    public function getModalIdentifier()
     {
         return $this->getSession()->getFlysystemModalId();
     }

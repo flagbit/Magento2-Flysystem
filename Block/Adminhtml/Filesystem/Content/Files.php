@@ -146,7 +146,7 @@ class Files extends Template
      * @param array $file
      * @return string|null
      */
-    public function getFileId(array $file): ?string
+    public function getFileId(array $file)
     {
         if(!isset($file['path'])) {
             return null;
@@ -158,7 +158,7 @@ class Files extends Template
      * @param array $file
      * @return string|null
      */
-    public function getFileShortName(array $file): ?string {
+    public function getFileShortName(array $file) {
         if(!isset($file['path'])) {
             return null;
         }

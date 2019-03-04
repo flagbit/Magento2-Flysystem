@@ -155,7 +155,7 @@ class TmpManager
     /**
      * @return FilesystemAdapter|null
      */
-    public function create(): ?FilesystemAdapter
+    public function create()
     {
         if(!$this->_adapter) {
             $path = $this->_directoryList->getAbsolutePath();
@@ -166,11 +166,12 @@ class TmpManager
 
     /**
      * @param string $file
-     * @param string|null $content
+     * @param null $content
      * @return bool
+     * @throws LocalizedException
      * @throws \League\Flysystem\FileExistsException
      */
-    public function writeTmp(string $file, ?string $content = null): bool
+    public function writeTmp(string $file, $content = null): bool
     {
         $this->clearTmp();
         return $this->getAdapter()->write($this->getTmpPath($file), $content);
@@ -249,7 +250,7 @@ class TmpManager
      * @throws LocalizedException
      * @throws \League\Flysystem\FileExistsException
      */
-    public function writePreview(string $file, ?string $content = null): bool
+    public function writePreview(string $file, $content = null): bool
     {
         $this->clearPreview();
         $previewFilename = $this->getUserPreviewDir().'/'.basename($file);
@@ -286,7 +287,7 @@ class TmpManager
     /**
      * @return FilesystemAdapter|null
      */
-    public function getAdapter(): ?FilesystemAdapter
+    public function getAdapter()
     {
         return $this->_adapter;
     }
@@ -294,7 +295,7 @@ class TmpManager
     /**
      * @param FilesystemAdapter|null $adapter
      */
-    public function setAdapter(?FilesystemAdapter $adapter)
+    public function setAdapter($adapter)
     {
         $this->_adapter = $adapter;
     }
@@ -307,7 +308,7 @@ class TmpManager
      * @throws \League\Flysystem\FileExistsException
      * @throws \League\Flysystem\FileNotFoundException
      */
-    public function writeWysiwygFile(string $file, ?string $content = null): string
+    public function writeWysiwygFile(string $file, $content = null): string
     {
         $wysiwygFileConst = 'wysiwyg/'.ltrim($file, '/');
         $wysiwygFile = $wysiwygFileConst;
