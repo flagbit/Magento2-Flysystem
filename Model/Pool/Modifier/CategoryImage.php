@@ -57,7 +57,7 @@ class CategoryImage implements ModifierInterface
      * @throws \League\Flysystem\FileNotFoundException
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-    public function modifyFile(array $data): ?string
+    public function modifyFile(array $data)
     {
         $this->filename = null;
         if(!isset($data['filename']) || empty($data['filename'])) {
@@ -66,17 +66,16 @@ class CategoryImage implements ModifierInterface
 
         $this->filename = $data['filename'];
 
-        $file = $this->createFileArray($this->filename);
+        $file = $this->createFileArray();
 
         $result = $this->_tmpManager->createCategoryTmp($file);
         return json_encode($result);
     }
 
     /**
-     * @param string $filename
      * @return array
+     * @throws LocalizedException
      * @throws \League\Flysystem\FileNotFoundException
-     * @throws \Magento\Framework\Exception\LocalizedException
      */
     protected function createFileArray(): array {
         $file = [

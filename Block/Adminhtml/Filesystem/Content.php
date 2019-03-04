@@ -100,7 +100,7 @@ class Content extends Container
     /**
      * @return string|null
      */
-    public function getFilebrowserSetupObject(): ?string
+    public function getFilebrowserSetupObject()
     {
         $setupObject = [
             'newFolderPrompt' => __('New Folder Name:'),
@@ -186,7 +186,7 @@ class Content extends Container
     /**
      * @return string|null
      */
-    public function getTargetElementId(): ?string
+    public function getTargetElementId()
     {
         return (string)$this->getRequest()->getParam('target_element_id');
     }
@@ -194,7 +194,7 @@ class Content extends Container
     /**
      * @return string|null
      */
-    public function getModalIdentifier(): ?string
+    public function getModalIdentifier()
     {
         return (string)$this->getRequest()->getParam('identifier');
     }

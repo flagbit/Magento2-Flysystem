@@ -52,7 +52,7 @@ class Tree extends \Magento\Backend\Block\Template
      * @return string|null
      * @throws \Exception
      */
-    public function getTreeJson(): ?string
+    public function getTreeJson()
     {
         $jsonArray = [];
 
@@ -125,7 +125,7 @@ class Tree extends \Magento\Backend\Block\Template
     /**
      * @return string|null
      */
-    public function getTreeWidgetOptions(): ?string
+    public function getTreeWidgetOptions()
     {
         $serialized = $this->_serializer->serialize([
             "folderTree" => [

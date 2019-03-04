@@ -56,7 +56,7 @@ class ProductImage implements ModifierInterface
      * @throws \League\Flysystem\FileNotFoundException
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function modifyFile(array $data): ?string
+    public function modifyFile(array $data)
     {
         $this->filename = null;
         if(!isset($data['filename']) || empty($data['filename'])) {

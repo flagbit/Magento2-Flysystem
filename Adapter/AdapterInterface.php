@@ -19,7 +19,7 @@ interface AdapterInterface {
      * @param array $config
      * @return bool
      */
-    public function write(string $path, string $contents, array $config = []): bool;
+    public function write(string $path, $contents, array $config = []): bool;
 
     /**
      * @param string $path
@@ -35,7 +35,7 @@ interface AdapterInterface {
      * @param array $config
      * @return bool
      */
-    public function put(string $path, string $contents, array $config = []): bool;
+    public function put(string $path, $contents, array $config = []): bool;
 
     /**
      * @param string $path
@@ -57,7 +57,7 @@ interface AdapterInterface {
      * @param array $config
      * @return bool
      */
-    public function update(string $path, string $contents, array $config = []): bool;
+    public function update(string $path, $contents, array $config = []): bool;
 
     /**
      * @param string $path
@@ -117,7 +117,7 @@ interface AdapterInterface {
      * @param bool $recursive
      * @return array|null
      */
-    public function listContents(string $directory = '', bool $recursive = false): ?array;
+    public function listContents(string $directory = '', bool $recursive = false);
 
     /**
      * @param string $path

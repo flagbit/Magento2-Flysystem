@@ -81,7 +81,7 @@ class UploadManager
     /**
      * @return FilesystemAdapter|null
      */
-    public function create(): ?FilesystemAdapter
+    public function create()
     {
         if(!$this->_adapter) {
             $this->_adapter = $this->_flysystemFactory->create($this->_flysystemManager->createLocalDriver(self::SERVER_TMP_PATH));
@@ -92,7 +92,7 @@ class UploadManager
     /**
      * @return Uploader|null
      */
-    public function getUploader(): ?Uploader
+    public function getUploader()
     {
         return $this->_uploader;
     }
@@ -100,7 +100,7 @@ class UploadManager
     /**
      * @return FilesystemAdapter|null
      */
-    public function getAdapter(): ?FilesystemAdapter
+    public function getAdapter()
     {
         return $this->_adapter;
     }
