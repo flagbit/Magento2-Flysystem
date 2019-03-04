@@ -166,7 +166,7 @@ class TmpManager
 
     /**
      * @param string $file
-     * @param null $content
+     * @param string|null $content
      * @return bool
      * @throws LocalizedException
      * @throws \League\Flysystem\FileExistsException
