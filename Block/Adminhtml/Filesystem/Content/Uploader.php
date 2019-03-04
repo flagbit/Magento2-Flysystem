@@ -40,7 +40,7 @@ class Uploader extends MagentoUploader
     /**
      * @return string|null
      */
-    protected function _getMediaType(): ?string
+    protected function _getMediaType()
     {
         if ($this->hasData('media_type')) {
             return $this->_getData('media_type');

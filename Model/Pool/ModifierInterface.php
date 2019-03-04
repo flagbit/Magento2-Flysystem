@@ -5,7 +5,7 @@ interface ModifierInterface
 {
     /**
      * @param array $data
-     * @return string
+     * @return string|null
      */
-    public function modifyFile(array $data): ?string;
+    public function modifyFile(array $data);
 }
