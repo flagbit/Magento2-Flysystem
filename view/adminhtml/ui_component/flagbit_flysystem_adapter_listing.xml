@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">flagbit_flysystem_adapter_listing.flagbit_flysystem_adapter_listing_data_source</item>
+        </item>
+    </argument>
+    <settings>
+        <buttons>
+            <button name="add">
+                <url path="*/*/new"/>
+                <class>primary</class>
+                <label translate="true">Add New Adapter</label>
+            </button>
+        </buttons>
+        <spinner>adapter_columns</spinner>
+        <deps>
+            <dep>flagbit_flysystem_adapter_listing.flagbit_flysystem_adapter_listing_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="flagbit_flysystem_adapter_listing_data_source" component="Magento_Ui/js/grid/provider">
+        <settings>
+            <storageConfig>
+                <param name="indexField" xsi:type="string">adapter_id</param>
+            </storageConfig>
+            <updateUrl path="mui/index/render"/>
+        </settings>
+        <dataProvider class="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider" name="flagbit_flysystem_adapter_listing_data_source">
+            <settings>
+                <requestFieldName>id</requestFieldName>
+                <primaryFieldName>adapter_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <listingToolbar name="listing_top">
+        <settings>
+            <sticky>true</sticky>
+        </settings>
+        <bookmark name="bookmarks"/>
+        <columnsControls name="columns_controls"/>
+        <filterSearch name="fulltext"/>
+        <paging name="listing_paging"/>
+    </listingToolbar>
+    <columns name="adapter_columns">
+        <column name="adapter_id">
+            <settings>
+                <label translate="true">ID</label>
+                <sorting>asc</sorting>
+            </settings>
+        </column>
+        <column name="name">
+            <settings>
+                <label translate="true">Title</label>
+            </settings>
+        </column>
+        <column name="type">
+            <settings>
+                <label translate="true">Type</label>
+            </settings>
+        </column>
+        <column name="config_json">
+            <settings>
+                <label translate="true">Config</label>
+            </settings>
+        </column>
+    </columns>
+</listing>

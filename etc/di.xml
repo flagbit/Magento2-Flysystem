@@ -2,4 +2,21 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="Flagbit\Flysystem\Adapter\AdapterInterface" type="Flagbit\Flysystem\Adapter\FilesystemAdapter" />
     <preference for="Flagbit\Flysystem\Adapter\ManagerInterface" type="Flagbit\Flysystem\Adapter\FilesystemManager" />
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="flagbit_flysystem_adapter_listing_data_source" xsi:type="string">Flagbit\Flysystem\Model\ResourceModel\AdapterProvider\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Flagbit\Flysystem\Model\ResourceModel\AdapterProvider\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">flagbit_flysystem_adapter</argument>
+            <argument name="eventPrefix" xsi:type="string">flagbit_flysystem_adapter_grid_collection</argument>
+            <argument name="eventObject" xsi:type="string">flagbit_flysystem_adapter_grid_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Flagbit\Flysystem\Model\ResourceModel\AdapterProvider</argument>
+        </arguments>
+    </type>
 </config>

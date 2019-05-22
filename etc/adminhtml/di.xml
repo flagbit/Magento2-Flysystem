@@ -23,6 +23,33 @@
         </arguments>
     </type>
 
+    <type name="Flagbit\Flysystem\Helper\Config">
+        <arguments>
+            <argument name="adapterList" xsi:type="array">
+                <item name="local" xsi:type="array">
+                    <item name="title" xsi:type="string">Local</item>
+                    <item name="identifier" xsi:type="string">local</item>
+                    <item name="class" xsi:type="string">Flagbit\Flysystem\Model\AdapterProvider\Type\Local</item>
+                </item>
+                <item name="ftp" xsi:type="array">
+                    <item name="title" xsi:type="string">FTP</item>
+                    <item name="identifier" xsi:type="string">ftp</item>
+                    <item name="class" xsi:type="string">Flagbit\Flysystem\Model\AdapterProvider\Type\Local</item>
+                </item>
+                <item name="sftp" xsi:type="array">
+                    <item name="title" xsi:type="string">SFTP</item>
+                    <item name="identifier" xsi:type="string">sftp</item>
+                    <item name="class" xsi:type="string">Flagbit\Flysystem\Model\AdapterProvider\Type\Local</item>
+                </item>
+                <item name="test" xsi:type="array">
+                    <item name="title" xsi:type="string">Null-Adapter</item>
+                    <item name="identifier" xsi:type="string">test</item>
+                    <item name="class" xsi:type="string">Flagbit\Flysystem\Model\AdapterProvider\Type\Local</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+
     <virtualType name="Flagbit\Flysystem\Pool\OnInsertPool" type="Flagbit\Flysystem\Model\Pool\FileModifierPool">
         <arguments>
             <argument name="modifiers" xsi:type="array">

@@ -24,6 +24,11 @@ class Config
         'gif'
     ];
 
+    /**
+     * @var array
+     */
+    protected $_adapterList;
+
     const XPATH_CONFIG_GENERAL_SOURCE = 'flagbit_flysystem/general/source';
     const XPATH_CONFIG_GENERAL_ENABLE_FILE_COMPARE = 'flagbit_flysystem/general/enable_file_compare';
 
@@ -59,11 +64,14 @@ class Config
     /**
      * Config constructor.
      * @param ScopeConfigInterface $scopeConfig
+     * @param array $adapterList
      */
     public function __construct(
-        ScopeConfigInterface $scopeConfig
+        ScopeConfigInterface $scopeConfig,
+        $adapterList = []
     ) {
         $this->_scopeConfig = $scopeConfig;
+        $this->_adapterList = $adapterList;
     }
 
     /**
@@ -240,6 +248,15 @@ class Config
          *  @see http://php.net/manual/de/function.intval.php,
          */
         return intval($directoryPermissions, 0);
+    }
+
+    public function getAdapter($type): ?array
+    {
+        if(array_key_exists($type, $this->_adapterList)) {
+            return $this->_adapterList[$type];
+        }
+
+        return null;
     }
 
     /**

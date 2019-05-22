@@ -1,7 +1,8 @@
 <?xml version="1.0" ?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
     <menu>
-        <add id="Magento_Backend::system_media" title="Media" translate="title" module="Magento_Backend" sortOrder="30" parent="Magento_Backend::content" resource="Magento_Backend::design"/>
-        <add id="Flagbit_Flysystem::flysystem_page" title="Flagbit Flysystem" module="Flagbit_Flysystem" sortOrder="80" action="flagbit_flysystem/filemanager" parent="Magento_Backend::system_media" resource="Flagbit_Flysystem::flysystem_page"/>
+        <add id="Flagbit_Flysystem::flysystem" title="Flagbit Flysystem" translate="title" module="Flagbit_Flysystem" sortOrder="30" parent="Magento_Backend::content" resource="Magento_Backend::design"/>
+        <add id="Flagbit_Flysystem::flysystem_page" title="File Manager" module="Flagbit_Flysystem" sortOrder="80" action="flagbit_flysystem/filemanager" parent="Flagbit_Flysystem::flysystem" resource="Flagbit_Flysystem::flysystem_page"/>
+        <add id="Flagbit_Flysystem::flysystem_adapters" title="Adapter Manager" module="Flagbit_Flysystem" sortOrder="90" action="flagbit_flysystem/adaptermanager" parent="Flagbit_Flysystem::flysystem" resource="Flagbit_Flysystem::flysystem_page"/>
     </menu>
 </config>

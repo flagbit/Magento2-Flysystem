@@ -2,21 +2,25 @@
 
 namespace Flagbit\Flysystem\Model\Filesystem;
 
+use \Exception;
 use \Flagbit\Flysystem\Adapter\FilesystemAdapter;
 use \Flagbit\Flysystem\Adapter\FilesystemAdapterFactory;
 use \Flagbit\Flysystem\Adapter\FilesystemManager;
 use \Flagbit\Flysystem\Helper\Config;
 use \Flagbit\Flysystem\Helper\Errors;
+use \Flagbit\Flysystem\Model\AdapterProvider;
 use \Magento\Backend\Model\Session;
 use \Magento\Framework\Event\Manager as EventManager;
 use \Magento\Framework\Exception\LocalizedException;
+use \Magento\Framework\Model\Context;
+use \Magento\Framework\Registry;
 use \Psr\Log\LoggerInterface;
 
 /**
  * Class Manager
  * @package Flagbit\Flysystem\Model\Filesystem
  */
-class Manager
+class Manager extends AdapterProvider
 {
     /**
      * @var FilesystemManager
@@ -60,6 +64,9 @@ class Manager
 
     /**
      * Manager constructor.
+     * @param Context $context
+     * @param Registry $registry
+     * @param AdapterProvider\TypeFactory $typeFactory
      * @param FilesystemManager $flysystemManager
      * @param FilesystemAdapterFactory $flysystemFactory
      * @param EventManager $eventManager
@@ -68,20 +75,31 @@ class Manager
      * @param LoggerInterface $logger
      */
     public function __construct(
+        Context $context,
+        Registry $registry,
+        AdapterProvider\TypeFactory $typeFactory,
         FilesystemManager $flysystemManager,
         FilesystemAdapterFactory $flysystemFactory,
         EventManager $eventManager,
         Config $flysystemConfig,
         Session $session,
         LoggerInterface $logger
-    )
-    {
+    ) {
         $this->_flysystemManager = $flysystemManager;
         $this->_flysystemFactory = $flysystemFactory;
         $this->_eventManager = $eventManager;
         $this->_flysystemConfig = $flysystemConfig;
         $this->_session = $session;
         $this->_logger = $logger;
+
+        parent::__construct($context, $registry, $flysystemConfig, $typeFactory);
+    }
+
+    public function _construct()
+    {
+        parent::_construct();
+        $this->load(1);
+        $this->createTypeProvider();
     }
 
     /**
@@ -89,7 +107,7 @@ class Manager
      * @return FilesystemAdapter|null
      * @throws LocalizedException
      */
-    public function create($source = null)
+    /*public function create($source = null)
     {
         if (!$source) {
             $source = $this->_flysystemConfig->getSource();
@@ -113,24 +131,7 @@ class Manager
         $this->_eventManager->dispatch('flagbit_flysystem_create_after', ['source' => $source, 'manager' => $this]);
 
         return $this->getAdapter(false);
-    }
-
-    /**
-     * @param bool $createIfNotExists
-     * @return FilesystemAdapter|null
-     * @throws LocalizedException
-     */
-    public function getAdapter(bool $createIfNotExists = true)
-    {
-        if (!$this->_adapter && $createIfNotExists) {
-            $this->create();
-        }
-
-        if (!$this->_adapter) {
-            throw new LocalizedException(Errors::getErrorMessage(111));
-        }
-        return $this->_adapter;
-    }
+    }*/
 
     /**
      * @param FilesystemAdapter|null $adapter
@@ -139,22 +140,6 @@ class Manager
     public function setAdapter($adapter)
     {
         $this->_adapter = $adapter;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getPath()
-    {
-        return $this->_path;
-    }
-
-    /**
-     * @param string|null $path
-     */
-    public function setPath($path)
-    {
-        $this->_path = $path;
     }
 
     /**
@@ -174,7 +159,7 @@ class Manager
             $this->setPath($path);
 
             return $this->_flysystemFactory->create($this->_flysystemManager->createLocalDriver($path));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->_logger->critical($e->getMessage());
             return null;
         }
@@ -210,7 +195,7 @@ class Manager
                 'ssl' => $this->_flysystemConfig->getFtpSsl(),
                 'timeout' => $this->_flysystemConfig->getFtpTimeout()
             ]));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->_logger->critical($e->getMessage());
             return null;
         }
@@ -256,7 +241,7 @@ class Manager
             }
 
             return $this->_flysystemFactory->create($this->_flysystemManager->createSftpDriver($config));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->_logger->critical($e->getMessage());
             return null;
         }
