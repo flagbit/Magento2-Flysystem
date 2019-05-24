@@ -4,6 +4,7 @@
     <body>
         <referenceContainer name="content">
             <uiComponent name="flagbit_flysystem_adapter_listing"/>
+            <block class="Flagbit\Flysystem\Block\Adminhtml\AdapterManager" name="flagbit_flysystem_adapter_list"/>
         </referenceContainer>
     </body>
 </layout>

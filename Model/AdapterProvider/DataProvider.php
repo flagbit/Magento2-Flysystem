@@ -4,13 +4,13 @@ namespace Flagbit\Flysystem\Model\AdapterProvider;
 use Flagbit\Flysystem\Model\ResourceModel\AdapterProvider\Collection;
 use Flagbit\Flysystem\Model\ResourceModel\AdapterProvider\CollectionFactory;
 use Magento\Framework\App\Request\DataPersistorInterface;
-use Magento\Ui\DataProvider\Modifier\PoolInterface;
+use \Magento\Ui\DataProvider\AbstractDataProvider;
 
 /**
  * Class DataProvider
  * @package Flagbit\Flysystem\Model\AdapterProvider
  */
-class DataProvider extends \Magento\Ui\DataProvider\ModifierPoolDataProvider
+class DataProvider extends AbstractDataProvider
 {
     /**
      * @var Collection
@@ -27,7 +27,16 @@ class DataProvider extends \Magento\Ui\DataProvider\ModifierPoolDataProvider
      */
     protected $loadedData;
 
-
+    /**
+     * DataProvider constructor.
+     * @param $name
+     * @param $primaryFieldName
+     * @param $requestFieldName
+     * @param CollectionFactory $adapterCollectionFactory
+     * @param DataPersistorInterface $dataPersistor
+     * @param array $meta
+     * @param array $data
+     */
     public function __construct(
         $name,
         $primaryFieldName,
@@ -35,13 +44,11 @@ class DataProvider extends \Magento\Ui\DataProvider\ModifierPoolDataProvider
         CollectionFactory $adapterCollectionFactory,
         DataPersistorInterface $dataPersistor,
         array $meta = [],
-        array $data = [],
-        PoolInterface $pool = null
+        array $data = []
     ) {
         $this->collection = $adapterCollectionFactory->create();
         $this->dataPersistor = $dataPersistor;
-        parent::__construct($name, $primaryFieldName, $requestFieldName, $meta, $data, $pool);
-        $this->meta = $this->prepareMeta($this->meta);
+        parent::__construct($name, $primaryFieldName, $requestFieldName, $meta, $data);
     }
 
     /**
@@ -50,9 +57,12 @@ class DataProvider extends \Magento\Ui\DataProvider\ModifierPoolDataProvider
      * @param array $meta
      * @return array
      */
-    public function prepareMeta(array $meta)
+    public function getMeta()
     {
-        return $meta;
+        var_dump($this->meta);
+        var_dump($this->data);
+
+        return $this->meta;
     }
 
     /**

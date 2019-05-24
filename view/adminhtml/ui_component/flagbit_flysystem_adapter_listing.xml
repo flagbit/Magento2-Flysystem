@@ -6,13 +6,6 @@
         </item>
     </argument>
     <settings>
-        <buttons>
-            <button name="add">
-                <url path="*/*/new"/>
-                <class>primary</class>
-                <label translate="true">Add New Adapter</label>
-            </button>
-        </buttons>
         <spinner>adapter_columns</spinner>
         <deps>
             <dep>flagbit_flysystem_adapter_listing.flagbit_flysystem_adapter_listing_data_source</dep>

@@ -17,9 +17,15 @@ class Local extends AbstractType
     /**
      * @var array
      */
-    protected $_configFields = [
-        self::CONFIG_ROOT_PATH => 'text',
-        self::CONFIG_LOCK_DURING_WRITE => 'bool'
+    protected static $_configFields = [
+        self::CONFIG_ROOT_PATH => [
+            'type' => 'text',
+            'default' => ''
+        ],
+        self::CONFIG_LOCK_DURING_WRITE => [
+            'type' => 'bool',
+            'default' => true
+        ]
     ];
 
     /**

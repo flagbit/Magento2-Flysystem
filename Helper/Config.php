@@ -250,6 +250,10 @@ class Config
         return intval($directoryPermissions, 0);
     }
 
+    /**
+     * @param $type
+     * @return array|null
+     */
     public function getAdapter($type): ?array
     {
         if(array_key_exists($type, $this->_adapterList)) {
@@ -257,6 +261,14 @@ class Config
         }
 
         return null;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAdapterList(): array
+    {
+        return $this->_adapterList;
     }
 
     /**
