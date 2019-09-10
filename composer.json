@@ -1,39 +1,59 @@
 {
-  "name": "flagbit/magento2-flysystem",
-  "description": "Flysystem integration for Magento2",
-  "type": "magento2-module",
-  "license": [
-    "proprietary"
-  ],
-  "authors": [
-    {
-      "name": "Robin Homberg",
-      "email": "robin.homberg@flagbit.de",
-      "role": "Developer"
-    },
-    {
-      "name": "Björn Meyer",
-      "email": "bjoern.meyer@flagbit.de",
-      "role": "DevOps"
-    }
-  ],
-  "require": {
-    "php": ">=7.1.0",
-    "league/flysystem": "1.0.43",
-    "league/flysystem-sftp": "^1.0"
-  },
-  "require-dev": {
-    "roave/security-advisories": "dev-master"
-  },
-  "autoload": {
-    "files": [
-      "registration.php"
+    "name": "flagbit/magento2-flysystem",
+    "description": "Flysystem integration for Magento2",
+    "type": "magento2-module",
+    "license": [
+        "GPL-3.0-or-later"
     ],
-    "psr-4": {
-      "Flagbit\\Flysystem\\": ""
+    "authors": [
+        {
+            "name": "Robin Homberg",
+            "email": "robin.homberg@flagbit.de",
+            "role": "Developer"
+        },
+        {
+            "name": "Björn Meyer",
+            "email": "bjoern.meyer@flagbit.de",
+            "role": "DevOps"
+        }
+    ],
+    "homepage": "https://github.com/flagbit/Magento2-Flysystem",
+    "keywords": [
+        "magento",
+        "magento2",
+        "flysystem",
+        "filesystem"
+    ],
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://repo.magento.com/"
+        }
+    ],
+    "require": {
+        "php": ">=7.1.0",
+        "league/flysystem": "^1.0",
+        "league/flysystem-sftp": "^1.0",
+        "magento/framework": ">=101.0.0",
+        "magento/module-backend": ">=100.2.0",
+        "magento/magento-composer-installer": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.5",
+        "roave/security-advisories": "dev-master"
+    },
+    "suggest": {
+        "flagbit/magento2-flysystem-s3": "S3 Adapter for Magento2 Flysystem integration"
+    },
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Flagbit\\Flysystem\\": ""
+        }
+    },
+    "config": {
+        "sort-packages": true
     }
-  },
-  "config": {
-    "sort-packages": true
-  }
 }
