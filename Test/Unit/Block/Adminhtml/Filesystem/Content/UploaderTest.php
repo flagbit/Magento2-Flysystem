@@ -67,7 +67,7 @@ class UploaderTest extends TestCase
 
         $this->_urlBuilderMock = $this->getMockBuilder(Url::class)
             ->disableOriginalConstructor()
-            ->setMethods(['getUrl', 'addSessionParam'])
+            ->setMethods(['getUrl'])
             ->getMock();
 
         $this->_mathRandomMock = $this->getMockBuilder(Random::class)
@@ -122,15 +122,6 @@ class UploaderTest extends TestCase
             ->withAnyParameters()
             ->willReturn($uniqueHash);
 
-        $this->_urlBuilderMock->expects($this->at(0))
-            ->method('addSessionParam')
-            ->willReturn($this->_urlBuilderMock);
-
-        $this->_urlBuilderMock->expects($this->at(1))
-            ->method('getUrl')
-            ->with('adminhtml/*/upload')
-            ->willReturn('asdf');
-
         $this->_formKeyMock->expects($this->once())
             ->method('getFormKey')
             ->willReturn($formKey);
@@ -140,11 +131,7 @@ class UploaderTest extends TestCase
             ->with('type')
             ->willReturn($mediaType);
 
-        $this->_urlBuilderMock->expects($this->at(2))
-            ->method('addSessionParam')
-            ->willReturn($this->_urlBuilderMock);
-
-        $this->_urlBuilderMock->expects($this->at(3))
+        $this->_urlBuilderMock->expects($this->at(1))
             ->method('getUrl')
             ->with($uri, $this->arrayHasKey('type'))
             ->willReturn($url);
@@ -168,24 +155,11 @@ class UploaderTest extends TestCase
             ->withAnyParameters()
             ->willReturn($uniqueHash);
 
-        $this->_urlBuilderMock->expects($this->at(0))
-            ->method('addSessionParam')
-            ->willReturn($this->_urlBuilderMock);
-
-        $this->_urlBuilderMock->expects($this->at(1))
-            ->method('getUrl')
-            ->with('adminhtml/*/upload')
-            ->willReturn('asdf');
-
         $this->_formKeyMock->expects($this->once())
             ->method('getFormKey')
             ->willReturn($formKey);
 
-        $this->_urlBuilderMock->expects($this->at(2))
-            ->method('addSessionParam')
-            ->willReturn($this->_urlBuilderMock);
-
-        $this->_urlBuilderMock->expects($this->at(3))
+        $this->_urlBuilderMock->expects($this->at(1))
             ->method('getUrl')
             ->with($uri, $this->arrayHasKey('type'))
             ->willReturn($url);

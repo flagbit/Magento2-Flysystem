@@ -31,7 +31,7 @@ class Uploader extends MagentoUploader
         $type = $this->_getMediaType();
 
         $this->getConfig()->setUrl(
-            $this->_urlBuilder->addSessionParam()->getUrl('flagbit_flysystem/*/upload', ['type' => $type])
+            $this->_urlBuilder->getUrl('flagbit_flysystem/*/upload', ['type' => $type])
         )->setFileField(
             \Flagbit\Flysystem\Helper\Config::FLYSYSTEM_UPLOAD_ID
         );
