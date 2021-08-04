@@ -32,11 +32,11 @@
     ],
     "require": {
         "php": ">=7.1.0",
-        "league/flysystem": "^1.0",
+        "league/flysystem": "^1.1.4",
         "league/flysystem-sftp": "^1.0",
         "magento/framework": ">=102.0.5",
-        "magento/module-backend": ">=100.2.0",
-        "magento/magento-composer-installer": "*"
+        "magento/magento-composer-installer": "*",
+        "magento/module-backend": ">=100.2.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^7.5",
